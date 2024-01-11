@@ -1,0 +1,45 @@
+{% extends 'splashscreen.html.twig' %}
+
+{% block title %}Log in!
+{% endblock %}
+
+{% block body %}
+	<div class="flex h-screen w-full items-center justify-center">
+		<div class="rounded-xl bg-gray-800 bg-opacity-50 px-16 py-10 shadow-lg backdrop-blur-md max-sm:px-8">
+			<div class="text-white">
+				<div class="mb-8 flex flex-col items-center">
+					<img src="{{ asset('soft_logos/mediaease.png') }}" width="150" alt="" srcset=""/>
+					<h1 class="mb-2 text-2xl">Media Ease</h1>
+					<span class="text-gray-300">Enter Login Details</span>
+					{% if app.user %}
+						<div class="mb-3">
+							You are logged in as
+							{{ app.user.userIdentifier }},
+							<a href="{{ path('app_logout') }}">Logout</a>
+						</div>
+					{% endif %}
+				</div>
+				<form method="post">
+					{% if error %}
+						<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+					{% endif %}
+					<div class="mb-4 text-lg">
+						<input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-700 dark:border-gray-200 rounded py-3 px-4 md:w-[98%] mx-auto leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" name="username" id="inputUsername" value="{{ last_username }}" placeholder="username" autocomplete="username" required autofocus/>
+					</div>
+					<div class="mb-4 text-lg">
+						<input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-700 dark:border-gray-200 rounded py-3 px-4 md:w-[98%] mx-auto leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="Password" name="password" id="inputPassword" placeholder="*********" autocomplete="current-password" required/>
+					</div>
+					<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+					<div class="mt-8 flex justify-center text-lg text-black">
+						<button type="submit" class="block bg-green-500 hover:bg-green-700 mt-5 py-2 px-10 rounded-2xl hover:-translate-y-1 transition-all duration-500 text-white font-semibold mb-2">Login</button>
+					</div>
+					<div class="flex justify-between mt-4">
+						<span class="text-sm ml-2 hover:text-blue-500 cursor-pointer">Forgot Password ?</span>
+						<a href="#" class="text-sm ml-2 hover:text-blue-500 cursor-pointer">Don't have an account yet?</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

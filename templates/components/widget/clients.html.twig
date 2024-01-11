@@ -1,0 +1,13 @@
+{% if display|last == 1 %}
+	<div id="clients_widget" class="carousel">
+		<div class="spinner" id="clients_spinner">
+			{% include "components/utility/spinner.html.twig" %}
+		</div>
+		<div class="widget_content" style="display: none;">
+			<div class="font-semibold text-white">
+				<h4 class="">Clients</h4>
+				<div class="carousel-content"></div>
+			</div>
+		</div>
+	</div>
+{% endif %}

@@ -1,0 +1,16 @@
+{% macro render_sidebar(sections) %}
+	<ul>
+		<li class="mt-10 ml-3 pl-3 lg:m-0 lg:p-0 lg:mt-8">
+			{% for section_title, links in sections %}
+				<h4 class="mt-10 mb-2 lg:mb-0 lg:mt-3 font-semibold text-sky-500 dark:text-sky-400">{{ section_title }}</h4>
+				<ul class="border-1 mb-4 border-slate-100 dark:border-slate-800">
+					{% for path, label in links %}
+						<li>
+							<a class="text-left block ml-3 border-l pl-4 border-slate-500 hover:border-sky-400 dark:hover:border-sky-500 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-600" href="{{ path }}">{{ label }}</a>
+						</li>
+					{% endfor %}
+				</ul>
+			{% endfor %}
+		</li>
+	</ul>
+{% endmacro %}

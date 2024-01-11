@@ -1,0 +1,88 @@
+{% extends 'settings/base.html.twig' %}
+
+{% block title %}Hello HomeController!
+{% endblock %}
+
+{% block body %}
+	<div class="max-w-8xl md:mx-auto md:px-auto lg:px-6">
+		<div class="xl:pt-[2.3615rem] pt-[15rem]">
+			<div class="xl:pl-[25rem]">
+				<div class="w-full mx-auto pt-10 xl:max-w-none xl:ml-4 rounded-xl mb-4 ">
+					<header id="header" class="relative">
+						<div class="px-4">
+							<p class="text-left text-2xl mb-2 leading-6 font-semibold text-sky-500 dark:text-sky-400">Settings</p>
+							<div class="flex items-center">
+								<h1 class="inline-block text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight dark:text-slate-200">General Settings</h1>
+							</div>
+						</div>
+						{% if catchphrase is defined and not null %}
+							<p class="mt-2 text-lg text-slate-700 dark:text-slate-400">Getting the most performance out of Tailwind CSS projects.</p>
+						{% endif %}
+					</header>
+					<div id="content-wrapper" class="relative px-4 prose prose-slate mt-8 dark:prose-dark pb-3 mb-4">
+						{{ form_start(form) }}
+						<div class="flex flex-wrap -mx-3 xl:mb-2">
+							<div class="w-full xl:w-1/2 px-3 xl:mb-6 md:mb-0 pt-2 xl:p-0">
+								<label class="text-left block md:ml-2 uppercase tracking-wide text-slate-600 dark:text-slate-200 text-md xl:text-xs font-bold mb-2">
+									{{ form_label(form.siteTitle) }}
+								</label>
+								{{ form_widget(form.siteTitle, {'attr': {'class': 'appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-700 dark:border-gray-200 rounded py-3 px-4 md:w-[98%] mx-auto leading-tight focus:outline-none focus:bg-white focus:border-gray-500'}}) }}
+								<p class="text-red-500 text-md xl:text-xs italic">{{ form_errors(form.siteTitle) }}.</p>
+							</div>
+							<div class="w-full xl:w-1/2 px-3 pt-2 pb-4 xl:p-0">
+								<label class="text-left block md:ml-2 uppercase tracking-wide text-slate-600 dark:text-slate-200 text-md xl:text-xs font-bold mb-2 pt-2 lg:pt-0">
+									{{ form_label(form.siteDescription) }}
+								</label>
+								{{ form_widget(form.siteDescription, {'attr': {'class': 'appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-700 dark:border-gray-200 rounded py-3 px-4 md:w-[98%] mx-auto leading-tight focus:outline-none focus:bg-white focus:border-gray-500'}}) }}
+							</div>
+						</div>
+						<div class="flex flex-wrap -mx-3 xl:mb-6 ">
+							<div class="w-full xl:w-1/2 px-3 xl:mb-6 md:mb-0 pt-2 pb-4 xl:p-0">
+								<label class="text-left block md:ml-2 uppercase tracking-wide text-slate-600 dark:text-slate-200 text-md xl:text-xs font-bold mb-2 pt-2 lg:pt-0">
+									{{ form_label(form.emailSenderAddress) }}
+								</label>
+								{{ form_widget(form.emailSenderAddress, {'attr': {'class': 'appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-700 dark:border-gray-200 rounded py-3 px-4 md:w-[98%] mx-auto leading-tight focus:outline-none focus:bg-white focus:border-gray-500'}}) }}
+							</div>
+							<div class="w-full xl:w-1/2 px-3  pt-2 pb-4 xl:p-0">
+								<label class="text-left block md:ml-2 uppercase tracking-wide text-slate-600 dark:text-slate-200 text-md xl:text-xs font-bold mb-2 pt-2 lg:pt-0">
+									{{ form_label(form.emailSenderName) }}
+								</label>
+								{{ form_widget(form.emailSenderName, {'attr': {'class': 'appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-700 dark:border-gray-200 rounded py-3 px-4 md:w-[98%] mx-auto leading-tight focus:outline-none focus:bg-white focus:border-gray-500'}}) }}
+							</div>
+						</div>
+						<div class="flex flex-wrap -mx-3 xl:mb-6 ">
+							<div class="w-full xl:w-1/2 px-3 xl:mb-6 md:mb-0 pt-2 pb-4 xl:p-0">
+								<label class="text-left block md:ml-2 uppercase tracking-wide text-slate-600 dark:text-slate-200 text-md xl:text-xs font-bold mb-2 pt-2 lg:pt-0">
+									{{ form_label(form.webrootUrl) }}
+								</label>
+								{{ form_widget(form.webrootUrl, {'attr': {'class': 'appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-700 dark:border-gray-200 rounded py-3 px-4 md:w-[98%] mx-auto leading-tight focus:outline-none focus:bg-white focus:border-gray-500'}}) }}
+							</div>
+						</div>
+						<div class="flex flex-wrap -mx-3 xl:mb-6 ">
+							<div class="w-full xl:w-1/2 px-3 xl:mb-6 md:mb-0 pt-2 pb-4 xl:p-0">
+								<label class="text-left block md:ml-2 uppercase tracking-wide text-slate-600 dark:text-slate-200 text-md xl:text-xs font-bold mb-2">
+									{{ form_label(form.mountPoint) }}
+								</label>
+								{{ form_widget(form.mountPoint, {'attr': {'class': 'appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-700 dark:border-gray-200 rounded py-3 px-4 md:w-[98%] mx-auto leading-tight focus:outline-none focus:bg-white focus:border-gray-500'}}) }}
+							</div>
+							<div class="w-full xl:w-1/2 px-3 xl:mb-6 md:mb-0 pt-2 pb-4 xl:p-0">
+								<label class="text-left block md:ml-2 uppercase tracking-wide text-slate-600 dark:text-slate-200 text-md xl:text-xs font-bold mb-2">
+									{{ form_label(form.netInterface) }}
+								</label>
+								{{ form_widget(form.netInterface, {'attr': {'class': 'appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-700 dark:border-gray-200 rounded py-3 px-4 md:w-[98%] mx-auto leading-tight focus:outline-none focus:bg-white focus:border-gray-500'}}) }}
+							</div>
+						</div>
+						<div class="flex justify-end pt-3 mt-4 mb-2 xl:m-0 xl:p-0">
+							<button class="iconed-button bg-green-500 hover:bg-green-700 text-white font-bold pl-3 rounded h-14 pr-[1.25rem]">
+								{{ heroicon(form.save.vars.icon_before, 'icon ' ~ form.save.vars.icon_class)|raw }}{{ form.save.vars.label }}
+							</button>
+						</div>
+						{{ form_errors(form) }}
+						{{ form_row(form._token) }}
+						{{ form_end(form, {'render_rest': false}) }}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

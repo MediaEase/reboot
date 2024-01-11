@@ -1,0 +1,122 @@
+.card-container .liquid-green,
+.card-container .liquid-red {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow-x: hidden;
+}
+
+.card-container .liquid-green::after,
+.card-container .liquid-green::before,
+.card-container .liquid-red::after,
+.card-container .liquid-red::before {
+    position: absolute;
+    content: "";
+    width: 200%;
+    height: 200%;
+    top: 0;
+    left: 0;
+    transform: translate(-25%, -25%);
+    animation: animate 5s linear infinite;
+    overflow-x: hidden;
+}
+
+.card-container .liquid-green {
+    background: rgba(0, 255, 0, 0.3);
+    box-shadow: inset 0 0 50px rgba(0, 255, 0, 0.8);
+    overflow: hidden;
+}
+
+.card-container .liquid-green::after {
+    border-radius: 45%;
+    box-shadow: 0 0 10px 5px rgba(0, 255, 0, 0.3), inset 0 0 5px rgba(0, 255, 0, 0.3);
+}
+
+.card-container .liquid-green::before {
+    border-radius: 40%;
+    background: rgba(90, 108, 124, 0.521);
+    box-shadow: 0 0 10px rgba(90, 108, 124, 0.521), inset 0 0 5px rgba(90, 108, 124, 0.521);
+    overflow-x: hidden;
+}
+
+.card-container .liquid-red {
+    background: rgba(255, 99, 71, 0.7);
+    box-shadow: inset 0 0 50px rgba(255, 0, 0, 0.9);
+    overflow: hidden;
+}
+
+.card-container .liquid-red::after {
+    border-radius: 45%;
+    box-shadow: 0 0 10px 5px rgba(255, 69, 0, 0.521), inset 0 0 5px rgba(255, 69, 0, 0.521);
+}
+
+.card-container .liquid-red::before {
+    border-radius: 40%;
+    background: rgba(90, 108, 124, 0.521);
+    box-shadow: 0 0 10px rgba(90, 108, 124, 0.521), inset 0 0 5px rgba(90, 108, 124, 0.521);
+    overflow-x: hidden;
+}
+
+/* Animation Keyframes */
+@keyframes animate {
+    0% {
+        transform: translate(-25%, -75%) rotate(0);
+        overflow-x: hidden;
+    }
+
+    100% {
+        transform: translate(-25%, -75%) rotate(360deg);
+        overflow-x: hidden;
+    }
+}
+
+#my-app-list>div:first-child {
+    background-color: rgba(90, 108, 124, 0.521);
+    --tw-text-opacity: 1;
+    color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+#my-app-list>div:last-child {
+    background-color: rgba(90, 108, 124, 0.521);
+    --tw-text-opacity: 1;
+    color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+#my-app-list th {
+    background-color: rgba(90, 108, 124, 0.521);
+    --tw-text-opacity: 1;
+    color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+#my-app-list th svg {
+    --tw-text-opacity: 1;
+    color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+#my-app-list tbody {
+    --tw-text-opacity: 1;
+    color: rgb(255 255 255 / var(--tw-text-opacity))!important;
+    font-weight: normal;
+}
+
+#my-app-list p {
+    --tw-text-opacity: 1;
+    color: rgb(255 255 255 / var(--tw-text-opacity))!important;
+    font-weight: normal;
+}
+
+#app-finder::placeholder {
+    --tw-text-opacity: 1;
+    color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
+    font-weight: normal!important;
+}
+
+#my-app-list td[data-te-field="apiKey"],
+#my-app-list td[data-te-field="actions"],
+#my-app-list td[data-te-field="version"]
+{
+    vertical-align: middle;
+}

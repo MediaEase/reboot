@@ -1,0 +1,7 @@
+<div class="card-container mb-16 lg:mb-0 p-2 relative group" data-app-panel="{{ appPanel|replace({' ': ''}) }}">
+	<div class="block h-full card-blur shadow-md rounded-xl hover:shadow-xl hover:scale-105 transition duration-300 ease-in-out p-6">
+		{{ block('card_header') }}
+		{{ block('card_content') }}
+		<div id="{{ appPanel|replace({' ': ''}) }}-liquid" class="liquid liquid-green"></div>
+	</div>
+</div>

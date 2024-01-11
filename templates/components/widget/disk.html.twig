@@ -1,0 +1,24 @@
+{% if display|last == 1 %}
+	<div id="disk_widget">
+		<div class="spinner" id="disk_spinner">
+			{% include "components/utility/spinner.html.twig" %}
+		</div>
+		<div class="widget_content" style="display: none;">
+			<div class="font-semibold text-white">
+				<h4>Disk Usage</h4>
+				<div class="text-sm font-semibold name-text">Name: Fetching...</div>
+				<div class="relative inline-block overflow-hidden scale-105 translate-x-4 skew-y-3 md:transform-none">
+					<svg class="transform -rotate-90 w-48 h-48">
+						<circle cx="80" cy="80" r="70" stroke="currentColor" stroke-width="14" fill="transparent" class="text-gray-700"/>
+						<circle cx="80" cy="80" r="70" stroke="currentColor" stroke-width="14" fill="transparent" class="disk-progress-circle text-blue-500"/>
+					</svg>
+					<span class="percentage usage-text" id="disk_usage">0%</span>
+				</div>
+			</div>
+			<div class="text-sm font-semibold total-text">Total: 0 GB</div>
+			<div class="text-sm font-semibold used-text">Used: 0 GB</div>
+			<div class="text-sm font-semibold free-text">Free: 0 GB</div>
+			<div class="text-sm font-semibold mount-text">Mount: /</div>
+		</div>
+	</div>
+{% endif %}

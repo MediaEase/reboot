@@ -1,0 +1,1101 @@
+nelmio_api_doc:
+  areas:
+    default:
+      path_patterns:
+        - ^/api 
+      disable_default_routes: true
+  documentation:
+    openapi: 3.0.0
+    info:
+      title: HarmonyUI V1 API
+      description: >-
+        Use these APIs to interact with the  HarmonyUI backend.
+        You can find out more about the HarmonyUI project at htttps://github.com/MediaEase/HarmonyUI
+      termsOfService: https:///github.com/MediaEase/HarmonyUI/tos
+      contact:
+        name: MediaEase
+        url: htttps://github.com/MediaEase/MediaEase
+      license:
+        name: MIT
+        url: https://opensource.org/licenses/MIT
+      version: 1.0.0
+    servers:
+      - url: 'http://localhost:8000'
+        description: Local development server
+    security:
+      - Bearer: []
+      - apiKey: []
+    tags:
+      - name: Apps
+        description: Apps related endpoints
+      - name: Authentication
+        description: Authentication related endpoints
+      - name: Metrics
+        description: Metrics related endpoints
+      - name: Profile
+        description: Profile related endpoints
+      - name: Store
+        description: Store related endpoints
+      - name: Users
+        description: Users related endpoints
+      - name: Widgets
+        description: Widgets related endpoints
+    paths:
+      /api/apps:
+        get:
+          tags:
+            - Apps
+          summary: Get apps
+          operationId: getApps
+          responses:
+            '200':
+              description: Returns apps
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: '#/components/schemas/App'
+            '401':
+              $ref: '#/components/responses/401'
+            '500':
+              $ref: '#/components/responses/500'
+        post:
+          tags:
+            - Apps
+          summary: Create app
+          operationId: createApp
+          requestBody:
+            content:
+              application/hal+json:
+                schema:
+                  $ref: '#/components/schemas/App'
+          responses:
+            '201':
+              description: App created
+              content:
+                application/hal+json:
+                  schema:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+            '401':
+              $ref: '#/components/responses/401'
+            '422':
+              $ref: '#/components/responses/422'
+            '500':
+              $ref: '#/components/responses/500'
+      /api/apps/{id}:
+        get:
+          tags:
+            - Apps
+          summary: Get app details
+          operationId: getApp
+          parameters:
+            - name: id
+              in: path
+              description: App Identifier
+              schema:
+                type: integer
+              required: true
+          responses:
+            '200':
+              description: Returns app details
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: '#/components/schemas/App'
+            '401':
+              $ref: '#/components/responses/401'
+            '404':
+              $ref: '#/components/responses/404'
+            '500':
+              $ref: '#/components/responses/500'
+        put:
+          tags:
+            - Apps
+          summary: Update app
+          operationId: updateApp
+          parameters:
+            - name: id
+              in: path
+              description: App Identifier
+              schema:
+                type: integer
+              required: true
+          requestBody:
+            content:
+              application/hal+json:
+                schema:
+                  $ref: '#/components/schemas/App'
+          responses:
+            '200':
+              description: App updated
+              content:
+                application/hal+json:
+                  schema:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+            '204':
+              $ref: '#/components/responses/204'
+            '401':
+              $ref: '#/components/responses/401'
+            '404':
+              $ref: '#/components/responses/404'
+            '422':
+              $ref: '#/components/responses/422'
+            '500':
+              $ref: '#/components/responses/500'
+        delete:
+          tags:
+            - Apps
+          summary: Delete app
+          operationId: deleteApp
+          parameters:
+            - name: id
+              in: path
+              description: App Identifier
+              schema:
+                type: integer
+              required: true
+          responses:
+            '204':
+              $ref: '#/components/responses/204'
+            '401':
+              $ref: '#/components/responses/401'
+            '404':
+              $ref: '#/components/responses/404'
+            '500':
+              $ref: '#/components/responses/500'
+      /api/login_check:
+        post:
+          tags:
+            - Authentication
+          summary: Get JWT token
+          operationId: login
+          requestBody:
+            content:
+              application/json:
+                schema:
+                  properties:
+                    username:
+                      type: string
+                    password:
+                      type: string
+                  type: object
+          responses:
+            '200':
+              description: OK
+              content:
+                application/hal+json:
+                  schema:
+                    type: object
+                    properties:
+                      token:
+                        type: string
+            '400':
+              $ref: '#/components/responses/400'
+            '405':
+              $ref: '#/components/responses/405'
+            '422':
+              $ref: '#/components/responses/422'
+            '500':
+              $ref: '#/components/responses/500'
+          security: []
+      /api/users/{id}:
+        get:
+          tags:
+            - Users
+          summary: Get user details
+          operationId: getUser
+          parameters:
+            - name: id
+              in: path
+              description: User Identifier
+              schema:
+                type: integer
+              required: true
+          responses:
+            '200':
+              description: Returns user details
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: '#/components/schemas/User'
+            '401':
+              $ref: '#/components/responses/401'
+            '403':
+              $ref: '#/components/responses/403'
+            '404':
+              $ref: '#/components/responses/404'
+            '500':
+              $ref: '#/components/responses/500'
+        put:
+          tags:
+            - Users
+          summary: Update user
+          operationId: updateCustomer
+          parameters:
+            - name: id
+              in: path
+              description: User Identifier
+              schema:
+                type: integer
+              required: true
+          requestBody:
+            content:
+              application/hal+json:
+                schema:
+                  properties:
+                    email:
+                      type: string
+                  type: object
+          responses:
+            '200':
+              description: User updated
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: '#/components/schemas/User'
+            '204':
+              $ref: '#/components/responses/204'
+            '401':
+              $ref: '#/components/responses/401'
+            '403':
+              $ref: '#/components/responses/403'
+            '404':
+              $ref: '#/components/responses/404'
+            '422':
+              $ref: '#/components/responses/422'
+            '500':
+              $ref: '#/components/responses/500'
+        delete:
+          tags:
+            - Users
+          summary: Delete user
+          operationId: deleteCustomer
+          parameters:
+            - name: id
+              in: path
+              description: User Identifier
+              schema:
+                type: integer
+              required: true
+          responses:
+            '204':
+              $ref: '#/components/responses/204'
+            '401':
+              $ref: '#/components/responses/401'
+            '403':
+              $ref: '#/components/responses/403'
+            '404':
+              $ref: '#/components/responses/404'
+            '500':
+              $ref: '#/components/responses/500'
+      /api/metric/cpu:
+        get:
+          tags:
+            - Metrics
+          summary: Get CPU metrics
+          operationId: getCpuUsage
+          responses:
+            '200':
+              description: Returns CPU metrics
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: '#/components/schemas/Cpu'
+            '401':
+              $ref: '#/components/responses/401'
+            '403':
+              $ref: '#/components/responses/403'
+            '500':
+              $ref: '#/components/responses/500'
+      /api/metric/disk:
+        get:
+          tags:
+            - Metrics
+          summary: Get disk metrics
+          operationId: getDiskUsage
+          responses:
+            '200':
+              description: Returns disk metrics
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: '#/components/schemas/Disk'
+            '401':
+              $ref: '#/components/responses/401'
+            '403':
+              $ref: '#/components/responses/403'
+            '500':
+              $ref: '#/components/responses/500'
+      /api/metric/mem:
+        get:
+          tags:
+            - Metrics
+          summary: Get ram metrics
+          operationId: getMetricsMem
+          responses:
+            '200':
+              description: Returns ram metrics
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: '#/components/schemas/Memory'
+            '401':
+              $ref: '#/components/responses/401'
+            '403':
+              $ref: '#/components/responses/403'
+            '500':
+              $ref: '#/components/responses/500'
+      /api/metric/net:
+        get:
+          tags:
+            - Metrics
+          summary: Get network metrics
+          operationId: getNetworkUsage
+          responses:
+            '200':
+              description: Returns network metrics
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: '#/components/schemas/Network'
+            '401':
+              $ref: '#/components/responses/401'
+            '403':
+              $ref: '#/components/responses/403'
+            '500':
+              $ref: '#/components/responses/500'
+      /api/me/preferences:
+        get:
+          tags:
+            - Profile
+          summary: Get user preferences
+          operationId: getPreferences
+          responses:
+            '200':
+              description: Returns user preferences
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: '#/components/schemas/Preferences'
+            '401':
+              $ref: '#/components/responses/401'
+            '403':
+              $ref: '#/components/responses/403'
+        patch:
+          tags:
+            - Profile
+          summary: Update user preferences
+          operationId: updatePreferences
+          requestBody:
+            content:
+              application/hal+json:
+                schema:
+                  $ref: '#/components/schemas/Preferences'
+          responses:
+            '200':
+              description: User preferences updated
+              content:
+                application/hal+json:
+                  schema:
+                    type: object
+                    properties:
+                      preferences:
+                        type: string
+            '204':
+              $ref: '#/components/responses/204'
+            '401':
+              $ref: '#/components/responses/401'
+            '403':
+              $ref: '#/components/responses/403'
+            '422':
+              $ref: '#/components/responses/422'
+            '500':
+              $ref: '#/components/responses/500'
+      /api/me/preferences/pin:
+        patch:
+          tags:
+            - Profile
+          summary: Update user pin
+          operationId: updatePin
+          requestBody:
+            content:
+              application/hal+json:
+                schema:
+                  $ref: '#/components/schemas/PinnedApp'
+          responses:
+            '200':
+              description: User pin updated
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: '#/components/schemas/PinnedApp'
+            '204':
+              $ref: '#/components/responses/204'
+            '401':
+              $ref: '#/components/responses/401'
+            '403':
+              $ref: '#/components/responses/403'
+            '422':
+              $ref: '#/components/responses/422'
+            '500':
+              $ref: '#/components/responses/500'
+      /api/me/preferences/theme:
+        patch:
+          tags:
+            - Profile
+          summary: Update user theme
+          operationId: updateTheme
+          requestBody:
+            content:
+              application/hal+json:
+                schema:
+                  $ref: '#/components/schemas/Theme'
+          responses:
+            '200':
+              description: User theme updated
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: '#/components/schemas/Theme'
+            '204':
+              $ref: '#/components/responses/204'
+            '401':
+              $ref: '#/components/responses/401'
+            '403':
+              $ref: '#/components/responses/403'
+            '422':
+              $ref: '#/components/responses/422'
+            '500':
+              $ref: '#/components/responses/500'
+      /api/me/preferences/lang:
+        patch:
+          tags:
+            - Profile
+          summary: Update user language
+          operationId: updateLanguage
+          requestBody:
+            content:
+              application/hal+json:
+                schema:
+                  $ref: '#/components/schemas/Lang'
+          responses:
+            '200':
+              description: User language updated
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: '#/components/schemas/Lang'
+            '204':
+              $ref: '#/components/responses/204'
+            '401':
+              $ref: '#/components/responses/401'
+            '403':
+              $ref: '#/components/responses/403'
+            '422':
+              $ref: '#/components/responses/422'
+            '500':
+              $ref: '#/components/responses/500'
+      /api/me/preferences/shell:
+        patch:
+          tags:
+            - Profile
+          summary: Update user shell
+          operationId: updateShell
+          requestBody:
+            content:
+              application/hal+json:
+                schema:
+                  $ref: '#/components/schemas/Shell'
+          responses:
+            '200':
+              description: User shell updated
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: '#/components/schemas/Shell'
+            '204':
+              $ref: '#/components/responses/204'
+            '401':
+              $ref: '#/components/responses/401'
+            '403':
+              $ref: '#/components/responses/403'
+            '422':
+              $ref: '#/components/responses/422'
+            '500':
+              $ref: '#/components/responses/500'
+      /api/me/preferences/display:
+        patch:
+          tags:
+            - Profile
+          summary: Update user display
+          operationId: updateDisplay
+          requestBody:
+            content:
+              application/hal+json:
+                schema:
+                  $ref: '#/components/schemas/Display'
+          responses:
+            '200':
+              description: User display updated
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: '#/components/schemas/Display'
+            '204':
+              $ref: '#/components/responses/204'
+            '401':
+              $ref: '#/components/responses/401'
+            '403':
+              $ref: '#/components/responses/403'
+            '422':
+              $ref: '#/components/responses/422'
+            '500':
+              $ref: '#/components/responses/500'
+      /api/me/preferences/widgets:
+        patch:
+          tags:
+            - Profile
+          summary: Update user widgets
+          operationId: updateWidgets
+          requestBody:
+            content:
+              application/hal+json:
+                schema:
+                  $ref: '#/components/schemas/Widget'
+          responses:
+            '200':
+              description: User widgets updated
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: '#/components/schemas/Widget'
+            '204':
+              $ref: '#/components/responses/204'
+            '401':
+              $ref: '#/components/responses/401'
+            '403':
+              $ref: '#/components/responses/403'
+            '422':
+              $ref: '#/components/responses/422'
+            '500':
+              $ref: '#/components/responses/500'
+      /api/me/my_apps:
+        get:
+          tags:
+            - Profile
+          summary: Get user apps
+          operationId: getUserApps
+          responses:
+            '200':
+              description: Returns user apps
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: '#/components/schemas/MyApps'
+            '401':
+              $ref: '#/components/responses/401'
+            '403':
+              $ref: '#/components/responses/403'
+      /api/me/services:
+        post:
+          tags:
+            - Profile
+          summary: Add service
+          operationId: addService
+          requestBody:
+            content:
+              application/hal+json:
+                schema:
+                  $ref: '#/components/schemas/Service'
+          responses:
+            '201':
+              description: Service added
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: '#/components/schemas/Service'
+            '401':
+              $ref: '#/components/responses/401'
+            '422':
+              $ref: '#/components/responses/422'
+            '500':
+              $ref: '#/components/responses/500'
+      /api/me/services/{id}:
+        delete:
+          tags:
+            - Profile
+          summary: Delete service
+          operationId: deleteService
+          parameters:
+            - name: id
+              in: path
+              description: Service Identifier
+              schema:
+                type: integer
+              required: true
+          responses:
+            '204':
+              $ref: '#/components/responses/204'
+            '401':
+              $ref: '#/components/responses/401'
+            '404':
+              $ref: '#/components/responses/404'
+            '500':
+              $ref: '#/components/responses/500'
+        patch:
+          tags:
+            - Profile
+          summary: Update service
+          operationId: updateService
+          parameters:
+            - name: id
+              in: path
+              description: Service Identifier
+              schema:
+                type: integer
+              required: true
+          requestBody:
+            content:
+              application/hal+json:
+                schema:
+                  $ref: '#/components/schemas/Service'
+          responses:
+            '200':
+              description: Service updated
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: '#/components/schemas/Service'
+            '204':
+              $ref: '#/components/responses/204'
+            '401':
+              $ref: '#/components/responses/401'
+            '404':
+              $ref: '#/components/responses/404'
+            '422':
+              $ref: '#/components/responses/422'
+            '500':
+              $ref: '#/components/responses/500'
+      /api/me/services/status:
+        get:
+          tags:
+            - Profile
+          summary: Get services status
+          operationId: getServicesStatus
+          responses:
+            '200':
+              description: Returns services status
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: '#/components/schemas/ServiceStatus'
+            '401':
+              $ref: '#/components/responses/401'
+            '500':
+              $ref: '#/components/responses/500'
+      /api/store:
+        get:
+          tags:
+            - Store
+          summary: Get store
+          operationId: getStore
+          responses:
+            '200':
+              description: Returns store
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: '#/components/schemas/Store'
+            '401':
+              $ref: '#/components/responses/401'
+            '500':
+              $ref: '#/components/responses/500'
+      /api/widgets:
+        get:
+          tags:
+            - Widgets
+          summary: Get widgets
+          operationId: getWidgets
+          responses:
+            '200':
+              description: Returns widgets
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: '#/components/schemas/Widget'
+            '401':
+              $ref: '#/components/responses/401'
+            '500':
+              $ref: '#/components/responses/500'
+    components:
+      securitySchemes:
+        Bearer:
+          type: http
+          scheme: bearer
+        apiKey:
+          type: apiKey
+          description: 'Value: {apiKey}'
+          in: header
+          name: X-API-KEY
+      responses:
+        '204':
+          description: No content - indicates the request was successful but there is no content to be returned in the response.
+        '400':
+          description: Client Error - Returned if the request body is invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+        '401':
+          description: Unauthorized - Returned if there is no authorization header, or if the JWT token is expired.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    description: A message describing the error
+                    example: 'JWT validation failed: JWT is expired'
+        '403':
+          description: Forbidden - Returned if the user you are running as, doesn't have access to this end-point.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+              examples:
+                '403':
+                  summary: An example of a 403 response object
+                  value:
+                    detailCode: 403 Forbidden
+                    trackingId: b21b1f7ce4da4d639f2c62a57171b427
+                    messages:
+                      - locale: en-US
+                        localeOrigin: DEFAULT
+                        text: The server understood the request but refuses to authorize it.
+        '404':
+          description: Not Found - returned if the request URL refers to a resource or object that does not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+              examples:
+                '404':
+                  summary: An example of a 404 response object
+                  value:
+                    detailCode: 404 Not found
+                    trackingId: b21b1f7ce4da4d639f2c62a57171b427
+                    messages:
+                      - locale: en-US
+                        localeOrigin: DEFAULT
+                        text: The server did not find a current representation for the target resource.
+        '405':
+          description: Method Not Allowed - indicates that the server knows the request method, but the target resource doesn't support this method.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorName:
+                    description: A message describing the error
+                    example: NotSupportedException
+                  errorMessage:
+                    description: Description of the error
+                    example: Cannot consume content type
+                  trackingId:
+                    type: string
+                    description: Unique tracking id for the error.
+                    example: e7eab60924f64aa284175b9fa3309599
+        '422':
+          description: Unprocessable Entity - Returned if the request was not processed due to validation errors.
+        '500':
+          description: Internal Server Error - Returned if there is an unexpected error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDto'
+              examples:
+                '500':
+                  summary: An example of a 500 response object
+                  value:
+                    detailCode: 500.0 Internal Fault
+                    trackingId: b21b1f7ce4da4d639f2c62a57171b427
+                    messages:
+                      - locale: en-US
+                        localeOrigin: DEFAULT
+                        text: An internal fault occurred.
+      schemas:
+        App:
+          type: object
+          properties:
+            name:
+              type: string
+            altname:
+              type: string
+            logo:
+              type: string
+            type:
+              type: string
+              enum:
+                - remote
+                - media
+                - automation
+                - download
+            groups:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+            store:
+              type: object
+              properties:
+                id:
+                  type: integer
+        Cpu:
+          type: object
+          properties:
+            model:
+              type: string
+            percentage:
+              type: number
+              format: double
+            loadAverage:
+              type: object
+              properties:
+                1min:
+                  type: number
+                  format: double
+                5min:
+                  type: number
+                  format: double
+                15min:
+                  type: number
+                  format: double
+        Disk:
+          type: object
+          properties:
+            total:
+              type: number
+            used:
+              type: number
+            free:
+              type: number
+            percentage:
+              type: number
+        Network:
+          type: object
+          properties:
+            interface:
+              type: string
+            downloadSpeed:
+              type: number
+              format: float
+            uploadSpeed:
+              type: number
+              format: float
+        Ram:
+          $ref: '#/components/schemas/Memory'
+        User:
+          type: object
+          properties:
+            id:
+              type: integer
+            username:
+              type: string
+            roles:
+              type: array
+              items:
+                type: string
+            mounts:
+              type: array
+              items:
+                type: object
+                properties:
+                  path:
+                    type: string
+                  rclone:
+                    type: boolean
+            email:
+              type: string
+            isVerified:
+              type: boolean
+            preference:
+              type: object
+              properties:
+                pinnedApps:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                display:
+                  type: string
+                shell:
+                  type: string
+                selectedWidgets:
+                  type: array
+                  items:
+                    type: string
+                theme:
+                  type: string
+            apiKey:
+              type: string
+        Service:
+          type: object
+          properties:
+            name:
+              type: string
+            url:
+              type: string
+            icon:
+              type: string
+            color:
+              type: string
+        Store:
+          type: object
+          properties:
+            name:
+              type: string
+            altName:
+              type: string
+            description:
+              type: string
+            type:
+              type: string
+            isPro:
+              type: boolean
+            isAvailable:
+              type: boolean
+        LocaleOrigin:
+          type: string
+          enum:
+            - DEFAULT
+            - REQUEST
+          description: An indicator of how the locale was selected. *DEFAULT* means the locale is the system default. *REQUEST* means the locale was selected from the request context (i.e., best match based on the *Accept-Language* header). Additional values may be added in the future without notice.
+          example: DEFAULT
+        ErrorMessageDto:
+          type: object
+          properties:
+            locale:
+              type: string
+              description: The locale for the message text, a BCP 47 language tag.
+              example: en-US
+            localeOrigin:
+              $ref: '#/components/schemas/LocaleOrigin'
+            text:
+              type: string
+              description: Actual text of the error message in the indicated locale.
+              example: The request was syntactically correct but its content is semantically invalid.
+        ErrorResponseDto:
+          type: object
+          properties:
+            detailCode:
+              type: string
+              description: Fine-grained error code providing more detail of the error.
+              example: 400.1 Bad Request Content
+            trackingId:
+              type: string
+              description: Unique tracking id for the error.
+              example: e7eab60924f64aa284175b9fa3309599
+            messages:
+              type: array
+              description: Generic localized reason for error
+              items:
+                $ref: '#/components/schemas/ErrorMessageDto'
+            causes:
+              type: array
+              description: Plain-text descriptive reasons to provide additional detail to the text provided in the messages field
+              items:
+                $ref: '#/components/schemas/ErrorMessageDto'
+        Memory:
+          type: object
+          properties:
+            total:
+              type: number
+              format: float
+              description: Total amount of RAM available, in MB.
+            used:
+              type: number
+              format: float
+              description: Amount of RAM used, in MB.
+            free:
+              type: number
+              format: float
+              description: Amount of free RAM, in MB.
+            available:
+              type: number
+              format: float
+              description: Amount of RAM available for use, in MB.
+            percentage:
+              type: number
+              format: float
+              description: Percentage of RAM currently used.
+        Preferences:
+          type: object
+          properties:
+            pinnedApps:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+            display:
+              type: string
+            shell:
+              type: string
+            selectedWidgets:
+              type: array
+              items:
+                type: string
+            theme:
+              type: string
+        PinnedApp:
+          type: object
+          properties:
+            pin:
+              type: string
+        Theme:
+          type: object
+          properties:
+            theme:
+              type: string
+        Lang:
+          type: object
+          properties:
+            language:
+              type: string
+        Shell:
+          type: object
+          properties:
+            shell:
+              type: string
+        Display:
+          type: object
+          properties:
+            display:
+              type: string
+        Widget:
+          type: object
+          properties:
+            widgets:
+              type: array
+              items:
+                type: string
+        MyApps:
+          type: object
+          properties:
+            apps:
+              type: string
+        ServiceStatus:
+          type: object
+          properties:
+            message:
+              type: string
