@@ -1,0 +1,55 @@
+<nav id="sidebar" class="hidden xl:block sidebar fixed left-0 bg-gray-900 top-0 z-[1035] lg:h-screen h-[100vh] w-[90px] overflow-hidden" style="width: 90px; height: 100vh; position: fixed; transition: all 0.3s linear 0s; transform: translateX(0%);">
+	<div class="flex flex-col items-center h-screen w-[90px] overflow-hidden text-gray-400 rounded">
+		<a class="flex items-center justify-center mt-3" href="{{ path('app_home') }}">
+			<img src="{{ asset('soft_logos/mediaease.png') }}" class="w-6 h-6" alt="Logo">
+		</a>
+		<div class="flex flex-col items-center mt-3 border-t border-gray-700">
+			<a class="flex items-center justify-center w-12 h-12 mt-2 rounded hover:bg-gray-700 hover:text-gray-300" href="{{ path('app_home') }}">
+				{{ heroicon('home', 'w6- h-6') }}
+			</a>
+			<a class="flex items-center justify-center w-12 h-12 mt-2 rounded hover:bg-gray-700 hover:text-gray-300" href="#">
+				{{ heroicon('chart-bar-square', 'w6- h-6') }}
+			</a>
+			<a class="flex items-center justify-center w-12 h-12 mt-2 rounded hover:bg-gray-700 hover:text-gray-300" href="">
+				{{ heroicon('wrench', 'w6- h-6') }}
+			</a>
+		</div>
+		<div class="flex flex-col items-center mt-2 border-t border-gray-700">
+			<a class="flex items-center justify-center w-12 h-12 mt-2 rounded hover:bg-gray-700 hover:text-gray-300" href="#">
+				{{ heroicon('adjustments-vertical', 'w6- h-6') }}
+			</a>
+			{% include "components/utility/theme_switcher.html.twig" %}
+		</div>
+		{% if pinnedApps|length > 1 %}
+			<twig:PinnedApps />
+		{% endif %}
+		<a class="flex items-center justify-center w-12 h-12 mt-auto rounded bg-gray-900 hover:bg-gray-700 hover:text-gray-300" href="#">
+			{{ heroicon('user-circle', 'w6- h-6') }}
+		</a>
+	</div>
+</nav>
+<div class="xl:hidden block">
+	<nav class="fixed top-0 w-full flex items-center justify-between h-[90px] bg-gray-900 z-50 border-gray-700 dark:border-gray-200 dark:border-b-1 border-b-1">
+		<div>
+			<img src="{{ asset('soft_logos/mediaease.png') }}" class="w-16 h-16 ml-[3rem]" alt="Logo">
+		</div>
+		<div class="relative inline-block text-left">
+			<button id="dropdown-button" class="z-10 inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-blue-500">
+				{{ heroicon('ellipsis-vertical', 'w-12 h-12 fill-gray-300 mr-[2rem]') }}
+			</button>
+			<div id="dropdown-menu" class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden">
+				<div class="py-2 p-2" role="menu" aria-orientation="vertical" aria-labelledby="dropdown-button">
+					<a class="block rounded-md px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 active:bg-blue-100 cursor-pointer" role="menuitem">
+						Settings
+					</a>
+					<a class="block rounded-md px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 active:bg-blue-100 cursor-pointer" role="menuitem">
+						Preferences
+					</a>
+					<a class="block rounded-md px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 active:bg-blue-100 cursor-pointer" role="menuitem">
+						Profile
+					</a>
+				</div>
+			</div>
+		</div>
+	</nav>
+</div>

@@ -1,0 +1,14 @@
+<div id="network_widget">
+	<div class="spinner" id="network_spinner">
+		{% include "components/utility/spinner.html.twig" %}
+	</div>
+	<div class="widget_content" style="display: none;">
+		<h4 class="font-semibold text-white">Network</h4>
+		<div class="font-semibold text-white">
+			<div class="text-sm font-semibold interface-text">Interface: Fetching...</div>
+			<div id="network_chart_container" class="max-w-lg mx-auto">
+				<canvas id="network_chart"></canvas>
+			</div>
+		</div>
+	</div>
+</div>

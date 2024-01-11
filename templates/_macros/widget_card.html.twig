@@ -1,0 +1,10 @@
+{% macro widget_card(display, unique_name, type) %}
+	{% set span = (display == 2 or display == 3) ? "grid-column: span " ~ display : "" %}
+	<div class="card-container mb-16 lg:mb-0 p-2 col-span-{{ display|last }} relative group" data-widget-panel="{{ unique_name }}" {{ span != "" ? 'style="' ~ span ~ '"' : "" }}>
+		<div class="block h-full card-blur shadow-md rounded-xl hover:shadow-xl hover:scale-105 transition duration-300 ease-in-out">
+			<div class="p-6">
+				{% include 'components/widget/' ~ type|lower ~ '.html.twig' %}
+			</div>
+		</div>
+	</div>
+{% endmacro %}

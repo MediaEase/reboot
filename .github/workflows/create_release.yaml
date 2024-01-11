@@ -43,21 +43,3 @@ jobs:
         run: |
           chmod +x .github/scripts/create-release.sh
           bash .github/scripts/create-release.sh
-          
-  update_submodule:
-    needs: create_release
-    permissions:
-      contents: write
-      pull-requests: write
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get latest release version of MediaEase/frontend
-        run: echo "HARMONYUI_VERSION=$(git describe --tags `git rev-list --tags --max-count=1`)" >> $GITHUB_ENV
-
-      - name: Repository Dispatch for HarmonyUI
-        uses: peter-evans/repository-dispatch@v2
-        with:
-          token: ${{ secrets.MEDIAEASE_ACCESS_TOKEN }}
-          repository: MediaEase/MediaEase
-          event-type: harmonyui-release
-          client-payload: '{"submodule": "HarmonyUI", "ref": "${{ github.ref }}", "sha": "${{ github.sha }}", "version": "${{ env.HARMONYUI_VERSION }}"}'
