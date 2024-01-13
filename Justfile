@@ -70,7 +70,7 @@ sf-log:
 
 # Open symfony project in browser
 sf-open:
-    {{SYMFONY_CONSOLE}} open:local
+    {{SYMFONY}} open:local
 
 sf-restart:
     just sf-stop
