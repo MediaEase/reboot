@@ -20,8 +20,14 @@
 			</a>
 			{% include "components/utility/theme_switcher.html.twig" %}
 		</div>
-		{% if pinnedApps|length > 1 %}
-			<twig:PinnedApps />
+		{% if pinnedApps|length > 0 %}
+			<div class="flex flex-col items-center mt-3 border-t border-gray-700">
+				{% for app in pinnedApps %}
+					<a class="flex items-center justify-center w-12 h-12 mt-2 rounded hover:bg-gray-700 hover:text-gray-300" href="{{ app.configuration['0'].root_url|lower }}">
+						<img class="w-8 h-8 rounded-full" src="{{ asset('soft_logos/' ~ app.application.altName ~ '.png') }}" alt="">
+					</a>
+				{% endfor %}
+			</div>
 		{% endif %}
 		<a class="flex items-center justify-center w-12 h-12 mt-auto rounded bg-gray-900 hover:bg-gray-700 hover:text-gray-300" href="#">
 			{{ heroicon('user-circle', 'w6- h-6') }}
