@@ -44,11 +44,14 @@ get_commits(){
 }
 
 # Fetch the last tag from the remote
-# @return the last tag
+# @return the last tag or v0.1.0 if no tags are found
 get_last_tag() {
   local tag
-  if ! git rev-list --tags --max-count=1 | xargs git describe --tags; then
-    tag=$(git describe --tags "$(git rev-list --tags --max-count=1)") || log "error" "Failed to get the last tag" "get_last_tag"
+  tag=$(git describe --tags "$(git rev-list --tags --max-count=1)" 2>/dev/null)
+  if [ -z "$tag" ]; then
+    log "notice" "No tags found. Defaulting to v0.1.0" "get_last_tag"
+    echo "v0.1.0"
+  else
     log "notice" "Last tag: $tag" "get_last_tag"
     echo "$tag"
   fi
@@ -203,7 +206,8 @@ generate_changelog() {
     type=$(echo "$commit" | awk '{print $2}' | sed -n 's/^\([^:]*\):.*/\1/p')
     desc=$(echo "$commit" | sed -e "s/^[^ ]* $type: //g" -e "s/ [^ ]*$//g")
     author=$(echo "$commit" | awk '{print $NF}')
-    sections[$type]+="- $desc ($hash by $author)\n"
+    partial_hash=${hash:0:7}
+    sections[$type]+="- $desc ([$partial_hash](https://github.com/$REPO_OWNER/$REPO_NAME/commit/$hash) by @$author)\n"
   done <<< "$commits"
 
   # Append sections to the changelog
