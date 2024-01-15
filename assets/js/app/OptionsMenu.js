@@ -55,11 +55,12 @@ export class OptionsMenu {
      * ensure proper event handling for dynamically added or removed elements.
      */
     initPinLinkEventListeners() {
-        // Find and reattach event listeners to all 'pin-link' elements.
-        document.querySelectorAll('.pin-link').forEach(button => {
+        // Remove existing listeners and reattach them to ensure only one listener per element.
+        const pinLinks = document.querySelectorAll('.pin-link');
+        pinLinks.forEach(button => {
             button.removeEventListener('click', this.handlePinClick);
             button.addEventListener('click', this.handlePinClick.bind(this));
-        });  
+        });
     }
 
     /**
@@ -76,14 +77,11 @@ export class OptionsMenu {
         fetchData(`/api/me/preferences/pin`, 'PATCH', { service: serviceId })
             .then(response => {
                 if (response) {
-                    const pinLink = event.target.closest('.pin-link');
-                    pinLink.innerHTML = response.isPinned ? 'Unpin' : 'Pin';
+                    window.location.reload(); // Reload the page to reflect the updated pin status.
                 }
             }).catch(error => {
                 console.error('Error pinning/unpinning the app:', error);
             });
-
-        window.location.reload(); // Consider the necessity of this for UX.
     }
 
     /**
