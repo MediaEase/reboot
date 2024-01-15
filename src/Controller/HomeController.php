@@ -27,11 +27,7 @@ final class HomeController extends AbstractController
     {
         $user = $this->getUser();
         $preferences = $this->preferenceRepository->findOneBy(['user' => $user]);
-        $services = $this->serviceRepository->findBy(['user' => $user]);
-        // sort services by name alphabetically
-        usort($services, static function ($a, $b): int {
-            return strcmp($a->getName(), $b->getName());
-        });
+        // remove "App Store" from the list
         $pinnedAppIds = $preferences->getPinnedApps();
         $pinnedServices = [];
 
@@ -50,7 +46,6 @@ final class HomeController extends AbstractController
             'user' => $user,
             'preferences' => $preferences,
             'widgetsRepository' => $this->widgetRepository,
-            'apps' => $services,
             'pinnedApps' => $pinnedServices,
         ]);
     }
