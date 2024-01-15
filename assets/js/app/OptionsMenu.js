@@ -1,17 +1,19 @@
 import { fetchData } from '../utils.js';
 export class OptionsMenu {
     constructor() {
-        this.handlePinClick = this.handlePinClick.bind(this);
+        this.eventListenersInitialized = false;
         this.initializeEventListeners();
-        this.setupEventListeners();
     }
 
     initializeEventListeners() {
-        document.addEventListener('DOMContentLoaded', () => {
-            this.setupEventListeners();
-        });
-        if (document.readyState === 'complete') {
-            this.setupEventListeners();
+        if (!this.eventListenersInitialized) {
+            document.addEventListener('DOMContentLoaded', () => {
+                this.setupEventListeners();
+            });
+            if (document.readyState === 'complete') {
+                this.setupEventListeners();
+            }
+            this.eventListenersInitialized = true;
         }
     }
 
@@ -25,12 +27,7 @@ export class OptionsMenu {
             }
         });
         document.querySelectorAll('.pin-link').forEach(button => {
-            button.addEventListener('click', function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-                this.onPinLinkClick(event);
-            }
-                .bind(this));
+            button.addEventListener('click', this.handlePinClick.bind(this));
         });
     }
 
@@ -43,8 +40,22 @@ export class OptionsMenu {
 
     handlePinClick(event) {
         event.preventDefault();
-        event.stopPropagation();
-        this.onPinLinkClick(event);
+        event.stopImmediatePropagation();
+        const serviceId = parseInt(event.target.getAttribute('data-service-id'), 10);
+        const data = {
+            service: serviceId
+        };
+        fetchData(`/api/me/preferences/pin`, 'PATCH', data)
+            .then(response => {
+                if (response) {
+                    const pinLink = event.target.closest('.pin-link');
+                    pinLink.innerHTML = response.isPinned ? 'Unpin' : 'Pin';
+                }
+            }).catch(error => {
+                console.error('Error pinning/unpinning the app:', error);
+            });
+
+            window.location.reload();
     }
 
     closeAllMenus() {
@@ -141,23 +152,5 @@ export class OptionsMenu {
         const menuHtml = this.generateOptionsMenu(appName, appDetails);
         const menuContainer = document.getElementById(appName + '_options_menu');
         menuContainer.innerHTML = menuHtml;
-    }
-
-    onPinLinkClick(event) {
-        const serviceId = parseInt(event.target.getAttribute('data-service-id'), 10);
-        const data = {
-            service: serviceId
-        };
-        fetchData(`/api/me/preferences/pin`, 'PATCH', data)
-            .then(response => {
-                if (response) {
-                    const pinLink = event.target.closest('.pin-link');
-                    pinLink.innerHTML = response.isPinned ? 'Unpin' : 'Pin';
-                }
-            }).catch(error => {
-                console.error('Error pinning/unpinning the app:', error);
-            });
-
-            window.location.reload();
     }
 }
