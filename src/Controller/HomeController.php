@@ -36,8 +36,7 @@ final class HomeController extends AbstractController
         $pinnedServices = [];
 
         foreach ($pinnedAppIds as $pinnedAppId) {
-            dump($pinnedAppId);
-            $service = $this->serviceRepository->findOneBy(['name' => $pinnedAppId['name']]);
+            $service = $this->serviceRepository->findOneBy(['id' => $pinnedAppId]);
                 if ($service !== null) {
                     $pinnedServices[] = $service;
                 }

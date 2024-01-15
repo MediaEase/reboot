@@ -17,6 +17,7 @@ class Service
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['services:info', 'services:update'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 60)]

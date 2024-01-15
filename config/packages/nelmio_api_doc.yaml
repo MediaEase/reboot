@@ -1060,8 +1060,8 @@ nelmio_api_doc:
         PinnedApp:
           type: object
           properties:
-            pin:
-              type: string
+            service:
+              type: int
         Theme:
           type: object
           properties:
