@@ -6,15 +6,12 @@
 		<div class="widget_content" style="display: none;">
 			<div class="font-semibold text-white">
 				<h4 class="">RAM Usage</h4>
-				<div class="mt-6 mrelative inline-block overflow-hidden scale-105 translate-x-4 skew-y-3 md:transform-none">
+				<div class="mt-6 relative inline-block overflow-hidden scale-105 translate-x-4 skew-y-3 md:transform-none">
 					<svg class="transform -rotate-90 w-48 h-48">
 						<circle cx="80" cy="80" r="70" stroke="currentColor" stroke-width="14" fill="transparent" class="text-gray-700"/>
 						<circle cx="80" cy="80" r="70" stroke="currentColor" stroke-width="14" fill="transparent" class="ram-progress-circle text-blue-500 "/>
 					</svg>
-					<span
-						class="percentage" id="memory_usage" style="top:50%!important;left:50%!important">{# {{ card.data.percentage|format_number(style='percent') }} #}
-
-					</span>
+					<span class="percentage" id="ram_usage"></span>
 				</div>
 			</div>
 			<div class="text-sm font-semibold" id="memory_model">
