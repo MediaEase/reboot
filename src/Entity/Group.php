@@ -21,7 +21,7 @@ class Group
     private ?int $id = null;
 
     #[ORM\Column(length: 60)]
-    #[Groups(['group:info', 'application:info', 'services:info'])]
+    #[Groups(['group:info', 'application:info', 'services:info,', 'store:info'])]
     private ?string $name = null;
 
     /**
@@ -32,16 +32,16 @@ class Group
     private Collection $users;
 
     /**
-     * @var Collection<int, Application>
+     * @var Collection<int, Store>
      */
-    #[ORM\ManyToMany(targetEntity: Application::class, inversedBy: 'groups')]
-    #[Groups(['group:info'])]
-    private Collection $applications;
+    #[ORM\ManyToMany(targetEntity: Store::class, inversedBy: 'groups')]
+    #[Groups(['group:info', 'store:info', 'application:info'])]
+    private Collection $stores;
 
     public function __construct()
     {
         $this->users = new ArrayCollection();
-        $this->applications = new ArrayCollection();
+        $this->stores = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -96,25 +96,28 @@ class Group
     }
 
     /**
-     * @return Collection<int, Application>
+     * @return Collection<int, Store>
      */
-    public function getApplications(): Collection
+    public function getStores(): Collection
     {
-        return $this->applications;
+        return $this->stores;
     }
 
-    public function addApplication(Application $application): static
+    public function addStore(Store $store): self
     {
-        if (! $this->applications->contains($application)) {
-            $this->applications->add($application);
+        if (! $this->stores->contains($store)) {
+            $this->stores->add($store);
+            $store->addGroup($this);
         }
 
         return $this;
     }
 
-    public function removeApplication(Application $application): static
+    public function removeStore(Store $store): self
     {
-        $this->applications->removeElement($application);
+        if ($this->stores->removeElement($store)) {
+            $store->removeGroup($this);
+        }
 
         return $this;
     }

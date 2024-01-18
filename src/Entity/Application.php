@@ -16,45 +16,34 @@ class Application
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['application:info', 'services:info'])]
+    #[Groups(['application:info', 'services:info', 'store:info'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 60)]
-    #[Groups(['application:info', 'services:info'])]
+    #[Groups(['application:info', 'services:info', 'store:info'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 60)]
-    #[Groups(['application:info', 'services:info'])]
+    #[Groups(['application:info', 'services:info', 'store:info'])]
     private ?string $altname = null;
 
     #[ORM\Column(length: 120)]
-    #[Groups(['application:info', 'services:info'])]
+    #[Groups(['application:info', 'services:info', 'store:info'])]
     private ?string $logo = null;
-
-    #[ORM\Column(length: 30)]
-    #[Groups(['application:info', 'services:info'])]
-    private ?string $type = null;
-
-    /**
-     * @var Collection<int, Group>
-     */
-    #[ORM\ManyToMany(targetEntity: Group::class, mappedBy: 'applications')]
-    #[Groups(['application:info', 'services:info'])]
-    private Collection $groups;
 
     /**
      * @var Collection<int, Service>
      */
     #[ORM\OneToMany(mappedBy: 'application', targetEntity: Service::class)]
+    #[Groups(['application:info'])]
     private Collection $services;
 
-    #[ORM\ManyToOne(inversedBy: 'instances')]
-    #[Groups(['application:info', 'services:info'])]
+    #[ORM\OneToOne(inversedBy: 'application', cascade: ['persist', 'remove'])]
+    #[Groups(['application:info'])]
     private ?Store $store = null;
 
     public function __construct()
     {
-        $this->groups = new ArrayCollection();
         $this->services = new ArrayCollection();
     }
 
@@ -99,45 +88,6 @@ class Application
         return $this;
     }
 
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    public function setType(string $type): static
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Group>
-     */
-    public function getGroups(): Collection
-    {
-        return $this->groups;
-    }
-
-    public function addGroup(Group $group): static
-    {
-        if (! $this->groups->contains($group)) {
-            $this->groups->add($group);
-            $group->addApplication($this);
-        }
-
-        return $this;
-    }
-
-    public function removeGroup(Group $group): static
-    {
-        if ($this->groups->removeElement($group)) {
-            $group->removeApplication($this);
-        }
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Service>
      */
@@ -158,7 +108,6 @@ class Application
 
     public function removeService(Service $service): static
     {
-        // set the owning side to null (unless already changed)
         if (! $this->services->removeElement($service)) {
             return $this;
         }

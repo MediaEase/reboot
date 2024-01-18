@@ -20,21 +20,9 @@ class Store
     #[Groups(['store:info', 'application:info', 'services:info'])]
     private ?int $id = null;
 
-    #[ORM\Column(length: 60)]
-    #[Groups(['store:info', 'application:info'])]
-    private ?string $name = null;
-
-    #[ORM\Column(length: 60)]
-    #[Groups(['store:info', 'application:info'])]
-    private ?string $altname = null;
-
     #[ORM\Column(type: Types::TEXT)]
     #[Groups(['store:info', 'application:info'])]
     private ?string $description = null;
-
-    #[ORM\Column(length: 30)]
-    #[Groups(['store:info', 'application:info'])]
-    private ?string $type = null;
 
     #[ORM\Column]
     #[Groups(['store:info', 'application:info'])]
@@ -44,44 +32,28 @@ class Store
     #[Groups(['store:info', 'application:info'])]
     private ?bool $isAvailable = null;
 
+    #[ORM\Column(length: 50)]
+    #[Groups(['store:info', 'application:info'])]
+    private ?string $type = null;
+
+    #[ORM\OneToOne(mappedBy: 'store', cascade: ['persist', 'remove'])]
+    #[Groups(['store:info'])]
+    private ?Application $application = null;
+
     /**
-     * @var Collection<int, Application>
+     * @var Collection<int, Group>
      */
-    #[ORM\OneToMany(mappedBy: 'store', targetEntity: Application::class)]
-    private Collection $instances;
+    #[ORM\ManyToMany(targetEntity: Group::class, mappedBy: 'stores')]
+    private Collection $groups;
 
     public function __construct()
     {
-        $this->instances = new ArrayCollection();
+        $this->groups = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): static
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getAltname(): ?string
-    {
-        return $this->altname;
-    }
-
-    public function setAltname(string $altname): static
-    {
-        $this->altname = $altname;
-
-        return $this;
     }
 
     public function getDescription(): ?string
@@ -92,18 +64,6 @@ class Store
     public function setDescription(string $description): static
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    public function setType(string $type): static
-    {
-        $this->type = $type;
 
         return $this;
     }
@@ -132,36 +92,61 @@ class Store
         return $this;
     }
 
-    /**
-     * @return Collection<int, Application>
-     */
-    public function getInstances(): Collection
+    public function getType(): ?string
     {
-        return $this->instances;
+        return $this->type;
     }
 
-    public function addInstance(Application $application): static
+    public function setType(string $type): self
     {
-        if (! $this->instances->contains($application)) {
-            $this->instances->add($application);
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getApplication(): ?Application
+    {
+        return $this->application;
+    }
+
+    public function setApplication(?Application $application): static
+    {
+        if (! $application instanceof Application && $this->application instanceof Application) {
+            $this->application->setStore(null);
+        }
+
+        if ($application instanceof Application && $application->getStore() !== $this) {
             $application->setStore($this);
+        }
+
+        $this->application = $application;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Group>
+     */
+    public function getGroups(): Collection
+    {
+        return $this->groups;
+    }
+
+    public function addGroup(Group $group): self
+    {
+        if (! $this->groups->contains($group)) {
+            $this->groups->add($group);
+            $group->addStore($this);
         }
 
         return $this;
     }
 
-    public function removeInstance(Application $application): static
+    public function removeGroup(Group $group): self
     {
-        // set the owning side to null (unless already changed)
-        if (! $this->instances->removeElement($application)) {
-            return $this;
+        if ($this->groups->removeElement($group)) {
+            $group->removeStore($this);
         }
-
-        if ($application->getStore() !== $this) {
-            return $this;
-        }
-
-        $application->setStore(null);
 
         return $this;
     }
