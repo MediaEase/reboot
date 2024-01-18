@@ -144,7 +144,7 @@ qa-lint-twigs:
 
 # Lints YAML files.
 qa-lint-yaml:
-    {{SYMFONY_CONSOLE}} lint:yaml
+    {{SYMFONY_CONSOLE}} lint:yaml --format json config/
 
 # Runs PHPMetrics on the project. Generates reports.
 qa-metrics:
