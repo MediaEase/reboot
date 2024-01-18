@@ -23,7 +23,7 @@ final class UserAppPinningController extends AbstractController
     #[Route('/me/my_apps', name: 'my_apps', methods: ['GET'])]
     public function getUserApps(#[CurrentUser] ?User $user, Request $request): JsonResponse
     {
-        if (! $user instanceof \App\Entity\User) {
+        if (! $user instanceof User) {
             return $this->json(['message' => 'User not found'], JsonResponse::HTTP_NOT_FOUND);
         }
 

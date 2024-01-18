@@ -44,7 +44,7 @@ final class PreferenceController extends AbstractController
     #[Route('/pin', name: 'pin_app', methods: ['PATCH'])]
     public function pinApp(#[CurrentUser] ?User $user, Request $request): Response
     {
-        if (! $user instanceof \App\Entity\User) {
+        if (! $user instanceof User) {
             return $this->json(['message' => 'User not found'], Response::HTTP_NOT_FOUND);
         }
 

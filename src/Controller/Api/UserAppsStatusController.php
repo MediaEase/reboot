@@ -21,7 +21,6 @@ final class UserAppsStatusController extends AbstractController
         private EntityManagerInterface $entityManager
     ) {
     }
-    
 
     #[Route('', name: 'status', methods: ['GET'])]
     public function getStatus(): Response

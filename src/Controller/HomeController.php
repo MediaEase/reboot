@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Repository\PreferenceRepository;
 use App\Repository\ServiceRepository;
+use App\Repository\StoreRepository;
 use App\Repository\WidgetRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +18,8 @@ final class HomeController extends AbstractController
     public function __construct(
         private WidgetRepository $widgetRepository,
         private PreferenceRepository $preferenceRepository,
-        private ServiceRepository $serviceRepository
+        private ServiceRepository $serviceRepository,
+        private StoreRepository $storeRepository,
     ) {
     }
 
@@ -27,15 +29,14 @@ final class HomeController extends AbstractController
     {
         $user = $this->getUser();
         $preferences = $this->preferenceRepository->findOneBy(['user' => $user]);
-        // remove "App Store" from the list
         $pinnedAppIds = $preferences->getPinnedApps();
         $pinnedServices = [];
 
         foreach ($pinnedAppIds as $pinnedAppId) {
             $service = $this->serviceRepository->findOneBy(['id' => $pinnedAppId]);
-                if ($service !== null) {
-                    $pinnedServices[] = $service;
-                }
+            if ($service !== null) {
+                $pinnedServices[] = $service;
+            }
         }
 
         usort($pinnedServices, static function ($a, $b): int {

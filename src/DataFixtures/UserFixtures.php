@@ -49,7 +49,8 @@ final class UserFixtures extends Fixture implements DependentFixtureInterface
             ->setAppGroup($group)
             ->setEmail($username.'@example.com')
             ->setIsVerified(true)
-            ->setPassword($this->userPasswordHasher->hashPassword($user, 'password'));
+            ->setPassword($this->userPasswordHasher->hashPassword($user, 'password'))
+            ->setApiKey(bin2hex(random_bytes(16)));
 
         $objectManager->persist($user);
         $this->addReference('user-'.$username, $user);

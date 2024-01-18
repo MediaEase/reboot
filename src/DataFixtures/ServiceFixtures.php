@@ -48,7 +48,7 @@ final class ServiceFixtures extends BaseFixtures implements DependentFixtureInte
         $fullServiceName = $this->getFullServiceName($serviceName, $username);
         $this->setupServiceDetails($service, $fullServiceName, $appReference, $username, $objectManager);
 
-        if ($parentService instanceof \App\Entity\Service) {
+        if ($parentService instanceof Service) {
             $parentService->addChildService($service);
             $objectManager->persist($parentService);
         }
