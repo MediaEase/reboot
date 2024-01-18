@@ -21,7 +21,7 @@ export function initTable(appsData, preferencesData) {
         console.error('Datatable element not found');
         return;
     }
-    const datatable = new Datatable(datatableElement, data, { hover: true, pagination: true, entriesOptions: [10, 20, 30, 75], fullPagination: true }, { hoverRow: 'hover:bg-gray-300 hover:text-black' });
+    const datatable = new Datatable(datatableElement, data, { hover: true, pagination: true, entriesOptions: [10, 20, 30, 75], fullPagination: true }, { hoverRow: 'hover:bg-gray-300 hover:text-black', column: 'pl-1 text-clip overflow-hidden text-[#212529] dark:text-white', rowItem: 'whitespace-nowrap text-clip overflow-auto px-[1.4rem] border-neutral-200 dark:border-neutral-500' });
     setupAdvancedSearch(datatable);
     attachEventListeners();
 }

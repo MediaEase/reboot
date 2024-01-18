@@ -229,3 +229,7 @@ dropdown-menu ul {
         transform: rotate(360deg);
     }
 }
+
+.submenu-trigger:hover .submenu {
+    display: block;
+}
