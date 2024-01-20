@@ -1,13 +1,25 @@
+/**
+ * This class is used in order to create the App Store modale.
+ */
 class AppStore {
+    /**
+     * Creates an AppStore.
+     * @param {Object[]} storeData - The data for the store including apps and their details.
+     * @param {Object[]} appsData - The data for the apps currently installed.
+     */
     constructor(storeData, appsData) {
-        this.apps = appsData;
-        this.storeData = storeData;
-        this.container = document.querySelector('#appStoreModal .modal-body');
+        this.apps = appsData; // Array of installed apps
+        this.storeData = storeData; // Array of available apps in the store
+        this.container = document.querySelector('#appStoreModal .modal-body'); // Container element for the app store
     }
 
+    /**
+     * Initialize the app store by setting up the UI and event listeners.
+     */
     initialize() {
         const appStoreContainer = document.createElement('div');
         appStoreContainer.className = "flex";
+        // Remove 'AppStore' app from the store data to avoid self-reference
         this.storeData = this.storeData.filter(app => app.application.name !== 'AppStore');
         this.renderNavigation(appStoreContainer);
         this.renderMainContent(appStoreContainer);
@@ -16,6 +28,10 @@ class AppStore {
         this.showHomeCategory();
     }
 
+    /**
+     * Renders the navigation menu for the app store.
+     * @param {HTMLElement} parentContainer - The container to which the navigation menu will be appended.
+     */
     renderNavigation(parentContainer) {
         const appTypeCounts = this.storeData.reduce((acc, app) => {
             const type = app.type;
@@ -57,6 +73,10 @@ class AppStore {
         parentContainer.appendChild(nav);
     }
 
+    /**
+     * Renders the main content area of the app store.
+     * @param {HTMLElement} parentContainer - The container to which the main content will be appended.
+     */
     renderMainContent(parentContainer) {
         const mainContent = document.createElement('div');
         mainContent.className = "flex-grow ml-2 md:px-24 py-4";
@@ -77,6 +97,11 @@ class AppStore {
         parentContainer.appendChild(mainContent);
     }
 
+    /**
+     * Renders an individual app card.
+     * @param {Object} app - The app data used to render the app card.
+     * @returns {string} HTML string representing an app card.
+     */
     renderAppCard(app) {
         const logoPath = `/soft_logos/${app.application.logo}`;
         console.log(app);
@@ -101,31 +126,58 @@ class AppStore {
         `;
     }
 
+    /**
+     * Renders the action button for each app (Install/Uninstall).
+     * @param {Object} app - The app data used to determine the button state.
+     * @returns {string} HTML string representing the action button.
+     */
     renderActionButton(app) {
         const isAppInstalled = this.apps.some(installedApp => installedApp.application.id === app.application.id);
         const svgPath = isAppInstalled
             ? '<path fill-rule="evenodd" d="M10.5 3.75a6 6 0 0 0-5.98 6.496A5.25 5.25 0 0 0 6.75 20.25H18a4.5 4.5 0 0 0 2.206-8.423 3.75 3.75 0 0 0-4.133-4.303A6.001 6.001 0 0 0 10.5 3.75Zm2.25 6a.75.75 0 0 0-1.5 0v4.94l-1.72-1.72a.75.75 0 0 0-1.06 1.06l3 3a.75.75 0 0 0 1.06 0l3-3a.75.75 0 1 0-1.06-1.06l-1.72 1.72V9.75Z" clip-rule="evenodd"></path>'
             : '<path fill-rule="evenodd" d="M10.5 3.75a6 6 0 0 0-5.98 6.496A5.25 5.25 0 0 0 6.75 20.25H18a4.5 4.5 0 0 0 2.206-8.423 3.75 3.75 0 0 0-4.133-4.303A6.001 6.001 0 0 0 10.5 3.75Zm2.25 6a.75.75 0 0 0-1.5 0v4.94l-1.72-1.72a.75.75 0 0 0-1.06 1.06l3 3a.75.75 0 0 0 1.06 0l3-3a.75.75 0 1 0-1.06-1.06l-1.72 1.72V9.75Z" clip-rule="evenodd"></path>';
 
-        const dropdownArrowSvg = '<svg data-slot="icon" aria-hidden="true" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m19.5 8.25-7.5 7.5-7.5-7.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>';
+        const actionButtonClasses = isAppInstalled ? 'bg-red-500 hover:bg-red-600 pl-4' : 'px-4 bg-green-500 hover:bg-green-600 rounded-r-lg';
+        const popoverArrowSvg = '<path d="m19.5 8.25-7.5 7.5-7.5-7.5" stroke-linecap="round" stroke-linejoin="round"></path>';
 
-        const actionButtonClasses = isAppInstalled ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600 rounded-r-lg';
+        const popoverClasses = isAppInstalled ? 'bg-red-500 hover:bg-red-600 popover-arrow-button' : 'hidden';
+        
+        const popoverButton = `
+            <div class="dropdown dropdown-bottom">
+                <div tabindex="0" role="button" class="rounded-r-lg inline-flex items-center py-2 ${popoverClasses}">
+                <svg class="w-7 h-7 fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" data-slot="icon">
+                    ${popoverArrowSvg}
+                </svg>
+                </div>
+                <ul tabindex="0" class="dropdown-content z-[1000] menu p-2 shadow w-52 text-xs bg-base-100 bg-opacity-95">
+                    <li><a>Backup</a></li>
+                    <li><a>Reinstall</a></li>
+                    <li><a>Reset</a></li>
+                </ul>
+            </div>
+        `;
+
         const actionButton = `
-            <div class="relative inline-flex items-center group">
-                <button class="rounded-l-lg inline-flex items-center py-1 px-4 ${actionButtonClasses} duration-300">
+            <div class="relative inline-flex items-center">
+                <span class="rounded-l-lg inline-flex items-center py-1 ${actionButtonClasses}">
                     <svg class="w-8 h-8 fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" data-slot="icon">
                         ${svgPath}
                     </svg>
-                    <span class="mx-4 flex items-start flex-col leading-none">
+                    <span class="ml-4 mr-2 flex items-start flex-col leading-none">
                         <span class="text-xs text-teal-100">${isAppInstalled ? 'Uninstall' : 'Install'}</span>
                         <span class="title-font text-sm text-gray-100 font-bold">${app.application.name}</span>
                     </span>
-                </button>
+                </span>
+                ${isAppInstalled ? popoverButton : ''}
             </div>`;
 
         return actionButton;
     }
 
+    /**
+     * Handles the search functionality in the app store.
+     * @param {string} query - The search query.
+     */
     handleSearch(query) {
         const lowerCaseQuery = query.toLowerCase();
         const filteredApps = this.storeData.filter(app => 
@@ -134,28 +186,45 @@ class AppStore {
         this.updateMainContent(filteredApps);
     }
 
+    /**
+     * Filters apps by their type/category.
+     * @param {string} type - The type of apps to filter by.
+     */
     filterAppsByType(type) {
         const filteredApps = this.storeData.filter(app => app.type === type);
         this.updateMainContent(filteredApps);
     }
 
+    /**
+     * Updates the main content area with filtered apps.
+     * @param {Object[]} filteredApps - The apps to display in the main content area.
+     */
     updateMainContent(filteredApps) {
         const mainContent = this.container.querySelector('.grid');
         let appCards = filteredApps.map(app => this.renderAppCard(app)).join('');
         mainContent.innerHTML = appCards;
     }
 
+    /**
+     * Resets the app filter to show a random selection of apps.
+     */
     resetFilter() {
         const shuffledApps = this.storeData.sort(() => 0.5 - Math.random());
         const randomApps = shuffledApps.slice(0, 6);
         this.updateMainContent(randomApps);
     }
 
+    /**
+     * Shows apps in the 'Home' category.
+     */
     showHomeCategory() {
         const homeApps = this.storeData.slice(0, 6);
         this.updateMainContent(homeApps);
     }
 
+    /**
+     * Sets up the event listeners for user interactions.
+     */
     setupEventListeners() {
         // Handling clicks on category links in navigation
         const navItems = this.container.querySelector('#navItems');
@@ -187,16 +256,42 @@ class AppStore {
             this.handleSearch(event.target.value);
         });
 
-        // handle the submenu toggle
+        // Handling clicks on the popover button
         this.container.addEventListener('click', (event) => {
-            if (event.target.classList.contains('rounded-r-lg')) {
-                event.preventDefault();
-                event.target.nextElementSibling.classList.toggle('hidden');
+            const popoverButton = event.target.closest('.popover-arrow-button');
+            if (popoverButton) {
+                this.togglePopover(popoverButton);
+            }
+        });
+
+        // Handling clicks outside of the popover
+        document.addEventListener('click', (event) => {
+            const popover = document.querySelector('.popover-content:not(.hidden)');
+            const isClickInsidePopover = popover.contains(event.target);
+            const isPopoverButton = event.target.classList.contains('popover-button');
+            
+            if (popover && !isClickInsidePopover && !isPopoverButton) {
+                popover.classList.add('hidden');
             }
         });
     }
 
+    /**
+     * Toggles the display of a popover for an app.
+     * @param {HTMLElement} button - The button element that triggered the popover.
+     */
+    togglePopover(button) {
+        // Get the popover id from the button's data attribute
+        const popoverId = button.getAttribute('data-popover-id');
+        const popover = document.getElementById(popoverId);
     
+        if (popover) {
+            popover.classList.toggle('hidden');
+        } else {
+            console.error('Popover not found for id:', popoverId);
+        }
+    }  
+
 }
 
 export default AppStore;
