@@ -15,14 +15,14 @@ import './styles/app-store.css';
 
 import './js/clipboard.js';
 import WidgetManager from './js/widgets/WidgetManager.js';
-import AppManager from './js/app/AppManager.js';
-import AppStore from './js/app/AppStore.js';
+import AppManager from './js/app/management/AppManager.js';
+import './js/app/index.js';
 import { fetchData } from './js/utils.js';
 import { processDataForCpuWidget } from './js/widgets/cpuWidget.js';
 import { processDataForRamWidget } from './js/widgets/memoryWidget.js';
 import { processDataForDiskWidget } from './js/widgets/diskWidget.js';
 import { processDataForClientWidget } from './js/widgets/clientWidget.js';
-import ViewSwitcher from './js/app/ViewSwitcher.js';
+import ViewSwitcher from './js/app/ui/ViewSwitcher.js';
 
 const availableWidgets = await fetchData('/api/widgets');
 const transformedWidgets = availableWidgets.map(widget => ({
@@ -51,16 +51,13 @@ const dashboard = document.querySelector('[data-widget-panel]');
 const page = document.body.getAttribute('data-page');
 const preferencesData = await fetchData('/api/me/preferences');
 const appsData = await fetchData('/api/me/my_apps');
-const storeData = await fetchData('/api/store');
 const timeInterval = 5000;
 
 if (dashboard) {
     const widgetManager = new WidgetManager(transformedWidgets, preferencesData);
     const appManager = new AppManager(timeInterval, appsData, preferencesData, page);
-    const store = new AppStore(storeData, appsData);
     widgetManager.initialize();
     appManager.initialize();
-    store.initialize();
     new ViewSwitcher();
 }
 

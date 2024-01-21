@@ -17,7 +17,7 @@ function updateTheme() {
         localStorage.theme = 'dark';
     }
     const theme = localStorage.theme;
-    document.documentElement.setAttribute('color-theme', theme);
+    document.documentElement.setAttribute('data-theme', theme);
     const data = { theme: theme };
     fetchData('/api/me/preferences/theme', 'PATCH', data)
 }
@@ -25,11 +25,11 @@ function updateTheme() {
 switch (localStorage.theme) {
     case 'dark':
         document.documentElement.classList.add('dark');
-        document.documentElement.setAttribute('color-theme', 'dark');
+        document.documentElement.setAttribute('data-theme', 'dark');
         break;
     case 'light':
         document.documentElement.classList.remove('dark');
-        document.documentElement.setAttribute('color-theme', 'light');
+        document.documentElement.setAttribute('data-theme', 'light');
         break;
 }
 

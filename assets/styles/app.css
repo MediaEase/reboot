@@ -9,16 +9,31 @@
     display: none;
 }
 
-html[color-theme="dark"] #header__moon {
-    display: block;
+html[data-theme="dark"] {
+    #header__moon {
+        display: block;
+    }
+
+    .content-background {
+        background-color: #171519;
+    }
 }
 
-html[color-theme="light"] #header__sun {
-    display: block;
+html[data-theme="light"] {
+    #header__sun {
+        display: block;
+    }
+
+    .content-background {
+        background-color: rgb(229 231 235);
+    }
 }
 
-html[color-theme="system"] #header__indeterminate {
-    display: block;
+html[data-theme="system"] {
+    #header__sun,
+    #header__moon {
+        display: none;
+    }
 }
 
 .background-cover {
