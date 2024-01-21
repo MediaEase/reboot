@@ -1,5 +1,5 @@
-import { fetchData } from '../utils.js';
-import AppStatusUpdater from './AppStatusUpdater.js';
+import { fetchData } from '../../utils.js';
+import AppStatusUpdater from '../management/AppStatusUpdater.js';
 class ViewSwitcher {
     constructor() {
         this.btnViewCards = document.getElementById('btnViewCards');

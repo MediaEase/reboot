@@ -1,4 +1,4 @@
-import { fetchData } from '../utils.js';
+import { fetchData } from '../../utils.js';
 
 /**
  * Represents an options menu for an app, handling its interactions and UI updates.

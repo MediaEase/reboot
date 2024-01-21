@@ -1,4 +1,4 @@
-import { CodeBlock, slugify } from "../utils.js";
+import { CodeBlock, slugify } from "../../utils.js";
 import ButtonGenerator from "./AppButtons.js";
 import { OptionsMenu } from "./OptionsMenu.js";
 

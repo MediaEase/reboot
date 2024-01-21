@@ -1,7 +1,7 @@
-import { initTable } from './table.js';
+import { initTable } from '../ui/table.js';
 import AppStatusUpdater from './AppStatusUpdater.js'
-import { fetchData } from '../utils.js';
-import { initCards } from './appCard.js';
+import { fetchData } from '../../utils.js';
+import { initCards } from '../ui/appCard.js';
 
 class AppManager {
     constructor(updateInterval = 5000, appData, preferencesData) {

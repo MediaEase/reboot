@@ -1,6 +1,6 @@
 // table.js
 import { Datatable } from "tw-elements";
-import { CodeBlock, slugify } from "../utils.js";
+import { CodeBlock, slugify } from "../../utils.js";
 import { OptionsMenu } from "./OptionsMenu.js";
 import ButtonGenerator from "./AppButtons.js";
 
