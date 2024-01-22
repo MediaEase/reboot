@@ -83,8 +83,6 @@ function get_prerelease_suffix() {
   echo "$prerelease_identifier"
 }
 
-
-
 # Calculate the new version based on the commits since the last tag
 # @param last_tag: the last tag
 # @return the new version
@@ -92,46 +90,42 @@ calculate_new_version() {
   local last_tag=$1
   local prerelease_suffix
   prerelease_suffix=$(get_prerelease_suffix)
-  local full_last_tag=$last_tag
-  last_tag=${last_tag#v}
-  last_tag=${last_tag%-"$prerelease_suffix"}
+  local base_tag=${last_tag%-*}  # Enlever le suffixe s'il existe
 
-  IFS='.' read -r -a version_components <<< "$last_tag"
+  IFS='.' read -r -a version_components <<< "${base_tag#v}"
   local major=${version_components[0]}
-  local minor=${version_components[1]}
-  local patch=${version_components[2]}
+  local minor=${version_components[1]:-0}
+  local patch=${version_components[2]:-0}
 
-  local has_feature_commit=false
-  local has_breaking_commit=false
-  local has_other_commit=false
+  local commits
+  commits=$(git log "$last_tag"..HEAD --reverse --pretty=format:"%s")
 
   while IFS= read -r line; do
-    if [[ "$line" =~ feat: ]]; then
-      has_feature_commit=true
-    elif [[ "$line" =~ breaking: ]]; then
-      has_breaking_commit=true
-    else
-      has_other_commit=true
-    fi
-  done < <(get_commits "$full_last_tag")
+    local commit_type
+    commit_type=$(echo "$line" | grep -oE '^[a-z]+')
 
-  if [[ "$has_breaking_commit" == "true" ]]; then
-    major=$((major + 1))
-    minor=0
-    patch=0
-  elif [[ "$has_feature_commit" == "true" ]]; then
-    minor=$((minor + 1))
-    patch=0
-  elif [[ "$has_other_commit" == "true" ]]; then
-    patch=$((patch + 1))
-  fi
+    case $commit_type in
+      breaking)
+        major=$((major + 1))
+        minor=0
+        patch=0
+        ;;
+      feat)
+        minor=$((minor + 1))
+        patch=0
+        ;;
+      *)
+        patch=$((patch + 1))
+        ;;
+    esac
+  done <<< "$commits"
 
   local new_version="v${major}.${minor}.${patch}"
   if [[ "$GITHUB_REF" == "refs/heads/$DEVELOP_BRANCH" ]]; then
     new_version="${new_version}-${prerelease_suffix}"
   fi
 
-  log "notice" "Old version: $full_last_tag" "calculate_new_version"
+  log "notice" "Old version: $last_tag" "calculate_new_version"
   log "notice" "New version calculated: $new_version" "calculate_new_version"
   echo "$new_version"
 }
@@ -194,25 +188,46 @@ generate_changelog() {
   # Initialize changelog string
   local changelog="# Changelog\n\n### This release contains the following changes:\n\n"
 
+  # Initialize all types in the sections array
+  declare -A sections
+  for key in "${!changelog_types[@]}"; do
+      sections[$key]=""
+  done
+
   # Get the list of commits since the last tag, with details
   local commits
   commits=$(git log "$last_tag"..HEAD --pretty=format:"%H %s %an")
 
-  # Sort commits into sections based on their types
-  declare -A sections
+  # Special treatment for "breaking" and "feat"
   while IFS= read -r commit; do
     local hash type desc author
     hash=$(echo "$commit" | awk '{print $1}')
     type=$(echo "$commit" | awk '{print $2}' | sed -n 's/^\([^:]*\):.*/\1/p')
+
+    # Validate and adjust the commit type
+    if [[ -z "$type" ]] || [[ -z "${changelog_types[$type]}" ]]; then
+        type="other"
+    fi
+
     desc=$(echo "$commit" | sed -e "s/^[^ ]* $type: //g" -e "s/ [^ ]*$//g")
     author=$(echo "$commit" | awk '{print $NF}')
     partial_hash=${hash:0:7}
     sections[$type]+="- $desc ([$partial_hash](https://github.com/$REPO_OWNER/$REPO_NAME/commit/$hash) by @$author)\n"
   done <<< "$commits"
 
-  # Append sections to the changelog
-  for type in "${!changelog_types[@]}"; do
-    if [[ -n "${sections[$type]}" ]]; then
+  # Append sections for "feat" to the changelog
+  if [[ -n "${sections[feat]}" ]]; then
+    changelog+="### ${changelog_types[feat]}\n"
+    changelog+="${sections[feat]}"
+    changelog+="---\n"
+  fi
+
+  # Sort the keys of the changelog_types array
+  IFS=$'\n' mapfile -t sorted_keys < <(printf '%s\n' "${!changelog_types[@]}" | sort)
+
+  # Append other sections to the changelog in alphabetical order
+  for type in "${sorted_keys[@]}"; do
+    if [[ "$type" != "feat" ]] && [[ -n "${sections[$type]}" ]]; then
       changelog+="### ${changelog_types[$type]}\n"
       changelog+="${sections[$type]}"
     fi
@@ -224,6 +239,7 @@ generate_changelog() {
   [[ $DEBUG == "true" ]] || log "notice" "Generated changelog:\n$changelog" "generate_changelog"
   [[ $DEBUG == "true" ]] || cat CHANGELOG.md
 }
+
 
 # Create a GitHub release
 # @param new_version: the new version
@@ -284,7 +300,7 @@ create_release() {
     log "error" "Failed to generate the changelog" "create_release"
     return 1
   fi
-
+  
   # Create the GitHub release
   if ! create_github_release "$new_version" "$is_prerelease"; then
     log "error" "Failed to create the GitHub release" "create_release"
