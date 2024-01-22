@@ -1,4 +1,27 @@
+/**
+ * AppStoreUI
+ * 
+ * Class representing the user interface of the app store.
+ * 
+ * @property {Object} appStoreManager - The app store manager.
+ * @property {HTMLElement} container - The DOM container where the UI will be rendered.
+ * 
+ * @method {void} initialize - Initializes the user interface of the app store.
+ * @method {void} renderNavigation - Renders the navigation of the app store UI.
+ * @method {void} renderMainContent - Renders the main content of the app store UI.
+ * @method {string} renderAppCard - Renders an individual app card.
+ * @method {string} renderActionButton - Renders the action button for an app (e.g., install/uninstall).
+ * @method {void} updateMainContent - Updates the main content of the UI with the filtered apps.
+ * @method {void} setupEventListeners - Sets up event listeners for the app store UI.
+ * @method {string} createNavItems - Creates navigation items for each type of app.
+ * @method {void} handleCategoryChange - Handles category change in the app store UI.
+ */
 class AppStoreUI {
+    /**
+     * Creates an instance of AppStoreUI.
+     * @param {Object} appStoreManager - The app store manager.
+     * @param {HTMLElement} container - The DOM container where the UI will be rendered.
+     */
     constructor(appStoreManager, container) {
         this.appStoreManager = appStoreManager;
         this.container = container;
@@ -6,6 +29,9 @@ class AppStoreUI {
         this.apps = appStoreManager.apps;
     }
 
+    /**
+     * Initializes the user interface of the app store.
+     */
     initialize() {
         const appStoreContainer = document.createElement('div');
         appStoreContainer.className = "flex";
@@ -34,6 +60,10 @@ class AppStoreUI {
         this.updateMainContent(this.appStoreManager.getHomeCategory());
     }
 
+    /**
+     * Renders the navigation of the app store UI.
+     * @param {HTMLElement} parentContainer - The parent container where the navigation will be added.
+     */
     renderNavigation(parentContainer) {
         const appTypeCounts = this.appStoreManager.getAppTypeCounts();
 
@@ -50,6 +80,10 @@ class AppStoreUI {
         parentContainer.appendChild(nav);
     }
     
+    /**
+     * Renders the main content of the app store UI.
+     * @param {HTMLElement} parentContainer - The parent container where the main content will be added.
+     */
     renderMainContent(parentContainer) {
         const mainContent = document.createElement('div');
         mainContent.className = "flex-grow ml-2 md:px-24 pt-4 mb-8";
@@ -64,6 +98,11 @@ class AppStoreUI {
         parentContainer.appendChild(mainContent);
     }
 
+    /**
+     * Renders an individual app card.
+     * @param {Object} app - The data of the app to display.
+     * @returns {string} HTML representing the app card.
+     */
     renderAppCard(app) {
         const logoPath = `/soft_logos/${app.application.logo}`;
         return `
@@ -87,6 +126,11 @@ class AppStoreUI {
         `;
     }
 
+    /**
+     * Renders the action button for an app (e.g., install/uninstall).
+     * @param {Object} app - The app data for which to generate the button.
+     * @returns {string} HTML representing the action button.
+     */
     renderActionButton(app) {
         const isAppInstalled = this.apps.some(installedApp => installedApp.application.id === app.application.id);
         const svgPath = isAppInstalled
@@ -130,12 +174,19 @@ class AppStoreUI {
         return actionButton;
     }
 
+    /**
+     * Updates the main content of the UI with the filtered apps.
+     * @param {Array} filteredApps - The apps to display.
+     */
     updateMainContent(filteredApps) {
         const mainContent = this.container.querySelector('.grid');
         let appCards = filteredApps.map(app => this.renderAppCard(app)).join('');
         mainContent.innerHTML = appCards;
     }
 
+    /**
+     * Sets up event listeners for the app store UI.
+     */
     setupEventListeners() {
         // Handling clicks on category links
         this.container.addEventListener('click', (event) => {
@@ -146,6 +197,12 @@ class AppStoreUI {
         });
     }
 
+    /**
+     * Creates navigation items for each type of app.
+     * @param {Array} types - The available types of apps.
+     * @param {Object} appTypeCounts - The count of apps for each type.
+     * @returns {string} HTML representing the navigation items.
+     */
     createNavItems(types, appTypeCounts) {
         const navItems = types.map(type => {
         return `<li class="mb-2 flex justify-start items-center pl-4">
@@ -162,6 +219,10 @@ class AppStoreUI {
         return navItems.join('');
     }
 
+    /**
+     * Handles category change in the app store UI.
+     * @param {string} type - The selected category type.
+     */
     handleCategoryChange(type) {
         let filteredApps = type === 'all' 
             ? this.appStoreManager.getHomeCategory() 
