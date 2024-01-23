@@ -47,7 +47,6 @@ class AppCardUI {
             }
         });
     
-        // Determine the overall status
         const allServicesInactive = appDetail.services.every(service => service.status !== 'active');
         const anyServiceInactive = appDetail.services.some(service => service.status !== 'active');
     

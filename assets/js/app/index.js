@@ -4,6 +4,7 @@ import AppStoreUI from './ui/AppStoreUI';
 import AppManager from './management/AppManager';
 import AppCardUI from './ui/AppCardUI';
 import AppTableUI from './ui/AppTableUI';
+import AppPinUI from './ui/AppPinUI';
 
 (async () => {
     try {
@@ -25,6 +26,9 @@ import AppTableUI from './ui/AppTableUI';
         appCardUI.initCards(processedData, preferencesData);
         const appTableUI = new AppTableUI('my-app-list');
         appTableUI.initTable(processedData, preferencesData);
+
+        const appPinUI = new AppPinUI('pinned-apps');
+        appPinUI.initPins(preferencesData);
     } catch (error) {
         console.error('Error initializing application:', error);
     }
