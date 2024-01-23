@@ -188,7 +188,7 @@ export class OptionsMenu {
         return `
             <div class="hidden absolute right-0 mt-2 w-48 bg-white divide-y divide-gray-100 rounded-md shadow-lg z-50" id="${menuId}_options_menu" data-app-name="${menuId}">
                 <ul class="py-1 text-gray-700 text-center">
-                    <li><a href="${appDetails.configuration[0].root_url}" class="block px-4 py-2 text-sm hover:bg-gray-100">Open</a></li>
+                    <li><a href="${appDetails.services[0].configuration.root_url}" class="block px-4 py-2 text-sm hover:bg-gray-100">Open</a></li>
                     <li>${pinAction}</li>
                     <li><a href="#" class="block px-4 py-2 text-sm hover:bg-red-300">Uninstall</a></li>
                     <div class="flex flex-col w-full relative bottom-0 app-panel-popover-footer">
