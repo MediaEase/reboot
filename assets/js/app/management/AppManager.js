@@ -7,7 +7,7 @@ class AppManager {
         this.updater = new AppStatusUpdater();
         this.appData = appData;
         this.preferencesData = preferencesData;
-        // this.status = fetchData('/api/me/services/status');
+        this.status = fetchData('/api/me/services/status');
     }
 
     async initialize() {

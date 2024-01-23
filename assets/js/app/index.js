@@ -3,6 +3,7 @@ import AppStoreManager from './management/AppStoreManager';
 import AppStoreUI from './ui/AppStoreUI';
 import AppManager from './management/AppManager';
 import AppCardUI from './ui/AppCardUI';
+import AppTableUI from './ui/AppTableUI';
 
 (async () => {
     try {
@@ -22,21 +23,8 @@ import AppCardUI from './ui/AppCardUI';
 
         const appCardUI = new AppCardUI('grid');
         appCardUI.initCards(processedData, preferencesData);
-    } catch (error) {
-        console.error('Error initializing application:', error);
-    }
-})();
-
-(async () => {
-    try {
-        const appsData = await fetchData('/api/me/my_apps');
-        const preferencesData = await fetchData('/api/me/preferences');
-        const appManager = new AppManager(5000, appsData, preferencesData);
-        await appManager.initialize();
-        const processedData = appManager.processData(appsData);
-
-        const appCardUI = new AppCardUI('grid');
-        appCardUI.initCards(processedData, preferencesData); // Utiliser les données traitées ici
+        const appTableUI = new AppTableUI('my-app-list');
+        appTableUI.initTable(processedData, preferencesData);
     } catch (error) {
         console.error('Error initializing application:', error);
     }
