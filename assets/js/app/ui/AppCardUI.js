@@ -20,7 +20,6 @@ class AppCardUI {
     }
 
     createCard(appName, appDetail, preferencesData) {
-        console.log(appDetail);
         const card = document.createElement('div');
         card.className = 'card-container mb-16 lg:mb-0 p-2 relative group';
         card.setAttribute('data-app-panel', appDetail.name);
