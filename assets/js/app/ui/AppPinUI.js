@@ -1,4 +1,19 @@
+/**
+ * Class responsible for managing the UI for pinned applications.
+ * 
+ * @property {HTMLElement} container - The DOM element where pinned apps will be displayed.
+ * 
+ * @method initialize - Initializes and renders the pinned applications using the provided preferences data.
+ * @method renderPinnedApps - Renders the UI for pinned applications. Clears existing content and creates new elements for each pinned app.
+ * @method updatePins - Updates the UI for pinned applications. Typically called when there's a change in the pinned apps data.
+ */
 class AppPinsUI {
+    /**
+     * Constructs the AppPinsUI object and initializes the container for pinned apps.
+     *
+     * @param {string} containerId - The ID of the DOM element where pinned apps will be displayed.
+     * @throws Will throw an error if the container element is not found.
+     */
     constructor(containerId = 'pinned-apps') {
         this.container = document.getElementById(containerId);
         if (!this.container) {
@@ -7,13 +22,23 @@ class AppPinsUI {
         }
     }
 
-    initPins(preferencesData) {
+    /**
+     * Initializes and renders the pinned applications using the provided preferences data.
+     *
+     * @param {Object} preferencesData - User preferences data containing information about pinned apps.
+     */
+    initialize(preferencesData) {
         const pinnedAppsData = preferencesData.pinnedApps;
         if (pinnedAppsData && pinnedAppsData.length > 0) {
             this.renderPinnedApps(pinnedAppsData);
         }
     }
 
+    /**
+     * Renders the UI for pinned applications. Clears existing content and creates new elements for each pinned app.
+     *
+     * @param {Array} pinnedAppsData - An array of pinned application data objects.
+     */
     renderPinnedApps(pinnedAppsData) {
         this.container.innerHTML = '';
 
@@ -32,6 +57,11 @@ class AppPinsUI {
         });
     }
 
+    /**
+     * Updates the UI for pinned applications. Typically called when there's a change in the pinned apps data.
+     *
+     * @param {Array} pins - An array of new pinned application data objects.
+     */
     updatePins(pins) {
         this.renderPinnedApps(pins);
     }

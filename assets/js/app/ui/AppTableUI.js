@@ -1,10 +1,30 @@
-
 import { Datatable } from "tw-elements";
 import { slugify, CodeBlock } from "../../utils.js";
-import { OptionsMenu } from "./OptionsMenu.js";
+import { OptionsMenu } from "./elements/OptionsMenu.js";
 import ButtonGenerator from "./elements/ButtonGenerator.js";
 
+/**
+ * Class responsible for managing the UI of the application table.
+ * 
+ * @property {HTMLElement} container - The DOM element where the application table will be displayed.
+ * 
+ * @method initialize - Initializes and creates the datatable with the provided application data and user preferences.
+ * @method transformData - Transforms application data into a format suitable for rendering in the datatable.
+ * @method setupAdvancedSearch - Sets up advanced search functionality for the datatable.
+ * @method generateColumnData - Generates column data based on the specified column name and optional formatter.
+ * @method generateStatusBadge - Generates a status badge element based on the application's status.
+ * @method formatServiceNameDisplay - Formats the display of service names for the application.
+ * @method toTitleCase - Converts a string to title case.
+ * @method createActionButtons - Creates action buttons for each application.
+ * @method setupEventListeners - Sets up event listeners for the application table.
+ */
 class AppTableUI {
+    /**
+     * Constructs the AppTableUI object and initializes the container for the application table.
+     *
+     * @param {string} containerId - The ID of the DOM element where the application table will be displayed.
+     * @throws Will throw an error if the container element is not found.
+     */
     constructor(containerId) {
         this.container = document.getElementById(containerId);
         if (!this.container) {
@@ -14,7 +34,13 @@ class AppTableUI {
         this.datatable = null;
     }
 
-    initTable(appsData, preferencesData) {
+    /**
+     * Initializes and creates the datatable with the provided application data and user preferences.
+     *
+     * @param {Object[]} appsData - Array of application data objects.
+     * @param {Object} preferencesData - User preferences data.
+     */
+    initialize(appsData, preferencesData) {
         const data = {
             columns: [
                 { label: 'Name', field: 'name' },
@@ -33,12 +59,18 @@ class AppTableUI {
         }
         const datatable = new Datatable(datatableElement, data, { hover: true, pagination: true, entriesOptions: [10, 20, 30, 75], fullPagination: true }, { hoverRow: 'hover:bg-gray-300 hover:text-black', column: 'pl-1 text-clip overflow-hidden text-[#212529] dark:text-white', rowItem: 'whitespace-nowrap text-clip overflow-auto px-[1.4rem] border-neutral-200 dark:border-neutral-500' });
         this.setupAdvancedSearch(datatable);
-        this.attachEventListeners();
+        this.setupEventListeners();
     }
 
+    /**
+     * Transforms application data into a format suitable for rendering in the datatable.
+     *
+     * @param {Object[]} appData - Array of application data objects.
+     * @param {Object} preferencesData - User preferences data.
+     * @returns {Object[]} Transformed data suitable for rendering in the datatable.
+     */
     transformData(appData, preferencesData) {
         const transformed = [];
-    
         appData.forEach(app => {
             const appName = app.name;
             const appServices = app.services || [];
@@ -63,6 +95,11 @@ class AppTableUI {
         return transformed;
     }
 
+    /**
+     * Sets up advanced search functionality for the datatable.
+     *
+     * @param {Datatable} datatable - The Datatable instance.
+     */
     setupAdvancedSearch(datatable) {
         const advancedSearchInput = document.getElementById('app-finder');
         const advancedSearchButton = document.getElementById('app-finder-button');
@@ -84,6 +121,14 @@ class AppTableUI {
         advancedSearchInput.addEventListener("input", handleSearchEvent);
     }
 
+    /**
+     * Generates column data based on the specified column name and optional formatter.
+     *
+     * @param {Object[]} services - Array of service objects.
+     * @param {string} columnName - The name of the column for which data is being generated.
+     * @param {Function} [formatter=(x) => x] - Optional formatter function to format the data.
+     * @returns {string} Formatted column data as a string.
+     */
     generateColumnData(services, columnName, formatter = (x) => x) {
         const isSpecialCase = columnName === 'ports' || columnName === 'apiKey';
         const separator = isSpecialCase ? ' ' : '<br class="pt-1">';
@@ -103,12 +148,25 @@ class AppTableUI {
         }).join(separator);
     }   
     
+    /**
+     * Generates a status badge element based on the application's status.
+     *
+     * @param {string} status - The status of the application.
+     * @returns {string} HTML string representing the status badge.
+     */
     generateStatusBadge(status) {
         return status === 'active'
             ? `<span class="inline-flex items-center justify-center w-6 h-6 me-2 text-xs font-semibold text-green-800 rounded-full">●</span>`
             : `<span class="inline-flex items-center justify-center w-6 h-6 me-2 text-xs font-semibold text-red-800 rounded-full">●</span>`;
     }
     
+    /**
+     * Formats the display of service names for the application.
+     *
+     * @param {string} appName - The name of the application.
+     * @param {Object[]} appServices - Array of service objects related to the application.
+     * @returns {string} HTML string representing the formatted service names.
+     */
     formatServiceNameDisplay(appName, appServices) {
         let formattedDisplay = `<a href="${appServices[0].configuration[0].root_url}">${this.toTitleCase(appName)}</a>`;
         if (appServices.length > 1) {
@@ -121,6 +179,12 @@ class AppTableUI {
         return formattedDisplay;
     }
     
+    /**
+     * Converts a string to title case.
+     *
+     * @param {string} str - The string to be converted to title case.
+     * @returns {string} The string converted to title case.
+     */
     toTitleCase(str) {
         if (typeof str !== 'string') {
             console.error('toTitleCase: Expected a string, got', str);
@@ -129,6 +193,14 @@ class AppTableUI {
         return str.replace(/\b\w+/g, function (s) { return s.charAt(0).toUpperCase() + s.substr(1).toLowerCase(); });
     }
     
+    /**
+     * Creates action buttons for each application.
+     *
+     * @param {string} appName - The name of the application.
+     * @param {Object} appDetail - Detailed information about the application.
+     * @param {Object} preferencesData - User preferences data.
+     * @returns {string} HTML string representing the action buttons.
+     */
     createActionButtons(appName, appDetail, preferencesData) {
         const buttonGenerator = new ButtonGenerator(appName, 'list');
         const settingsButton = buttonGenerator.generateButton('settings');
@@ -145,7 +217,10 @@ class AppTableUI {
         `;
     }
     
-    attachEventListeners() {
+    /**
+     * Sets up event listeners for the application table.
+     */
+    setupEventListeners() {
         const optionsMenuInstance = new OptionsMenu();
         document.addEventListener('click', (event) => optionsMenuInstance.onDocumentClick(event));
         document.addEventListener('click', (event) => optionsMenuInstance.onButtonMenuClick(event));

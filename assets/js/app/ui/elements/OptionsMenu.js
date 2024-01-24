@@ -1,7 +1,22 @@
-import { fetchData } from '../../utils.js';
+import { fetchData } from '../../../utils.js';
 
 /**
  * Represents an options menu for an app, handling its interactions and UI updates.
+ * 
+ * @property {boolean} eventListenersInitialized - Indicates if event listeners are already set up to avoid redundancy.
+ * 
+ * @method initializeEventListeners - Sets up event listeners if they haven't been initialized.
+ * @method setupEventListeners - Establishes global and specific event listeners related to the options menu.
+ * @method initPinLinkEventListeners - Reinitializes event listeners for 'pin-link' elements.
+ * @method handlePinClick - Handles the click event on pin links, preventing default behavior and stopping event propagation.
+ * @method closeAllMenus - Closes all open menus to maintain a clean and intuitive interface.
+ * @method onDocumentClick - Handles clicks on the document to manage menu visibility.
+ * @method onButtonMenuClick - Handles the click event on the options menu button.
+ * @method isAppPinned - Checks if a specific app is pinned based on the user's preferences.
+ * @method generateOptionsMenu - Generates the HTML for the options menu of an application.
+ * @method generateServiceControlHTML - Generates HTML for service control buttons, including start, stop, and restart.
+ * @method generatePinLink - Generates the HTML for the pin/unpin link of an app.
+ * @method showOptionsMenu - Populates the options menu for an app with the relevant HTML content.
  */
 export class OptionsMenu {
     constructor() {

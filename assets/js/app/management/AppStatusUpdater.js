@@ -16,7 +16,7 @@ class AppStatusUpdater {
     }
 
     updateStatus(appStatusData) {
-        // this.updateAppTable(appStatusData);
+        this.updateAppTable(appStatusData);
         this.updateAppCards(appStatusData);
         this.updateContextualMenus(appStatusData);
     }

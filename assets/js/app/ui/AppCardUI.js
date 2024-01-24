@@ -1,8 +1,24 @@
 import { slugify, CodeBlock } from "../../utils.js";
 import ButtonGenerator from "./elements/ButtonGenerator.js";
-import { OptionsMenu } from "./OptionsMenu.js";
+import { OptionsMenu } from "./elements/OptionsMenu.js";
 
+/**
+ * AppCardUI is responsible for creating and managing the UI elements of application cards.
+ * 
+ * @property {HTMLElement} container - The container where the cards will be appended.
+ * @property {Object} optionsMenu - The options menu for each application.
+ * 
+ * @method initialize - Initializes the application cards using provided data.
+ * @method createCard - Creates a card element for a given application.
+ * @method generatePorts - Generates server and web port numbers for a given application detail.
+ * @method showModalDetails - Displays a modal with detailed information about an application.
+ * @method setupEventListeners - Sets up event listeners for the card elements.
+ */
 class AppCardUI {
+    /**
+     * Constructs the AppCardUI object.
+     * @param {string} containerId - The ID of the container where the cards will be appended.
+     */
     constructor(containerId = 'grid') {
         this.container = document.getElementById(containerId);
         if (!this.container) {
@@ -11,7 +27,12 @@ class AppCardUI {
         }
     }
 
-    initCards(appsData, preferencesData) {
+    /**
+     * Initializes the application cards using provided data.
+     * @param {Object} appsData - Data about the applications to be displayed.
+     * @param {Object} preferencesData - User's preferences data.
+     */
+    initialize(appsData, preferencesData) {
         Object.entries(appsData).forEach(([appName, appDetail]) => {
             const cardElement = this.createCard(appName, appDetail, preferencesData);
             this.container.appendChild(cardElement);
@@ -19,6 +40,13 @@ class AppCardUI {
         this.setupEventListeners();
     }
 
+    /**
+     * Creates a card element for a given application.
+     * @param {string} appName - The name of the application.
+     * @param {Object} appDetail - Detailed data about the application.
+     * @param {Object} preferencesData - User's preferences data.
+     * @returns {HTMLElement} - The card element.
+     */
     createCard(appName, appDetail, preferencesData) {
         const card = document.createElement('div');
         card.className = 'card-container mb-16 lg:mb-0 p-2 relative group';
@@ -32,20 +60,7 @@ class AppCardUI {
         const hasChildServices = appDetail.services.length > 1;
         const logoPath = `/soft_logos/${slugify(appDetail.name)}.png`;
         const appApiKey = appDetail.services[0]?.apikey || 'No API Key';
-    
-        // Extract server and web ports from the services
-        let serverPort = 'N/A';
-        let webPort = 'N/A';
-        appDetail.services.forEach(service => {
-            if (service.name.includes('-server')) {
-                serverPort = service.ports[0]?.default || serverPort;
-            }
-            if (service.name.includes('-web')) {
-                webPort = service.ports[0]?.default || webPort;
-            } else {
-                serverPort = service.ports[0]?.default || serverPort;
-            }
-        });
+        const [serverPort, webPort] = this.generatePorts(appDetail);
     
         const allServicesInactive = appDetail.services.every(service => service.status !== 'active');
         const anyServiceInactive = appDetail.services.some(service => service.status !== 'active');
@@ -122,11 +137,43 @@ class AppCardUI {
     return card;
     }
 
+    /**
+     * Generates server and web port numbers for a given application detail.
+     * Iterates through each service of the application to determine the server and web ports.
+     * 
+     * @param {Object} appDetail - Detailed data about the application, including its services.
+     * @returns {[string, string]} - An array where the first element is the server port and the second element is the web port. 
+     *                               Returns 'N/A' for each port if not applicable.
+     */
+    generatePorts(appDetail) {
+        let serverPort = 'N/A';
+        let webPort = 'N/A';
+        appDetail.services.forEach(service => {
+            if (service.name.includes('-server')) {
+                serverPort = service.ports[0]?.default || serverPort;
+            }
+            if (service.name.includes('-web')) {
+                webPort = service.ports[0]?.default || webPort;
+            } else {
+                serverPort = service.ports[0]?.default || serverPort;
+            }
+        });
+        return [serverPort, webPort];
+    }
+
+    /**
+     * Displays a modal with detailed information about an application.
+     * @param {string} appName - The name of the application.
+     * @param {Object} appDetails - Detailed data about the application.
+     */
     showModalDetails(appName, appDetails) {
         const modal = document.getElementById('appModal');
         modal.innerHTML = '<ul>' + appDetails.map(detail => `<li>${detail}</li>`).join('') + '</ul>';
     }
 
+    /**
+     * Sets up event listeners for the card elements.
+     */
     setupEventListeners() {
         const optionsMenuInstance = new OptionsMenu();
         document.addEventListener('click', (event) => optionsMenuInstance.onDocumentClick(event));

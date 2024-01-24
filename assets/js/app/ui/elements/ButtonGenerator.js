@@ -1,9 +1,31 @@
+/**
+ * Class responsible for generating buttons for applications.
+ * 
+ * @property {string} appName The name of the application.
+ * @property {string} display The display name of the application.
+ * 
+ * @method generateButton Generates a button for the application.
+ * @method sanitize Sanitizes a string.
+ */
 class ButtonGenerator {
+    /**
+     * Constructs the ButtonGenerator object.
+     *
+     * @param {string} appName - The name of the application for which buttons are generated.
+     * @param {string} display - The display context of the button (e.g., 'card', 'list').
+     */
     constructor(appName, display) {
         this.appName = this.sanitize(appName);
         this.display = display;
     }
 
+    /**
+     * Generates a button element based on the specified type.
+     * Supported types are 'options' and 'settings'.
+     *
+     * @param {string} type - The type of button to generate ('options' or 'settings').
+     * @returns {string} HTML string representing the button element.
+     */
     generateButton(type) {
         const types = {
             options: {
@@ -35,6 +57,12 @@ class ButtonGenerator {
     `;
     }
 
+    /**
+     * Sanitizes a string by replacing spaces with hyphens and converting to lowercase.
+     *
+     * @param {string} str - The string to be sanitized.
+     * @returns {string} The sanitized string.
+     */
     sanitize(str) {
         return str.replace(/\s+/g, '-').toLowerCase();
     }

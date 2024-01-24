@@ -8,10 +8,12 @@ import AppPinUI from './ui/AppPinUI';
 
 (async () => {
     try {
+        /* Fetch data from the API */
         const storeData = await fetchData('/api/store');
         const appsData = await fetchData('/api/me/my_apps');
         const preferencesData = await fetchData('/api/me/preferences');
 
+        /* Initialize the application */
         const container = document.querySelector('#appStoreModal #appStoreContainer');
 
         const appStoreManager = new AppStoreManager(storeData, appsData);
@@ -23,12 +25,12 @@ import AppPinUI from './ui/AppPinUI';
         const processedData = appManager.processData(appsData);
 
         const appCardUI = new AppCardUI('grid');
-        appCardUI.initCards(processedData, preferencesData);
+        appCardUI.initialize(processedData, preferencesData);
         const appTableUI = new AppTableUI('my-app-list');
-        appTableUI.initTable(processedData, preferencesData);
+        appTableUI.initialize(processedData, preferencesData);
 
         const appPinUI = new AppPinUI('pinned-apps');
-        appPinUI.initPins(preferencesData);
+        appPinUI.initialize(preferencesData);
     } catch (error) {
         console.error('Error initializing application:', error);
     }
