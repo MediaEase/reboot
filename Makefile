@@ -6,6 +6,7 @@ VENDOR_BIN = ./vendor/bin
 PHPUNIT = APP_ENV=test phpunit
 PHP_CONSOLE = php bin/console
 SYMFONY_CONSOLE = symfony console
+NPM := "npm"
 
 
 audit: ## Shortcut that runs make qa-audit
@@ -35,9 +36,12 @@ install-dev: ## Install php tools
 
 install-project: ## Install project with normal dependencies
 	$(COMPOSER) install --optimize-autoloader
+	$(SYMFONY) lexik:jwt:generate-keypair
+    $(NPM) install --force --frozen-lockfile --non-interactive --silent
+	$(NPM) run build
 	$(PHP_CONSOLE) doctrine:database:create
 	$(PHP_CONSOLE) doctrine:schema:update --force --complete
-	$(PHP_CONSOLE) doctrine:fixtures:load --append
+# 	$(PHP_CONSOLE) doctrine:fixtures:load --append
 	make sf-clear-cache
 	make qa-composer-outdated
 	make qa-composer-validate

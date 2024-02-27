@@ -29,25 +29,11 @@ final class HomeController extends AbstractController
     {
         $user = $this->getUser();
         $preferences = $this->preferenceRepository->findOneBy(['user' => $user]);
-        $pinnedAppIds = $preferences->getPinnedApps();
-        $pinnedServices = [];
-
-        foreach ($pinnedAppIds as $pinnedAppId) {
-            $service = $this->serviceRepository->findOneBy(['id' => $pinnedAppId]);
-            if ($service !== null) {
-                $pinnedServices[] = $service;
-            }
-        }
-
-        usort($pinnedServices, static function ($a, $b): int {
-            return strcmp($a->getName(), $b->getName());
-        });
 
         return $this->render('dashboard/index.html.twig', [
             'user' => $user,
             'preferences' => $preferences,
             'widgetsRepository' => $this->widgetRepository,
-            'pinnedApps' => $pinnedServices,
         ]);
     }
 }
