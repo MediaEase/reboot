@@ -55,13 +55,13 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ github.ref }}
-          token: ${{ secrets.MEDIAEASE_ACCESS_TOKEN }}
+          token: ${{ secrets.PAT }}
           fetch-depth: 0
 
-      - name: Repository Dispatch for HarmonyUI
-        uses: peter-evans/repository-dispatch@v2
+      - name: Repository Dispatch for scripts
+        uses: peter-evans/repository-dispatch@v3
         with:
-          token: ${{ secrets.MEDIAEASE_ACCESS_TOKEN }}
+          token: ${{ secrets.PAT }}
           repository: MediaEase/MediaEase
-          event-type: harmonyui-release
-          client-payload: '{ "submodule": "HarmonyUI", "ref": "${{ github.ref_name }}", "sha": "${{ github.sha }}", "harmonyui_version":  "${{ steps.get_latest_release.outputs.release }}"}'
+          event-type: scripts-release
+          client-payload: '{ "submodule": "scripts", "ref": "${{ github.ref_name }}", "sha": "${{ github.sha }}"}'
