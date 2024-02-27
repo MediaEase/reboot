@@ -1,5 +1,7 @@
 {
     "type": "project",
+    "name": "mediaease/harmonyui",
+    "description": "Harmony UI - frontend app for Harmony built with Symfony and TailwindCSS",
     "license": "proprietary",
     "minimum-stability": "stable",
     "prefer-stable": true,
