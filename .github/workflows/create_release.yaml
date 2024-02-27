@@ -58,7 +58,7 @@ jobs:
           token: ${{ secrets.PAT }}
           fetch-depth: 0
 
-      - name: Repository Dispatch for scripts
+      - name: Repository Dispatch for HarmonyUI
         uses: peter-evans/repository-dispatch@v3
         with:
           token: ${{ secrets.PAT }}
