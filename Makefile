@@ -43,7 +43,6 @@ install-project: ## Install project with normal dependencies
 	$(PHP_CONSOLE) doctrine:schema:update --force --complete
 # 	$(PHP_CONSOLE) doctrine:fixtures:load --append
 	make sf-clear-cache
-	make qa-composer-outdated
 	make qa-composer-validate
 
 ###################################
