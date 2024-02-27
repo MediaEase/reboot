@@ -64,4 +64,4 @@ jobs:
           token: ${{ secrets.PAT }}
           repository: MediaEase/MediaEase
           event-type: harmonyui-release
-          client-payload: '{ "submodule": "frontend", "ref": "${{ github.ref_name }}", "sha": "${{ github.sha }}"}'
+          client-payload: '{ "submodule": "HarmonyUI", "ref": "${{ github.ref_name }}", "sha": "${{ github.sha }}"}'
