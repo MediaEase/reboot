@@ -48,12 +48,12 @@ install-dev:
 install-project:
     {{COMPOSER}} install --optimize-autoloader
     {{NPM}} install --force
+	{{NPM}} run build
     {{PHP_CONSOLE}} doctrine:database:create
     {{PHP_CONSOLE}} doctrine:schema:update --force --complete
     {{PHP_CONSOLE}} doctrine:fixtures:load --append
     just sf-clear-cache
     just qa-composer-outdated
-    just qa-composer-validate
 
 ###################################
 #

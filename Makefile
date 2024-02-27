@@ -84,27 +84,25 @@ sf-stop: ## Stop Symfony server
 qa-audit: ## Runs a security audit (security-checker + audit + rector + PHPCS + phpmetrics + phpinsights + PHPStan). Only generates reports.#Runs a security audit (security-checker + audit + rector + PHPCS + phpmetrics + phpinsights + PHPStan). Only generates reports.
 	make qa-security-checker
 	$(COMPOSER) audit
-	$(COMPOSER) run-script rector-bs --working-dir=tools/php
-	$(COMPOSER) run-script cs-bs --working-dir=tools/php
-	$(COMPOSER) run-script metrics --working-dir=tools/php
-	$(COMPOSER) run-script stan --working-dir=tools/php
+	$(COMPOSER) run-script rector-bs
+	$(COMPOSER) run-script cs-bs
+	$(COMPOSER) run-script metrics
+	$(COMPOSER) run-script stan
 
 qa-composer-outdated: ## Check outdated dependencies.
 	$(COMPOSER) outdated --direct --strict
-	$(COMPOSER) outdated --strict --strict --working-dir=tools/php
 
 qa-composer-validate: ## Validates a composer.json and composer.lock.
 	$(COMPOSER) validate --strict --no-check-lock
-	$(COMPOSER) validate --strict --no-check-lock --working-dir=tools/php
 
 qa-cs: ## Runs PHP_CodeSniffer on the project and fixes the issues.
-	$(COMPOSER) run-script cs --working-dir=tools/php
+	$(COMPOSER) run-script cs
 
 qa-cs-bs: ## Runs PHP_CodeSniffer on the project. Generates reports.
-	$(COMPOSER) run-script cs-bs --working-dir=tools/php
+	$(COMPOSER) run-script cs-bs
 
 qa-insights: ## Runs PHPInsights on the project.
-	$(COMPOSER) run-script insights --working-dir=tools/php
+	$(COMPOSER) run-script insights
 
 qa-lint-container: ## Checks the Symfony DI container for errors.
 	$(SYMFONY_CONSOLE) lint:container
@@ -119,19 +117,19 @@ qa-lint-yaml: ## Lints YAML files.
 	$(SYMFONY_CONSOLE) lint:yaml ./config
 
 qa-metrics: ## Runs PHPMetrics on the project. Generates reports.
-	$(COMPOSER) run-script metrics --working-dir=tools/php
+	$(COMPOSER) run-script metrics
 
 qa-rector: ## Runs Rector on the project and fixes the issues.
-	$(COMPOSER) run-script rector --working-dir=tools/php
+	$(COMPOSER) run-script rector
 
 qa-rector-bs: ## Runs Rector on the project. Generates reports.
-	$(COMPOSER) run-script rector-bs --working-dir=tools/php
+	$(COMPOSER) run-script rector-bs
 
 qa-security-checker: ## Checks security issues in your project dependencies.
 	$(SYMFONY) check:security
 
 qa-stan: ## Runs PHPStan on the project.
-	$(COMPOSER) run-script stan --working-dir=tools/php
+	$(COMPOSER) run-script stan
 	
 test: ## Run PHPUnit tests
 	php $(VENDOR_BIN)/phpunit
