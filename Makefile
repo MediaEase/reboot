@@ -6,7 +6,7 @@ VENDOR_BIN = ./vendor/bin
 PHPUNIT = APP_ENV=test phpunit
 PHP_CONSOLE = php bin/console
 SYMFONY_CONSOLE = symfony console
-NPM := "npm"
+NPM := npm
 
 
 audit: ## Shortcut that runs make qa-audit
@@ -36,8 +36,8 @@ install-dev: ## Install php tools
 
 install-project: ## Install project with normal dependencies
 	$(COMPOSER) install --optimize-autoloader
-	$(SYMFONY) lexik:jwt:generate-keypair
-    $(NPM) install --force --frozen-lockfile --non-interactive --silent
+	$(NPM) install --force --frozen-lockfile --non-interactive --silent
+	make sf-keypair
 	$(NPM) run build
 	$(PHP_CONSOLE) doctrine:database:create
 	$(PHP_CONSOLE) doctrine:schema:update --force --complete
@@ -74,6 +74,9 @@ sf-start-daemon: ## Start Symfony server in daemon-mode
 
 sf-stop: ## Stop Symfony server
 	$(SYMFONY) server:stop
+
+sf-keypair: ## Generate JWT keypair
+	$(SYMFONY_CONSOLE) lexik:jwt:generate-keypair
 
 ###################################
 #
