@@ -22,18 +22,18 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ github.ref }}
-          token: ${{ secrets.MEDIAEASE_ACCESS_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
       - name: Set up Git
         id: git-config
         run: |
-          git config --global user.name 'tomcdj71'
+          git config --global user.name 'GitHub Actions'
           git config --global user.email 'actions@github.com'
 
       - name: Run release script
         env:
-          GITHUB_TOKEN: ${{ secrets.MEDIAEASE_ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO_OWNER: ${{ github.repository_owner }}
           REPO_NAME: ${{ github.event.repository.name }}
           DEVELOP_BRANCH: develop
@@ -63,5 +63,5 @@ jobs:
         with:
           token: ${{ secrets.PAT }}
           repository: MediaEase/MediaEase
-          event-type: scripts-release
-          client-payload: '{ "submodule": "scripts", "ref": "${{ github.ref_name }}", "sha": "${{ github.sha }}"}'
+          event-type: harmonyui-release
+          client-payload: '{ "submodule": "HarmonyUI", "ref": "${{ github.ref_name }}", "sha": "${{ github.sha }}"}'
