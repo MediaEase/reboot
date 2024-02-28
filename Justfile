@@ -6,7 +6,7 @@
 # Variables
 set shell := ["bash", "-c"]
 PWD := "`pwd`"
-NPM := "yarn"
+NPM := "pnpm"
 SYMFONY := "symfony"
 COMPOSER := "composer"
 VENDOR_BIN := "./vendor/bin"

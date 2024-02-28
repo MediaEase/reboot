@@ -6,7 +6,7 @@ VENDOR_BIN = ./vendor/bin
 PHPUNIT = APP_ENV=test phpunit
 PHP_CONSOLE = php bin/console
 SYMFONY_CONSOLE = symfony console
-NPM := npm
+NPM := pnpm
 
 
 audit: ## Shortcut that runs make qa-audit
