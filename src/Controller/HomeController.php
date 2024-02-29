@@ -33,7 +33,6 @@ final class HomeController extends AbstractController
         return $this->render('dashboard/index.html.twig', [
             'user' => $user,
             'preferences' => $preferences,
-            'widgetsRepository' => $this->widgetRepository,
         ]);
     }
 }
