@@ -47,7 +47,7 @@ install-dev:
 # Install project with normal dependencies
 install-project:
     {{COMPOSER}} install --optimize-autoloader
-    {{NPM}} install --force --frozen-lockfile --non-interactive --silent
+    {{NPM}} install --force --prefer-frozen-lockfile --silent
     {{NPM}} run build
     just sf-rotate-keys
     {{PHP_CONSOLE}} doctrine:database:create

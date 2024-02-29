@@ -36,7 +36,7 @@ install-dev: ## Install php tools
 
 install-project: ## Install project with normal dependencies
 	$(COMPOSER) install --optimize-autoloader
-	$(NPM) install --force --frozen-lockfile --non-interactive --silent
+	$(NPM) install --force --prefer-frozen-lockfile --silent
 	$(NPM) run build
 	make sf-rotate-keys
 	$(PHP_CONSOLE) doctrine:database:create
