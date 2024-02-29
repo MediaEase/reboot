@@ -42,13 +42,13 @@ help:
 ###################################
 # Install php tools
 install-dev:
-    {COMPOSER}} install --optimize-autoloader --dev
+    {{COMPOSER}} install --optimize-autoloader --dev
 
 # Install project with normal dependencies
 install-project:
     {{COMPOSER}} install --optimize-autoloader
     {{NPM}} install --force --frozen-lockfile --non-interactive --silent
-	{{NPM}} run build
+    {{NPM}} run build
     just sf-rotate-keys
     {{PHP_CONSOLE}} doctrine:database:create
     {{PHP_CONSOLE}} doctrine:schema:update --force --complete
