@@ -47,11 +47,12 @@ install-dev:
 # Install project with normal dependencies
 install-project:
     {{COMPOSER}} install --optimize-autoloader
-    {{NPM}} install --force
+    {{NPM}} install --force --frozen-lockfile --non-interactive --silent
 	{{NPM}} run build
+    just sf-rotate-keys
     {{PHP_CONSOLE}} doctrine:database:create
     {{PHP_CONSOLE}} doctrine:schema:update --force --complete
-    {{PHP_CONSOLE}} doctrine:fixtures:load --append
+    # {{PHP_CONSOLE}} doctrine:fixtures:load --append
     just sf-clear-cache
     just qa-composer-outdated
 
@@ -95,6 +96,17 @@ sf-start-daemon:
 # Stop Symfony server
 sf-stop:
     {{SYMFONY}} server:stop
+
+# Generate JWT keypair
+sf-keypair: #
+	{{SYMFONY_CONSOLE}} lexik:jwt:generate-keypair
+
+# Rotate keys
+sf-rotate-keys:
+    {{SYMFONY_CONSOLE}} secret:regenerate-app-secret .env.local
+    {{SYMFONY_CONSOLE}} secret:regenerate-mercure-jwt-secret .env.local
+    {{SYMFONY_CONSOLE}} secret:regenerate-jwt-passphrase .env.local
+    just sf-keypair
 
 ###################################
 #
