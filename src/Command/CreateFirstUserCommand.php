@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Command;
 
 use App\Entity\User;
@@ -19,15 +20,9 @@ use App\Entity\Group;
 )]
 class CreateFirstUserCommand extends Command
 {
-    private EntityManagerInterface $entityManager;
-    private UserPasswordHasherInterface $passwordHasher;
-
-    public function __construct(EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher)
+    public function __construct(private EntityManagerInterface $entityManager, private UserPasswordHasherInterface $userPasswordHasher)
     {
         parent::__construct();
-
-        $this->entityManager = $entityManager;
-        $this->passwordHasher = $passwordHasher;
     }
 
     protected function configure(): void
@@ -46,6 +41,13 @@ class CreateFirstUserCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $installLockFile = '/root/.mediaease/.mediaease-install.lock';
+        if (!file_exists($installLockFile)) {
+            $output->writeln('Error: The installation lock file does not exist. Command aborted.');
+
+            return Command::FAILURE;
+        }
+
         $username = $input->getArgument('username');
         $password = $input->getArgument('password');
         $email = $input->getArgument('email');
@@ -54,17 +56,18 @@ class CreateFirstUserCommand extends Command
         $mountPath = $input->getArgument('mount');
         $shell = $input->getArgument('shell');
         $display = $input->getArgument('display');
-        
+
         $user = new User();
         $user->setUsername($username);
         $user->setEmail($email);
         $user->setRoles(['ROLE_ADMIN']);
         $user->setAppGroup($this->entityManager->getRepository(Group::class)->findOneBy(['name' => 'full']));
-        $user->setPassword($this->passwordHasher->hashPassword($user, $password));
+        $user->setPassword($this->userPasswordHasher->hashPassword($user, $password));
         $user->setIsVerified($isVerified);
         $user->setApiKey(bin2hex(random_bytes(16)));
+
         $this->entityManager->persist($user);
-        
+
         $preference = new Preference();
         $preference->setUser($user);
         $preference->setTheme($theme);
@@ -72,18 +75,20 @@ class CreateFirstUserCommand extends Command
         $preference->setPinnedApps([]);
         $preference->setDisplay($display);
         $preference->setShell($shell);
+
         $this->entityManager->persist($preference);
 
         $mount = new Mount();
         $mount->setPath($mountPath);
         $mount->setIsRclone(false);
         $mount->setUser($user);
+
         $this->entityManager->persist($mount);
 
         $this->entityManager->flush();
-        
+
         $output->writeln('Admin user created successfully!');
-        
+
         return Command::SUCCESS;
     }
 }
