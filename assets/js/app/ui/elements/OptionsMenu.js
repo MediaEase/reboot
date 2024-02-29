@@ -92,7 +92,12 @@ export class OptionsMenu {
         fetchData(`/api/me/preferences/pin`, 'PATCH', { service: serviceId })
             .then(response => {
                 if (response) {
-                    window.location.reload(); // Reload the page to reflect the updated pin status.
+                    const pinLink = event.target.closest('.pin-link');
+                    pinLink.innerText = response.pinned ? 'Unpin' : 'Pin';
+                    const preferencesData = fetchData('/api/me/preferences');
+                    preferencesData.then(data => {
+                        data = this.data;
+                    });
                 }
             }).catch(error => {
                 console.error('Error pinning/unpinning the app:', error);
@@ -271,17 +276,19 @@ export class OptionsMenu {
      */
     generatePinLink(appDetails, preferences) {
         // Check if the app is currently pinned.
-        const isPinned = this.isAppPinned(appDetails.id, preferences);
+        const isPinned = this.isAppPinned(appDetails.services[0].id, preferences);
         // Determine the action text based on the pin status.
         const pinAction = isPinned ? 'Unpin' : 'Pin';
 
         // Return HTML string for the pin/unpin button.
         return `
             <button class="pin-link block w-full px-4 py-2 text-sm hover:bg-gray-100" 
-                    data-service-id="${appDetails.id}">
+                data-service-id="${appDetails.services[0].id}" 
+                data-action="click->pins#updatePins">
                 ${pinAction}
-            </button>`;
-        }
+            </button>
+        `;
+    }
 
     /**
      * Populates the options menu for an app with the relevant HTML content.

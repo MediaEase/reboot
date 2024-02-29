@@ -90,7 +90,7 @@ class AppStoreUI {
         const bannerPath = `/soft_logos/app_store_banner.png`;
         let appCards = this.storeData.map(app => this.renderAppCard(app)).join('');
         mainContent.innerHTML = `
-        <img src="${bannerPath}" alt="" class="rounded-xl max-w-5xl mx-auto mb-4">
+        <img src="${bannerPath}" alt="" class="rounded-xl max-w-5xl mx-auto mb-4" data-controller="installApp" data-install-app-target="banner">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-6">
                 ${appCards}
             </div>
@@ -139,9 +139,7 @@ class AppStoreUI {
 
         const actionButtonClasses = isAppInstalled ? 'bg-red-500 hover:bg-red-600 pl-4' : 'px-4 bg-green-500 hover:bg-green-600 rounded-r-lg';
         const popoverArrowSvg = '<path d="m19.5 8.25-7.5 7.5-7.5-7.5" stroke-linecap="round" stroke-linejoin="round"></path>';
-
         const popoverClasses = isAppInstalled ? 'bg-red-500 hover:bg-red-600 popover-arrow-button' : 'hidden';
-        
         const popoverButton = `
         <div class="dropdown dropdown-bottom">
             <div tabindex="0" role="button" class="rounded-r-lg inline-flex items-center py-2 ${popoverClasses}">
@@ -157,19 +155,24 @@ class AppStoreUI {
         </div>
         `;
 
+        const action = isAppInstalled ? 'uninstall' : 'install';
         const actionButton = `
-            <div class="relative inline-flex items-center">
-                <span class="rounded-l-lg inline-flex items-center py-1 ${actionButtonClasses}">
-                    <svg class="w-8 h-8 fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" data-slot="icon">
-                        ${svgPath}
-                    </svg>
-                    <span class="ml-4 mr-2 flex items-start flex-col leading-none">
-                        <span class="text-xs text-teal-100">${isAppInstalled ? 'Uninstall' : 'Install'}</span>
-                        <span class="title-font text-sm text-gray-100 font-bold">${app.application.name}</span>
-                    </span>
+        <div class="relative inline-flex items-center">
+            <a class="rounded-l-lg inline-flex items-center cursor-pointer py-1 ${actionButtonClasses}"
+                data-action="click->storeactions#handleAction"
+                data-storeactions-url-value="/api/store"
+                data-app-name="${app.application.altname}"
+                data-action-type="${action}">
+                <svg class="w-8 h-8 fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" data-slot="icon">
+                    ${svgPath}
+                </svg>
+                <span class="ml-4 mr-2 flex items-start flex-col leading-none">
+                    <span class="text-xs text-teal-100">${isAppInstalled ? 'Uninstall' : 'Install'}</span>
+                    <span class="title-font text-sm text-gray-100 font-bold">${app.application.name}</span>
                 </span>
-                ${isAppInstalled ? popoverButton : ''}
-            </div>`;
+            </a>
+            ${isAppInstalled ? popoverButton : ''}
+        </div>`;
 
         return actionButton;
     }
