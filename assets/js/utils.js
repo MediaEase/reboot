@@ -119,14 +119,3 @@ export function slugify(str) {
     }
     return str.replace(/\s+/g, '-').toLowerCase();
 }
-
-export async function pinUnpinApp(appName) {
-    const url = `/api/me/preferences/pin`;
-    const method = 'PATCH';
-    const body = { app: appName };
-    try {
-        const response = await fetchData(url, method, body);
-    } catch (error) {
-        console.error('Erreur lors de l\'épinglage/désépinglage de l\'application:', error);
-    }
-}
