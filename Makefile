@@ -37,8 +37,8 @@ install-dev: ## Install php tools
 install-project: ## Install project with normal dependencies
 	$(COMPOSER) install --optimize-autoloader
 	$(NPM) install --force --frozen-lockfile --non-interactive --silent
-	make sf-keypair
 	$(NPM) run build
+	make sf-rotate-keys
 	$(PHP_CONSOLE) doctrine:database:create
 	$(PHP_CONSOLE) doctrine:schema:update --force --complete
 # 	$(PHP_CONSOLE) doctrine:fixtures:load --append
@@ -76,6 +76,12 @@ sf-stop: ## Stop Symfony server
 
 sf-keypair: ## Generate JWT keypair
 	$(SYMFONY_CONSOLE) lexik:jwt:generate-keypair
+
+sf-rotate-keys: # Rotate keys
+    $(SYMFONY_CONSOLE) secret:regenerate-app-secret .env.local
+    $(SYMFONY_CONSOLE) secret:regenerate-mercure-jwt-secret .env.local
+    $(SYMFONY_CONSOLE) secret:regenerate-jwt-passphrase .env.local
+	make sf-keypair
 
 ###################################
 #
