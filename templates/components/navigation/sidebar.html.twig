@@ -20,7 +20,10 @@
 			</a>
 			{% include "components/utility/theme_switcher.html.twig" %}
 		</div>
-		<div class="flex flex-col items-center mt-3 border-t border-gray-700" id="pinned-apps"></div>
+		<div class="flex flex-col items-center mt-3 border-t border-gray-700" 
+			id="pinned-apps" 
+			data-controller="pins">
+		</div>
 		<a class="flex items-center justify-center w-12 h-12 mt-auto rounded bg-gray-900 hover:bg-gray-700 hover:text-gray-300" href="#">
 			{{ heroicon('user-circle', 'w6- h-6') }}
 		</a>
