@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Table(name: '`user`')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    public \Doctrine\Common\Collections\ArrayCollection $preferences;
+    public ArrayCollection $preferences;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
