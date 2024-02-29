@@ -30,6 +30,8 @@ nelmio_api_doc:
         description: Apps related endpoints
       - name: Authentication
         description: Authentication related endpoints
+      - name: Logs
+        description: Logs related endpoints
       - name: Metrics
         description: Metrics related endpoints
       - name: Profile
@@ -715,6 +717,50 @@ nelmio_api_doc:
               $ref: '#/components/responses/401'
             '500':
               $ref: '#/components/responses/500'
+      /api/store/install:
+        post:
+          tags:
+            - Store
+          summary: Install app
+          operationId: installApp
+          requestBody:
+            content:
+              application/hal+json:
+                schema:
+                  $ref: '#/components/schemas/AppManagement'
+          responses:
+            '201':
+              description: App installed
+              content:
+                application/hal+json:
+                  schema:
+                    type: object
+                    properties:
+                      altName:
+                        type: string
+            '401':
+              $ref: '#/components/responses/401'
+            '422':
+              $ref: '#/components/responses/422'
+            '500':
+              $ref: '#/components/responses/500'
+      /api/store/pid-status:
+        get:
+          tags:
+            - Store
+          summary: Get pid status
+          operationId: getPidStatus
+          responses:
+            '200':
+              description: Returns pid status
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: '#/components/schemas/ServiceStatus'
+            '401':
+              $ref: '#/components/responses/401'
+            '500':
+              $ref: '#/components/responses/500'
       /api/widgets:
         get:
           tags:
@@ -1098,4 +1144,9 @@ nelmio_api_doc:
           type: object
           properties:
             message:
+              type: string
+        AppManagement:
+          type: object
+          properties:
+            altName:
               type: string
