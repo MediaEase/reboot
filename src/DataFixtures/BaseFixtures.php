@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 
-abstract class BaseFixtures extends Fixture
+abstract class BaseFixtures extends Fixture implements FixtureGroupInterface
 {
     /**
      * @return array<class-string>
@@ -25,6 +26,11 @@ abstract class BaseFixtures extends Fixture
         ];
     }
 
+    public static function getGroups(): array
+    {
+        return ['prod', 'ci'];
+    }
+    
     /**
      * @return array<class-string>
      */

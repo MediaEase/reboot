@@ -8,8 +8,9 @@ use App\Entity\Application;
 use App\Entity\Store;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 
-final class ApplicationFixtures extends BaseFixtures implements DependentFixtureInterface
+final class ApplicationFixtures extends BaseFixtures implements DependentFixtureInterface, FixtureGroupInterface
 {
     public function load(ObjectManager $objectManager): void
     {
@@ -26,9 +27,9 @@ final class ApplicationFixtures extends BaseFixtures implements DependentFixture
             $store->setDescription('This is the description for '.$appName);
             $store->setIsPro(rand(0, 1) === 1);
             $store->setIsAvailable(rand(0, 1) === 1);
-            $storeType = $types[array_rand($types)]; // Randomly select a store type
-            $store->setApplicationType($storeType); // Set the store type
-            $store->setApplication($application); // Link the application to the store
+            $storeType = $types[array_rand($types)];
+            $store->setType($storeType);
+            $store->setApplication($application);
             $application->setStore($store);
             $randomGroupName = $types[array_rand($types)];
             $group = $this->getReference('group-'.$randomGroupName);
@@ -47,5 +48,10 @@ final class ApplicationFixtures extends BaseFixtures implements DependentFixture
         return [
             GroupFixtures::class,
         ];
+    }
+
+    public static function getGroups(): array
+    {
+        return ['prod', 'ci'];
     }
 }

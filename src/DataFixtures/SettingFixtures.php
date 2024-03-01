@@ -7,8 +7,9 @@ namespace App\DataFixtures;
 use App\Entity\Setting;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 
-final class SettingFixtures extends Fixture
+final class SettingFixtures extends Fixture implements FixtureGroupInterface
 {
     public function load(ObjectManager $objectManager): void
     {
@@ -26,5 +27,10 @@ final class SettingFixtures extends Fixture
         $objectManager->persist($setting);
 
         $objectManager->flush();
+    }
+
+    public static function getGroups(): array
+    {
+        return ['prod', 'ci'];
     }
 }

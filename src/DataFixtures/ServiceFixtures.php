@@ -7,8 +7,9 @@ namespace App\DataFixtures;
 use App\Entity\Service;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 
-final class ServiceFixtures extends BaseFixtures implements DependentFixtureInterface
+final class ServiceFixtures extends BaseFixtures implements DependentFixtureInterface, FixtureGroupInterface
 {
     public function load(ObjectManager $objectManager): void
     {
@@ -271,5 +272,10 @@ final class ServiceFixtures extends BaseFixtures implements DependentFixtureInte
         }
 
         return $serviceName;
+    }
+
+    public static function getGroups(): array
+    {
+        return ['ci'];
     }
 }

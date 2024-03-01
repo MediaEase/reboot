@@ -9,8 +9,9 @@ use App\Entity\Service;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 
-final class PreferenceFixtures extends Fixture implements DependentFixtureInterface
+final class PreferenceFixtures extends Fixture implements DependentFixtureInterface, FixtureGroupInterface
 {
     public function load(ObjectManager $objectManager): void
     {
@@ -65,5 +66,10 @@ final class PreferenceFixtures extends Fixture implements DependentFixtureInterf
         $preference->setTheme('dark');
 
         return $preference;
+    }
+
+    public static function getGroups(): array
+    {
+        return ['ci'];
     }
 }

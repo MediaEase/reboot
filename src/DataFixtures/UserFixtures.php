@@ -9,8 +9,9 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 
-final class UserFixtures extends Fixture implements DependentFixtureInterface
+final class UserFixtures extends Fixture implements DependentFixtureInterface, FixtureGroupInterface
 {
     public function __construct(
         private readonly UserPasswordHasherInterface $userPasswordHasher
@@ -54,5 +55,10 @@ final class UserFixtures extends Fixture implements DependentFixtureInterface
 
         $objectManager->persist($user);
         $this->addReference('user-'.$username, $user);
+    }
+
+    public static function getGroups(): array
+    {
+        return ['ci'];
     }
 }

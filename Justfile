@@ -52,7 +52,7 @@ install-project:
     just sf-rotate-keys
     {{PHP_CONSOLE}} doctrine:database:create
     {{PHP_CONSOLE}} doctrine:schema:update --force --complete
-    # {{PHP_CONSOLE}} doctrine:fixtures:load --append
+    {{PHP_CONSOLE}} doctrine:fixtures:load --append --group=prod
     just sf-clear-cache
     just qa-composer-outdated
 

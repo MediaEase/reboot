@@ -7,8 +7,9 @@ namespace App\DataFixtures;
 use App\Entity\Widget;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 
-final class WidgetFixtures extends Fixture
+final class WidgetFixtures extends Fixture implements FixtureGroupInterface
 {
     public function load(ObjectManager $objectManager): void
     {
@@ -27,5 +28,10 @@ final class WidgetFixtures extends Fixture
         }
 
         $objectManager->flush();
+    }
+
+    public static function getGroups(): array
+    {
+        return ['ci'];
     }
 }

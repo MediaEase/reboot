@@ -8,8 +8,9 @@ use App\Entity\Mount;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 
-final class MountFixtures extends Fixture implements DependentFixtureInterface
+final class MountFixtures extends Fixture implements DependentFixtureInterface, FixtureGroupInterface
 {
     public function load(ObjectManager $objectManager): void
     {
@@ -43,5 +44,10 @@ final class MountFixtures extends Fixture implements DependentFixtureInterface
         return [
             UserFixtures::class,
         ];
+    }
+
+    public static function getGroups(): array
+    {
+        return ['prod', 'ci'];
     }
 }
