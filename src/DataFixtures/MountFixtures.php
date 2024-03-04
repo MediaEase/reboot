@@ -48,6 +48,6 @@ final class MountFixtures extends Fixture implements DependentFixtureInterface, 
 
     public static function getGroups(): array
     {
-        return ['prod', 'ci'];
+        return ['ci'];
     }
 }
