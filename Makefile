@@ -41,7 +41,6 @@ install-project: ## Install project with normal dependencies
 	make sf-rotate-keys
 	$(PHP_CONSOLE) doctrine:database:create
 	$(PHP_CONSOLE) doctrine:schema:update --force --complete
-	$(PHP_CONSOLE) doctrine:fixtures:load --append --group=prod
 	make sf-clear-cache
 	make qa-composer-validate
 
