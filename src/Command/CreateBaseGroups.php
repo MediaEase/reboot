@@ -28,7 +28,7 @@ class CreateBaseGroups extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $installLockFile = './.mediaease/.mediaease-install.lock';
+        $installLockFile = './.mediaease-install.lock';
         if (!file_exists($installLockFile)) {
             $output->writeln('Error: The installation lock file does not exist. Command aborted.');
 
