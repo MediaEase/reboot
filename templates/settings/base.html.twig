@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html color-theme="{{ user.preferences.theme }}">
+<html lang="en">
 	<head>
 		<meta charset="UTF-8">
 		<title>
@@ -15,7 +15,7 @@
 			{{ encore_entry_script_tags('app') }}
 		{% endblock %}
 	</head>
-	<body class="">
+	<body class="" id="page-content" data-container-id={{ user.apiKey }}>
 		{% include "components/navigation/sidebar.html.twig" %}
 		<div class="bottom-0 left-0 right-0 top-0 h-full w-full absolute p-6 text-center bg-white dark:bg-gray-800 text-white/80">
 			{% include "components/navigation/settings_sidebar.html.twig" %}
