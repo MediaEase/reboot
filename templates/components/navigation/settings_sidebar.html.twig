@@ -2,27 +2,31 @@
 
 <div class="hidden rounded-xl bg-gray-100 dark:bg-gray-900 hover:shadow-xl settings-sidebar xl:block fixed z-20 inset-0 top-[3.8125rem] w-[16rem]">
 	<nav id="nav" class="lg:text-sm text-left text-2xl lg:leading-6 relative">
-		{{ sidebar.render_sidebar({
-			'Settings': {
-				'/settings/general': 'General',
-				'/settings/security': 'Security',
-				'/settings/session': 'Session',
-				'/settings/users': 'Users'
-			},
-			'User Management': {
-				'/settings/groups': 'Groups',
-				'/settings/management': 'Management',
-				'/settings/registration': 'Registration'
-			},
-			'System': {
-				'/settings/api': 'Api',
-				'/settings/help': 'Help',
-				'/settings/logs': 'Logs',
-				'/settings/ssl': 'SSL',
-				'/settings/troubleshoot': 'Troubleshoot',
-				'/settings/update': 'Update'
-			}
-		}) }}
+		{{ sidebar.render_sidebar(
+			{
+				'Settings': {
+					'/settings/general': 'General',
+					'/settings/security': 'Security',
+					'/settings/session': 'Session',
+					'/settings/users': 'Users'
+				},
+				'User Management': {
+					'/settings/groups': 'Groups',
+					'/settings/management': 'Management',
+					'/settings/registration': 'Registration'
+				},
+				'System': {
+					'/settings/api': 'Api',
+					'/settings/help': 'Help',
+					'/settings/logs': 'Logs',
+					'/settings/ssl': 'SSL',
+					'/settings/troubleshoot': 'Troubleshoot',
+					'/settings/update': 'Update'
+				}
+			}, {
+				'/settings/help': true,
+				}
+			) }}
 	</nav>
 </div>
 <div class="xl:hidden hover:shadow-xl mobile-breadcrumb z-30 w-[16rem] bg-white dark:bg-gray-900 border-gray-500 border-y border-b dark:border-gray-300 text-white/80 text-lg">
