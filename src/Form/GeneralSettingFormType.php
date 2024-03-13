@@ -14,48 +14,32 @@ class GeneralSettingFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $setting = $options['data'];
+
         $builder
-            ->add('siteTitle', TextType::class, [
-                'label' => 'Site title',
+            ->add('siteName', TextType::class, [
+                'label' => 'Site Name',
                 'attr' => [
-                    'placeholder' => 'Site title',
+                    'placeholder' => $setting ? $setting->getSiteName() : 'Site Name',
                     'class' => 'w-full md:w-1/2 px-3 mb-6 md:mb-0',
                 ],
             ])
             ->add('siteDescription', TextType::class, [
                 'label' => 'Site description',
                 'attr' => [
-                    'placeholder' => 'Site description',
+                    'placeholder' => $setting ? $setting->getSiteDescription() : 'Site description',
                 ],
             ])
-            ->add('emailSenderAddress', TextType::class, [
-                'label' => 'Email sender address',
+            ->add('rootUrl', UrlType::class, [
+                'label' => 'Root URL',
                 'attr' => [
-                    'placeholder' => 'Email sender address',
-                ],
-            ])
-            ->add('emailSenderName', TextType::class, [
-                'label' => 'Email sender name',
-                'attr' => [
-                    'placeholder' => 'Email sender name',
-                ],
-            ])
-            ->add('webrootUrl', UrlType::class, [
-                'label' => 'Webroot URL',
-                'attr' => [
-                    'placeholder' => 'Webroot URL',
-                ],
-            ])
-            ->add('mountPoint', TextType::class, [
-                'label' => 'Mount point',
-                'attr' => [
-                    'placeholder' => 'Mount point',
+                    'placeholder' => $setting ? $setting->getRootUrl() : 'Root URL',
                 ],
             ])
             ->add('netInterface', TextType::class, [
                 'label' => 'Network interface',
                 'attr' => [
-                    'placeholder' => 'Network interface',
+                    'placeholder' => $setting ? $setting->getNetInterface() : 'Network interface',
                 ],
             ])
             ->add('save', ButtonType::class, [
