@@ -243,13 +243,14 @@ final class ServiceFixtures extends BaseFixtures implements DependentFixtureInte
     private function getPaths(string $username, string $appReference, int $defaultPort): array
     {
         $appLower = strtolower(str_replace(' ', '', $appReference));
-
+        $subdomain = array_rand([true, false]) ? "'subdomain' => $username.$appLower," : "'subdomain' => false,";
         return [
             'config_path' => '/home/'.$username.'/.config/'.$appLower,
             'database_path' => '/home/'.$username.'/.config/'.$appLower.'/database.db',
             'caddyfile_path' => '/etc/nginx/sites-enabled/'.$username.'.'.$appLower.'.conf',
             'backup_path' => '/home/'.$username.'/.mediaease/backups/'.$appLower,
             'root_url' => 'https://localhost:'.$defaultPort.'/'.$username.'/'.$appLower,
+            $subdomain
         ];
     }
 
