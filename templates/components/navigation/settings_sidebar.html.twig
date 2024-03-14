@@ -5,28 +5,29 @@
 		{{ sidebar.render_sidebar(
 			{
 				'Settings': {
-					'/settings/general': 'General',
-					'/settings/security': 'Security',
-					'/settings/session': 'Session',
-					'/settings/users': 'Users'
+					'app_settings_general': 'General',
+					'app_settings_security': 'Security',
+					'app_settings_session': 'Session',
 				},
 				'User Management': {
-					'/settings/groups': 'Groups',
-					'/settings/management': 'Management',
-					'/settings/registration': 'Registration'
+					'app_settings_users': 'Users',
+					'app_settings_users_groups': 'Groups',
+					'app_settings_users_manage': 'Management',
+					'app_settings_users_registration': 'Registration'
 				},
 				'System': {
-					'/settings/api': 'Api',
-					'/settings/help': 'Help',
-					'/settings/logs': 'Logs',
-					'/settings/ssl': 'SSL',
-					'/settings/troubleshoot': 'Troubleshoot',
-					'/settings/update': 'Update'
+					'app_settings_system_api': 'Api',
+					'app_settings_system_help': 'Help',
+					'app_settings_system_logs': 'Logs',
+					'app_settings_system_subdomains': 'Subdomains',
+					'app_settings_system_troobleshoot': 'Troubleshoot',
+					'app_settings_system_update': 'Update'
 				}
-			}, {
-				'/settings/help': true,
-				}
-			) }}
+			}, 
+			{
+				'app_settings_system_help': true,
+			}
+		) }}
 	</nav>
 </div>
 <div class="xl:hidden hover:shadow-xl mobile-breadcrumb z-30 w-[16rem] bg-white dark:bg-gray-900 border-gray-500 border-y border-b dark:border-gray-300 text-white/80 text-lg">
@@ -54,26 +55,30 @@
 		</button>
 	</div>
 	<nav id="nav" class="lg:text-sm text-3xl text-left lg:leading-6 relative pt-[5rem]">
-		{{ sidebar.render_sidebar({
+		{{ sidebar.render_sidebar(
+			{
 				'Settings': {
-					'/settings/installation': 'General',
-					'/settings/security': 'Security',
-					'/settings/session': 'Session',
-					'/settings/users': 'Users'
+					'app_settings_general': 'General',
+					'app_settings_security': 'Security',
+					'app_settings_session': 'Session',
 				},
 				'User Management': {
-					'/settings/groups': 'Groups',
-					'/settings/management': 'Management',
-					'/settings/registration': 'Registration'
+					'app_settings_users': 'Users',
+					'app_settings_users_groups': 'Groups',
+					'app_settings_users_manage': 'Management',
+					'app_settings_users_registration': 'Registration'
 				},
 				'System': {
-					'/settings/api': 'Api',
-					'/settings/help': 'Help',
-					'/settings/logs': 'Logs',
-					'/settings/ssl': 'SSL',
-					'/settings/troubleshoot': 'Troubleshoot',
-					'/settings/update': 'Update'
+					'app_settings_system_api': 'Api',
+					'app_settings_system_help': 'Help',
+					'app_settings_system_logs': 'Logs',
+					'app_settings_system_subdomains': 'Subdomains',
+					'app_settings_system_troobleshoot': 'Troubleshoot',
+					'app_settings_system_update': 'Update'
 				}
-			}) }}
+			}, {
+				'app_settings_system_help': true,
+				}
+			) }}
 	</nav>
 </div>
