@@ -1,6 +1,6 @@
 {% extends 'splashscreen.html.twig' %}
 
-{% block title %}Log in!
+{% block title %}Log in - {{ app.request.server.get('SITE_NAME') }}
 {% endblock %}
 
 {% block body %}
@@ -9,7 +9,7 @@
 			<div class="text-white">
 				<div class="mb-8 flex flex-col items-center">
 					<img src="{{ asset('soft_logos/mediaease.png') }}" width="150" alt="" srcset=""/>
-					<h1 class="mb-2 text-2xl">Media Ease</h1>
+					<h1 class="mb-2 text-2xl">{{ app.request.server.get('SITE_NAME') }}</h1>
 					<span class="text-gray-300">Enter Login Details</span>
 					{% if app.user %}
 						<div class="mb-3">
