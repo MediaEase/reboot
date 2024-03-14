@@ -15,17 +15,17 @@ class IconButtonExtension extends AbstractTypeExtension
         return [ButtonType::class];
     }
 
-    public function buildView(FormView $view, FormInterface $form, array $options): void
+    public function buildView(FormView $formView, FormInterface $form, array $options): void
     {
-        $view->vars['icon_before'] = $options['icon_before'];
-        $view->vars['icon_after'] = $options['icon_after'];
-        $view->vars['button_class'] = $options['button_class'];
-        $view->vars['icon_class'] = $options['icon_class'];
+        $formView->vars['icon_before'] = $options['icon_before'];
+        $formView->vars['icon_after'] = $options['icon_after'];
+        $formView->vars['button_class'] = $options['button_class'];
+        $formView->vars['icon_class'] = $options['icon_class'];
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults([
+        $optionsResolver->setDefaults([
         'icon_before' => null,
         'icon_after' => null,
         'button_class' => null,

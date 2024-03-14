@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 declare(strict_types=1);
 
@@ -10,11 +10,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class RouteActiveExtension extends AbstractExtension
 {
-    private $requestStack;
-
-    public function __construct(RequestStack $requestStack)
+    public function __construct(private RequestStack $requestStack)
     {
-        $this->requestStack = $requestStack;
     }
 
     public function getFunctions(): array
@@ -27,6 +24,7 @@ class RouteActiveExtension extends AbstractExtension
     public function isActiveRoute(string $routeName): bool
     {
         $currentRoute = $this->requestStack->getCurrentRequest()->attributes->get('_route');
+
         return $currentRoute === $routeName;
     }
 }

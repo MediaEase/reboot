@@ -30,7 +30,7 @@ abstract class BaseFixtures extends Fixture implements FixtureGroupInterface
     {
         return ['prod', 'ci'];
     }
-    
+
     /**
      * @return array<class-string>
      */

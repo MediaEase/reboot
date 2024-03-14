@@ -12,11 +12,11 @@ use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 
 class GeneralSettingFormType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    public function buildForm(FormBuilderInterface $formBuilder, array $options): void
     {
         $setting = $options['data'];
 
-        $builder
+        $formBuilder
             ->add('siteName', TextType::class, [
                 'label' => 'Site Name',
                 'attr' => [
@@ -51,9 +51,9 @@ class GeneralSettingFormType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    public function configureOptions(OptionsResolver $optionsResolver): void
     {
-        $resolver->setDefaults([
+        $optionsResolver->setDefaults([
             'data_class' => Setting::class,
         ]);
     }

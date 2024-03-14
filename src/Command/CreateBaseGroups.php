@@ -34,17 +34,19 @@ class CreateBaseGroups extends Command
 
             return Command::FAILURE;
         }
-        $groups= [
+
+        $groups = [
             'full',
             'automation',
             'media',
-            'remote'
+            'remote',
         ];
         foreach ($groups as $name) {
             $group = new Group();
             $group->setName($name);
             $this->entityManager->persist($group);
         }
+
         $this->entityManager->flush();
 
         return Command::SUCCESS;
