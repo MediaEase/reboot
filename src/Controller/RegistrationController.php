@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\RegistrationFormType;
+use App\Form\RegistrationType;
 use App\Handler\RegistrationHandler;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
@@ -25,7 +25,7 @@ final class RegistrationController extends AbstractController
     #[Route('/register', name: 'app_register')]
     public function register(Request $request): Response
     {
-        $form = $this->createForm(RegistrationFormType::class, new User());
+        $form = $this->createForm(RegistrationType::class, new User());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
