@@ -8,8 +8,18 @@ import './bootstrap.js';
 
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.css';
-import './styles/progress-circle.css';
 import './js/clipboard.js';
+import { toDarkMode, toLightMode } from './js/menus/theme_switcher.js';
 
 window.toDarkMode = toDarkMode;
 window.toLightMode = toLightMode;
+
+import {
+    Tab,
+    Modal,
+    Popover,
+    Ripple,
+    initTE,
+} from "tw-elements";
+
+initTE({ Modal, Popover, Ripple, Tab });
