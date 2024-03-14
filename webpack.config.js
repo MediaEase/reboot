@@ -1,6 +1,6 @@
 const Encore = require('@symfony/webpack-encore');
 require("dotenv").config();
-const BrowserSyncPlugin = require("browser-sync-webpack-plugin");
+const BrowserSyncPlugin = require("browser-sync-v3-webpack-plugin");
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
@@ -24,6 +24,7 @@ Encore
      */
     .addEntry('app', './assets/app.js')
     .addEntry('dashboard', './assets/dashboard.js')
+    .addEntry('login', './assets/login.js')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()

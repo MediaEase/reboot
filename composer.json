@@ -114,7 +114,6 @@
         "insights-bs": "./vendor/bin/phpinsights --format=console --no-interaction -v > reports/phpinsights.txt || true",
         "metrics-src": "./vendor/bin/phpmetrics --level=10 --extensions=php8,php,inc src,tests --report-html=reports/metrics-src --report-violations=reports/metrics-src/violations.xml --exclude=DataFixtures",
         "metrics": [
-            "@metrics-src",
             "@insights-bs"
         ],
         "rector": "./vendor/bin/rector process --config config/tools/rector.php --clear-cache --debug",
