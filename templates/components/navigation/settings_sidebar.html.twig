@@ -1,33 +1,20 @@
 {% import '_macros/table_of_contents.html.twig' as sidebar %}
+{% set sidebarStructure = {
+    'System': {
+    	'app_settings_general': 'General',
+        'app_settings_system_smtp': 'SMTP',
+        'app_settings_system_help': 'Help',
+        'app_settings_system_subdomains': 'Subdomains',
+    }
+} %}
+
+{% set externalLinks = {
+    'app_settings_system_help': true,
+} %}
 
 <div class="hidden rounded-xl bg-gray-100 dark:bg-gray-900 hover:shadow-xl settings-sidebar xl:block fixed z-20 inset-0 top-[3.8125rem] w-[16rem]">
 	<nav id="nav" class="lg:text-sm text-left text-2xl lg:leading-6 relative">
-		{{ sidebar.render_sidebar(
-			{
-				'Settings': {
-					'app_settings_general': 'General',
-					'app_settings_security': 'Security',
-					'app_settings_session': 'Session',
-				},
-				'User Management': {
-					'app_settings_users': 'Users',
-					'app_settings_users_groups': 'Groups',
-					'app_settings_users_manage': 'Management',
-					'app_settings_users_registration': 'Registration'
-				},
-				'System': {
-					'app_settings_system_api': 'Api',
-					'app_settings_system_help': 'Help',
-					'app_settings_system_logs': 'Logs',
-					'app_settings_system_subdomains': 'Subdomains',
-					'app_settings_system_troobleshoot': 'Troubleshoot',
-					'app_settings_system_update': 'Update'
-				}
-			}, 
-			{
-				'app_settings_system_help': true,
-			}
-		) }}
+		{{ sidebar.render_sidebar(sidebarStructure, externalLinks) }}
 	</nav>
 </div>
 <div class="xl:hidden hover:shadow-xl mobile-breadcrumb z-30 w-[16rem] bg-white dark:bg-gray-900 border-gray-500 border-y border-b dark:border-gray-300 text-white/80 text-lg">
@@ -55,30 +42,6 @@
 		</button>
 	</div>
 	<nav id="nav" class="lg:text-sm text-3xl text-left lg:leading-6 relative pt-[5rem]">
-		{{ sidebar.render_sidebar(
-			{
-				'Settings': {
-					'app_settings_general': 'General',
-					'app_settings_security': 'Security',
-					'app_settings_session': 'Session',
-				},
-				'User Management': {
-					'app_settings_users': 'Users',
-					'app_settings_users_groups': 'Groups',
-					'app_settings_users_manage': 'Management',
-					'app_settings_users_registration': 'Registration'
-				},
-				'System': {
-					'app_settings_system_api': 'Api',
-					'app_settings_system_help': 'Help',
-					'app_settings_system_logs': 'Logs',
-					'app_settings_system_subdomains': 'Subdomains',
-					'app_settings_system_troobleshoot': 'Troubleshoot',
-					'app_settings_system_update': 'Update'
-				}
-			}, {
-				'app_settings_system_help': true,
-				}
-			) }}
+		{{ sidebar.render_sidebar(sidebarStructure, externalLinks) }}
 	</nav>
 </div>
