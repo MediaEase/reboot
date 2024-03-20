@@ -18,7 +18,7 @@ final class DotenvUpdater
     /**
      * Constructor for the DotenvUpdater class.
      *
-     * @param SecretManager $secretManager The secret manager service.
+     * @param SecretManager $secretManager the secret manager service
      */
     public function __construct(private SecretManager $secretManager)
     {
@@ -30,7 +30,7 @@ final class DotenvUpdater
      * @param array  $formData    Data to be written to the .env file.
      * @param string $envFilePath Path to the .env file.
      *
-     * @throws \Exception If the file does not exist or is not writable.
+     * @throws \Exception if the file does not exist or is not writable
      */
     public function updateEnvFile(array $formData, string $envFilePath): void
     {
@@ -67,9 +67,9 @@ final class DotenvUpdater
     /**
      * Generates the MAILER_DSN string from form data.
      *
-     * @param array $formData Form data used to generate the MAILER_DSN.
+     * @param array $formData form data used to generate the MAILER_DSN
      *
-     * @return string The generated MAILER_DSN string.
+     * @return string the generated MAILER_DSN string
      */
     private function generateMailerDsn(array $formData): string
     {
