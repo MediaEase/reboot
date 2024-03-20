@@ -3,6 +3,7 @@
 /.env.local.php
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
+/config/secrets/dev/
 /public/bundles/
 /var/
 /vendor/
@@ -47,3 +48,7 @@ symfony.lock
 /phpcs.xml
 ###< squizlabs/php_codesniffer ###
 package-lock.json
+pnpm-lock.yaml
+bun.lockb
+public/assets/app-*.js
+public/assets/dashboard-*.js
