@@ -243,7 +243,7 @@ final class ServiceFixtures extends BaseFixtures implements DependentFixtureInte
     private function getPaths(string $username, string $appReference, int $defaultPort): array
     {
         $appLower = strtolower(str_replace(' ', '', $appReference));
-        $subdomain = array_rand([true, false]) !== 0 && (array_rand([true, false]) !== '' && array_rand([true, false]) !== '0') && array_rand([true, false]) !== [] ? sprintf('\'subdomain\' => %s.%s,', $username, $appLower) : "'subdomain' => false,";
+        $subdomain = array_rand([true, false]) !== 0 && (array_rand([true, false]) !== '' && array_rand([true, false]) !== '0') && array_rand([true, false]) !== [] ? sprintf("'subdomain' => %s.%s,", $username, $appLower) : "'subdomain' => false,";
 
         return [
             'config_path' => '/home/'.$username.'/.config/'.$appLower,
