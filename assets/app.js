@@ -19,7 +19,8 @@ import {
     Modal,
     Popover,
     Ripple,
+    Tooltip,
     initTE,
 } from "tw-elements";
 
-initTE({ Modal, Popover, Ripple, Tab });
+initTE({ Modal, Popover, Ripple, Tab, Tooltip });
