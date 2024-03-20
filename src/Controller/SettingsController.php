@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Form\PhpSettingsType;
 use App\Form\SmtpSettingsType;
 use App\Updater\DotenvUpdater;
+use App\Updater\PhpIniUpdater;
+use App\Security\SecretManager;
 use App\Form\GeneralSettingType;
 use App\Repository\ServiceRepository;
 use App\Repository\SettingRepository;
-use App\Security\SecretManager;
 use App\Repository\PreferenceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -105,5 +107,28 @@ final class SettingsController extends AbstractController
     public function systemHelpSettings(Request $request): \Symfony\Component\HttpFoundation\Response
     {
         return $this->render('settings/help.html.twig');
+    }
+
+    #[Route('/system/php', name: 'system_php')]
+    #[IsGranted('ROLE_ADMIN')]
+    public function systemPHPSettings(Request $request, PhpIniUpdater $phpIniUpdater): \Symfony\Component\HttpFoundation\Response
+    {
+        $user = $this->getUser();
+        $iniFilePath = '/etc/php/8.3/cli/conf.d/99-mediaease.ini';
+        $defaultData = $phpIniUpdater->getIniConfig($iniFilePath);
+        $form = $this->createForm(PhpSettingsType::class, $defaultData);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $formData = $form->getData();
+            $cliIniPath = '/etc/php/8.3/cli/conf.d/99-mediaease.ini';
+            $fpmIniPath = '/etc/php/8.3/fpm/conf.d/99-mediaease.ini';
+            $phpIniUpdater->updateIniFiles($formData, [$cliIniPath, $fpmIniPath]);
+        }
+
+        return $this->render('settings/php.html.twig', [
+            'form' => $form->createView(),
+            'user' => $user,
+        ]);
     }
 }
