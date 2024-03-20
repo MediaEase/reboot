@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Form\PhpSettingsType;
-use App\Form\SmtpSettingsType;
+use App\Form\Setting\PhpType;
+use App\Form\Setting\SmtpType;
 use App\Updater\DotenvUpdater;
 use App\Updater\PhpIniUpdater;
 use App\Security\SecretManager;
 use App\Form\GeneralSettingType;
+use App\Form\Setting\GeneralType;
 use App\Repository\ServiceRepository;
 use App\Repository\SettingRepository;
 use App\Repository\PreferenceRepository;
@@ -47,7 +48,7 @@ final class SettingsController extends AbstractController
         $settings = $this->settingRepository->findLast();
         $user = $this->getUser();
         $preferences = $this->preferenceRepository->findOneBy(['user' => $user]);
-        $form = $this->createForm(GeneralSettingType::class, $settings);
+        $form = $this->createForm(GeneralType::class, $settings);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -86,7 +87,7 @@ final class SettingsController extends AbstractController
             'smtp_port' => $secretManager->getSecret('SMTP_PORT'),
             'smtp_timeout' => $this->getParameter('app.smtp_timeout'),
         ];
-        $form = $this->createForm(SmtpSettingsType::class, $defaultData);
+        $form = $this->createForm(SmtpType::class, $defaultData);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -111,12 +112,12 @@ final class SettingsController extends AbstractController
 
     #[Route('/system/php', name: 'system_php')]
     #[IsGranted('ROLE_ADMIN')]
-    public function systemPHPSettings(Request $request, PhpIniUpdater $phpIniUpdater): \Symfony\Component\HttpFoundation\Response
+    public function systemPhpSetting(Request $request, PhpIniUpdater $phpIniUpdater): \Symfony\Component\HttpFoundation\Response
     {
         $user = $this->getUser();
         $iniFilePath = '/etc/php/8.3/cli/conf.d/99-mediaease.ini';
         $defaultData = $phpIniUpdater->getIniConfig($iniFilePath);
-        $form = $this->createForm(PhpSettingsType::class, $defaultData);
+        $form = $this->createForm(PhpType::class, $defaultData);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

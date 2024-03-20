@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\Setting;
 
 use App\Entity\Setting;
 use Symfony\Component\Form\AbstractType;
@@ -10,7 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 
-class GeneralSettingType extends AbstractType
+final class GeneralType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $formBuilder, array $options): void
     {
