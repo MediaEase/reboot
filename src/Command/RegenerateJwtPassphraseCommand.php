@@ -11,7 +11,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use sixlive\DotenvEditor\DotenvEditor;
 
 #[AsCommand(
-    name: 'secret:regenerate-jwt-passphrase',
+    name: 'secrets:regenerate-jwt-passphrase',
     description: 'Regenerate a random value and update JWT_PASSPHRASE',
 )]
 class RegenerateJwtPassphraseCommand extends Command

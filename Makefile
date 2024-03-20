@@ -77,9 +77,9 @@ sf-keypair: ## Generate JWT keypair
 	$(SYMFONY_CONSOLE) lexik:jwt:generate-keypair
 
 sf-rotate-keys: # Rotate keys
-    $(SYMFONY_CONSOLE) secret:regenerate-app-secret .env.local
-    $(SYMFONY_CONSOLE) secret:regenerate-mercure-jwt-secret .env.local
-    $(SYMFONY_CONSOLE) secret:regenerate-jwt-passphrase .env.local
+    $(SYMFONY_CONSOLE) secrets:regenerate-app-secret .env.local
+    $(SYMFONY_CONSOLE) secrets:regenerate-mercure-jwt-secret .env.local
+    $(SYMFONY_CONSOLE) secrets:regenerate-jwt-passphrase .env.local
 	make sf-keypair
 
 ###################################

@@ -102,9 +102,9 @@ sf-keypair: #
 
 # Rotate keys
 sf-rotate-keys:
-    {{SYMFONY_CONSOLE}} secret:regenerate-app-secret .env.local
-    {{SYMFONY_CONSOLE}} secret:regenerate-mercure-jwt-secret .env.local
-    {{SYMFONY_CONSOLE}} secret:regenerate-jwt-passphrase .env.local
+    {{SYMFONY_CONSOLE}} secrets:regenerate-app-secret .env.local
+    {{SYMFONY_CONSOLE}} secrets:regenerate-mercure-jwt-secret .env.local
+    {{SYMFONY_CONSOLE}} secrets:regenerate-jwt-passphrase .env.local
     just sf-keypair
 
 ###################################

@@ -11,7 +11,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use sixlive\DotenvEditor\DotenvEditor;
 
 #[AsCommand(
-    name: 'secret:regenerate-mercure-jwt-secret',
+    name: 'secrets:regenerate-mercure-jwt-secret',
     description: 'Regenerate a random value and update MERCURE_JWT_SECRET',
 )]
 class RegenerateMercureJwtSecretCommand extends Command

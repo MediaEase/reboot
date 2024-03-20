@@ -11,7 +11,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use sixlive\DotenvEditor\DotenvEditor;
 
 #[AsCommand(
-    name: 'secret:regenerate-app-secret',
+    name: 'secrets:regenerate-app-secret',
     description: 'Regenerate a random value and update APP_SECRET',
 )]
 class RegenerateAppSecretCommand extends Command
