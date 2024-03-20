@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Form\SmtpSettingsType;
+use App\Updater\DotenvUpdater;
 use App\Form\GeneralSettingType;
 use App\Repository\ServiceRepository;
 use App\Repository\SettingRepository;
+use App\Security\SecretManager;
 use App\Repository\PreferenceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,6 +29,7 @@ final class SettingsController extends AbstractController
         private EntityManagerInterface $entityManager,
         private ServiceRepository $serviceRepository,
         private PreferenceRepository $preferenceRepository,
+        private DotenvUpdater $dotenvUpdater,
     ) {
     }
 
@@ -62,26 +65,38 @@ final class SettingsController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     public function systemSubdomainsSettings(Request $request): \Symfony\Component\HttpFoundation\Response
     {
-        $services = $this->serviceRepository->findAll();
-        dd($services);
+        $this->serviceRepository->findAll();
+
         return $this->render('settings/subdomains.html.twig');
     }
 
     #[Route('/system/smtp', name: 'system_smtp')]
     #[IsGranted('ROLE_ADMIN')]
-    public function systemEmailsSettings(Request $request): \Symfony\Component\HttpFoundation\Response
+    public function systemEmailsSettings(Request $request, SecretManager $secretManager): \Symfony\Component\HttpFoundation\Response
     {
-        $defaultData = [];
+        $user = $this->getUser();
+        $defaultData = [
+            'mail_protocol' => $this->getParameter('app.mail_protocol'),
+            'mail_parameters' => $this->getParameter('app.mail_parameters'),
+            'smtp_hostname' => $secretManager->getSecret('SMTP_HOSTNAME'),
+            'smtp_username' => $secretManager->getSecret('SMTP_USERNAME'),
+            'smtp_password' => $secretManager->getSecret('SMTP_PASSWORD'),
+            'smtp_port' => $secretManager->getSecret('SMTP_PORT'),
+            'smtp_timeout' => $this->getParameter('app.smtp_timeout'),
+        ];
         $form = $this->createForm(SmtpSettingsType::class, $defaultData);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $formData = $form->getData();
-            $this->updateEnvFile($formData);
+            $envFilePath = $this->containerBag->get('kernel.project_dir').'/.env.local';
+            $this->dotenvUpdater->updateEnvFile($formData, $envFilePath);
         }
 
         return $this->render('settings/smtp.html.twig', [
             'form' => $form->createView(),
+            'user' => $user,
+            'mailer_dsn' => $secretManager->getSecret('MAILER_DSN'),
         ]);
     }
 
@@ -90,21 +105,5 @@ final class SettingsController extends AbstractController
     public function systemHelpSettings(Request $request): \Symfony\Component\HttpFoundation\Response
     {
         return $this->render('settings/help.html.twig');
-    }
-
-    private function updateEnvFile(array $formData): void
-    {
-        $envPath = $this->containerBag->get('kernel.project_dir').'/.env.local';
-        $content = file_get_contents($envPath);
-
-        foreach ($formData as $key => $value) {
-            $content = preg_replace(
-                '/^'.$key.'=.*$/m',
-                $key.'='.$value,
-                $content
-            );
-        }
-
-        file_put_contents($envPath, $content);
     }
 }
