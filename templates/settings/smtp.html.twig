@@ -21,67 +21,52 @@
 					</header>
 					<div id="content-wrapper" class="relative px-4 pt-6 prose prose-slate mt-8 dark:prose-dark pb-3 mb-4">
 						{{ form_start(form) }}
-						<div class="flex flex-wrap -mx-3 xl:mb-2">
+						{% import '_macros/form_macros.html.twig' as form_label_macro %}
+						<div class="flex flex-wrap -mx-3 xl:py-2">
 							<div class="w-full px-3 md:mb-0 pt-2 xl:p-0">
-								<label class="text-left block md:ml-2 uppercase tracking-wide text-slate-600 dark:text-slate-200 text-md xl:text-xs font-bold mb-2 pt-2 lg:pt-0">
-									{{ form_label(form.mail_protocol) }}
-                                        <span
-                                            class="inline-block rounded text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-200 focus:bg-primary-accent-200 focus:outline-none focus:ring-0 active:bg-primary-accent-200 dark:bg-primary-300 dark:hover:bg-primary-400 dark:focus:bg-primary-400 dark:active:bg-primary-400"
-                                            data-te-toggle="tooltip"
-                                            data-te-html="true"
-                                            data-te-ripple-init
-                                            data-te-ripple-color="light"
-                                            title="{{ 'forms.help.mail_protocol'|trans }}">
-                                            {{ heroicon('question-mark-circle', 'ml-2 mt-2 -pb-5 h-5 w-5 text-gray-500') }}
-                                        </span>
-								</label>
-								{{ form_widget(form.mail_protocol, {'attr': {'class': 'appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-700 dark:border-gray-200 rounded py-3 px-4 md:w-[98%] mx-auto leading-tight focus:outline-none focus:bg-gray-200 focus:border-gray-300'}}) }}
+								{{ form_label_macro.label_with_icon(form, 'mail_protocol') }}
+								{{ form_widget(form.mail_protocol, {'attr': {'class': 'form-widget'}}) }}
+								{{ form_label_macro.form_error_stylized(form, 'mail_protocol') }}
 							</div>
                         </div>
-                        <div class="flex flex-wrap -mx-3 xl:mb-2">
+                        <div class="flex flex-wrap -mx-3 xl:py-2">
 							<div class="w-full px-3 md:mb-0 pt-2 xl:p-0">
-								<label class="text-left block md:ml-2 uppercase tracking-wide text-slate-600 dark:text-slate-200 text-md xl:text-xs font-bold mb-2 pt-2 lg:pt-2">
-									{{ form_label(form.mail_parameters) }}
-								</label>
-								{{ form_widget(form.mail_parameters, {'attr': {'class': 'appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-700 dark:border-gray-200 rounded py-3 px-4 md:w-[98%] mx-auto leading-tight focus:outline-none focus:bg-gray-200 focus:border-gray-300'}}) }}
+								{{ form_label_macro.label_with_icon(form, 'mail_parameters') }}
+								{{ form_widget(form.mail_parameters, {'attr': {'class': 'form-widget'}}) }}
+								{{ form_label_macro.form_error_stylized(form, 'mail_parameters') }}
 							</div>
                         </div>
-                        <div class="flex flex-wrap -mx-3 xl:mb-2">
-                            <div class="w-full px-3 md:mb-0 pt-2 xl:p-0">
-								<label class="text-left block md:ml-2 uppercase tracking-wide text-slate-600 dark:text-slate-200 text-md xl:text-xs font-bold mb-2 pt-2 lg:pt-2">
-									{{ form_label(form.smtp_hostname) }}
-								</label>
-								{{ form_widget(form.smtp_hostname, {'attr': {'class': 'appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-700 dark:border-gray-200 rounded py-3 px-4 md:w-[98%] mx-auto leading-tight focus:outline-none focus:bg-gray-200 focus:border-gray-300'}}) }}
+                        <div class="flex flex-wrap -mx-3 xl:py-2">
+							<div class="w-full px-3 md:mb-0 pt-2 xl:p-0">
+								{{ form_label_macro.label_with_icon(form, 'smtp_hostname') }}
+								{{ form_widget(form.smtp_hostname, {'attr': {'class': 'form-widget'}}) }}
+								{{ form_label_macro.form_error_stylized(form, 'smtp_hostname') }}
 							</div>
                         </div>
-                        <div class="flex flex-wrap -mx-3 xl:mb-2">
+                        <div class="flex flex-wrap -mx-3 xl:py-2">
                             <div class="w-full px-3 md:mb-0 pt-2 xl:p-0">
-								<label class="text-left block md:ml-2 uppercase tracking-wide text-slate-600 dark:text-slate-200 text-md xl:text-xs font-bold mb-2 pt-2 lg:pt-2">
-									{{ form_label(form.smtp_username) }}
-								</label>
-								{{ form_widget(form.smtp_username, {'attr': {'class': 'appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-700 dark:border-gray-200 rounded py-3 px-4 md:w-[98%] mx-auto leading-tight focus:outline-none focus:bg-gray-200 focus:border-gray-300'}}) }}
+								{{ form_label_macro.label_with_icon(form, 'smtp_username') }}
+								{{ form_widget(form.smtp_username, {'attr': {'class': 'form-widget'}}) }}
+								{{ form_label_macro.form_error_stylized(form, 'smtp_username') }}
 							</div>
 						</div>
                         <div class="flex flex-wrap -mx-3 xl:mb-2">
                             <div class="w-full px-3 md:mb-0 pt-2 xl:p-0">
-								<label class="text-left block md:ml-2 uppercase tracking-wide text-slate-600 dark:text-slate-200 text-md xl:text-xs font-bold mb-2 pt-2 lg:pt-2">
-									{{ form_label(form.smtp_password) }}
-								</label>
-								{{ form_widget(form.smtp_password, {'attr': {'class': 'appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-700 dark:border-gray-200 rounded py-3 px-4 md:w-[98%] mx-auto leading-tight focus:outline-none focus:bg-gray-200 focus:border-gray-300'}}) }}
+								{{ form_label_macro.label_with_icon(form, 'smtp_password') }}
+								{{ form_widget(form.smtp_password, {'attr': {'class': 'form-widget', 'placeholder': '*********'}}) }}
+								{{ form_label_macro.form_error_stylized(form, 'smtp_password') }}
 							</div>
 						</div>
                         <div class="flex flex-wrap -mx-3 xl:mb-2">
                             <div class="w-full md:w-1/2 px-1 md:mb-0">
-                                <label class="text-left block md:ml-2 uppercase tracking-wide text-slate-600 dark:text-slate-200 text-md xl:text-xs font-bold mb-2 pt-2 lg:pt-2">
-                                    {{ form_label(form.smtp_port) }}
-                                </label>
-                                {{ form_widget(form.smtp_port, {'attr': {'class': 'appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-700 dark:border-gray-200 rounded py-3 px-4 md:w-[98%] mx-auto leading-tight focus:outline-none focus:bg-gray-200 focus:border-gray-300'}}) }}
+                                {{ form_label_macro.label_with_icon(form, 'smtp_port') }}
+                                {{ form_widget(form.smtp_port, {'attr': {'class': 'form-widget'}}) }}
+								{{ form_label_macro.form_error_stylized(form, 'smtp_port') }}
                             </div>
                             <div class="w-full md:w-1/2 px-1 md:mb-0">
-                                <label class="text-left block md:ml-2 uppercase tracking-wide text-slate-600 dark:text-slate-200 text-md xl:text-xs font-bold mb-2 pt-2 lg:pt-2">
-                                    {{ form_label(form.smtp_timeout) }}
-                                </label>
-                                {{ form_widget(form.smtp_timeout, {'attr': {'class': 'appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-700 dark:border-gray-200 rounded py-3 px-4 md:w-[98%] mx-auto leading-tight focus:outline-none focus:bg-gray-200 focus:border-gray-300'}}) }}
+                                {{ form_label_macro.label_with_icon(form, 'smtp_timeout') }}
+                                {{ form_widget(form.smtp_timeout, {'attr': {'class': 'form-widget'}}) }}
+								{{ form_label_macro.form_error_stylized(form, 'smtp_timeout') }}
                             <div class="flex justify-end pt-3 mt-4 mb-2 xl:m-0">
                                 <button class="iconed-button bg-green-500 hover:bg-green-700 text-white font-bold pl-3 rounded h-[2.75rem] pr-[1.25rem] mr-1">
                                     {{ heroicon(form.save.vars.icon_before, 'icon ' ~ form.save.vars.icon_class)|raw }}{{ form.save.vars.label }}

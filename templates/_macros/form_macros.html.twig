@@ -1,0 +1,24 @@
+{% macro label_with_icon(form, fieldName) %}
+    {% set label = form[fieldName] %}
+    {% set tooltipKey = 'forms.help.' ~ fieldName %}
+    <label class="form-label-text text-md xl:text-xs">
+        {{ form_label(label) }}
+        {% if tooltipKey|trans != tooltipKey %}
+            <span class="form-label-span -mt-2"
+                data-te-toggle="tooltip"
+                data-te-html="true"
+                data-te-ripple-init
+                data-te-ripple-color="light"
+                title="{{ tooltipKey|trans }}">
+                {{ heroicon('question-mark-circle', 'form-label-icon -pb-5') }}
+            </span>
+        {% endif %}
+    </label>
+{% endmacro %}
+
+{% macro form_error_stylized(form, fieldName) %}
+    {% set label = form[fieldName] %}
+    {% if form[fieldName].vars.errors|length > 0 %}
+        <p class="text-red-500 text-md xl:text-xs italic">{{ form_errors(form[fieldName]) }}.</p>
+    {% endif %}
+{% endmacro %}

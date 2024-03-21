@@ -244,3 +244,25 @@ dropdown-menu ul {
         transform: rotate(360deg);
     }
 }
+
+@layer components {
+    .form-label-text {
+        @apply text-left block md:ml-2 uppercase tracking-wide text-slate-600 dark:text-slate-200 font-bold mb-2 pt-2 lg:pt-0;
+    }
+
+    .form-label-span {
+        @apply inline-block rounded text-xs font-medium uppercase leading-normal text-slate-600 dark:text-slate-200 transition duration-150 ease-in-out focus:outline-none focus:ring-0 ;
+    }
+
+    .form-label-icon {
+        @apply ml-2 mt-2 h-5 w-5 text-slate-600 dark:text-slate-200
+    }
+
+    .form-widget {
+        @apply appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-700 dark:border-gray-200 rounded py-3 px-4 md:w-[98%] mx-auto leading-tight focus:outline-none focus:bg-gray-200 focus:border-gray-300;
+    }
+    
+    .form-submit {
+        @apply iconed-button bg-green-500 hover:bg-green-700 text-white font-bold pl-3 rounded h-[2.75rem] pr-[1.25rem] mr-1;
+    }
+}

@@ -16,60 +16,41 @@
 							</div>
 						</div>
 						{% if catchphrase is defined and not null %}
-							<p class="mt-2 text-lg text-slate-700 dark:text-slate-400">Getting the most performance out of Tailwind CSS projects.</p>
+							<p class="mt-2 text-lg text-slate-700 dark:text-slate-400"></p>
 						{% endif %}
 					</header>
 					<div id="content-wrapper" class="relative px-4 pt-6 prose prose-slate mt-8 dark:prose-dark pb-3 mb-4">
 						{{ form_start(form) }}
-						<div class="flex flex-wrap -mx-3 xl:mb-2">
+						{% import '_macros/form_macros.html.twig' as form_label_macro %}
+						<div class="flex flex-wrap -mx-3 xl:py-2">
 							<div class="w-full xl:w-1/2 px-3 xl:mb-6 md:mb-0 pt-2 xl:p-0">
-								<label class="text-left block md:ml-2 uppercase tracking-wide text-slate-600 dark:text-slate-200 text-md xl:text-xs font-bold mb-2">
-									{{ form_label(form.siteName) }}
-								</label>
-								{{ form_widget(form.siteName, {'attr': {'class': 'appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-700 dark:border-gray-200 rounded py-3 px-4 md:w-[98%] mx-auto leading-tight focus:outline-none focus:bg-gray-200 focus:border-gray-300'}}) }}
-								<p class="text-red-500 text-md xl:text-xs italic">{{ form_errors(form.siteName) }}.</p>
+								{{ form_label_macro.label_with_icon(form, 'siteName') }}
+								{{ form_widget(form.siteName, {'attr': {'class': 'form-widget'}}) }}
+								{{ form_label_macro.form_error_stylized(form, 'siteName') }}
 							</div>
-							<div class="w-full xl:w-1/2 px-3 pt-2 pb-4 xl:p-0">
-								<label class="text-left block md:ml-2 uppercase tracking-wide text-slate-600 dark:text-slate-200 text-md xl:text-xs font-bold mb-2 pt-2 lg:pt-0">
-									{{ form_label(form.siteDescription) }}
-								</label>
-								{{ form_widget(form.siteDescription, {'attr': {'class': 'appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-700 dark:border-gray-200 rounded py-3 px-4 md:w-[98%] mx-auto leading-tight focus:outline-none focus:bg-gray-200 focus:border-gray-300'}}) }}
+							<div class="w-full xl:w-1/2 px-3 xl:mb-6 md:mb-0 pt-2 xl:p-0">
+								{{ form_label_macro.label_with_icon(form, 'siteDescription') }}
+								{{ form_widget(form.siteDescription, {'attr': {'class': 'form-widget'}}) }}
+								{{ form_label_macro.form_error_stylized(form, 'siteDescription') }}
 							</div>
-						</div>
+                        </div>
+						<div class="flex flex-wrap -mx-3 xl:py-2">
+							<div class="w-full xl:w-1/2 px-3 xl:mb-6 md:mb-0 pt-2 xl:p-0">
+								{{ form_label_macro.label_with_icon(form, 'rootUrl') }}
+								{{ form_widget(form.rootUrl, {'attr': {'class': 'form-widget'}}) }}
+								{{ form_label_macro.form_error_stylized(form, 'rootUrl') }}
+							</div>
+							<div class="w-full xl:w-1/2 px-3 xl:mb-6 md:mb-0 pt-2 xl:p-0">
+								{{ form_label_macro.label_with_icon(form, 'netInterface') }}
+								{{ form_widget(form.netInterface, {'attr': {'class': 'form-widget'}}) }}
+								{{ form_label_macro.form_error_stylized(form, 'netInterface') }}
+							</div>
+                        </div>
 						{# <div class="flex flex-wrap -mx-3 xl:mb-6 ">
-							<div class="w-full xl:w-1/2 px-3 xl:mb-6 md:mb-0 pt-2 pb-4 xl:p-0">
-								<label class="text-left block md:ml-2 uppercase tracking-wide text-slate-600 dark:text-slate-200 text-md xl:text-xs font-bold mb-2 pt-2 lg:pt-0">
-									{{ form_label(form.emailSenderAddress) }}
-								</label>
-								{{ form_widget(form.emailSenderAddress, {'attr': {'class': 'appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-700 dark:border-gray-200 rounded py-3 px-4 md:w-[98%] mx-auto leading-tight focus:outline-none focus:bg-gray-200 focus:border-gray-300'}}) }}
-							</div>
-							<div class="w-full xl:w-1/2 px-3  pt-2 pb-4 xl:p-0">
-								<label class="text-left block md:ml-2 uppercase tracking-wide text-slate-600 dark:text-slate-200 text-md xl:text-xs font-bold mb-2 pt-2 lg:pt-0">
-									{{ form_label(form.emailSenderName) }}
-								</label>
-								{{ form_widget(form.emailSenderName, {'attr': {'class': 'appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-700 dark:border-gray-200 rounded py-3 px-4 md:w-[98%] mx-auto leading-tight focus:outline-none focus:bg-gray-200 focus:border-gray-300'}}) }}
-							</div>
-						</div> #}
-						<div class="flex flex-wrap -mx-3 xl:mb-6 ">
-							<div class="w-full xl:w-1/2 px-3 xl:mb-6 md:mb-0 pt-2 pb-4 xl:p-0">
-								<label class="text-left block md:ml-2 uppercase tracking-wide text-slate-600 dark:text-slate-200 text-md xl:text-xs font-bold mb-2 pt-2 lg:pt-0">
-									{{ form_label(form.rootUrl) }}
-								</label>
-								{{ form_widget(form.rootUrl, {'attr': {'class': 'appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-700 dark:border-gray-200 rounded py-3 px-4 md:w-[98%] mx-auto leading-tight focus:outline-none focus:bg-gray-200 focus:border-gray-300'}}) }}
-							</div>
-							<div class="w-full xl:w-1/2 px-3 xl:mb-6 md:mb-0 pt-2 pb-4 xl:p-0">
-								<label class="text-left block md:ml-2 uppercase tracking-wide text-slate-600 dark:text-slate-200 text-md xl:text-xs font-bold mb-2">
-									{{ form_label(form.netInterface) }}
-								</label>
-								{{ form_widget(form.netInterface, {'attr': {'class': 'appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-700 dark:border-gray-200 rounded py-3 px-4 md:w-[98%] mx-auto leading-tight focus:outline-none focus:bg-gray-200 focus:border-gray-300'}}) }}
-							</div>
-						</div>
-						{# <div class="flex flex-wrap -mx-3 xl:mb-6 ">
-							<div class="w-full xl:w-1/2 px-3 xl:mb-6 md:mb-0 pt-2 pb-4 xl:p-0">
-								<label class="text-left block md:ml-2 uppercase tracking-wide text-slate-600 dark:text-slate-200 text-md xl:text-xs font-bold mb-2">
-									{{ form_label(form.mountPoint) }}
-								</label>
-								{{ form_widget(form.mountPoint, {'attr': {'class': 'appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-700 dark:border-gray-200 rounded py-3 px-4 md:w-[98%] mx-auto leading-tight focus:outline-none focus:bg-gray-200 focus:border-gray-300'}}) }}
+							<div class="w-full xl:w-1/2 px-3 xl:mb-6 md:mb-0 pt-2 xl:p-0">
+								{{ form_label_macro.label_with_icon(form, 'mountPoint') }}
+								{{ form_widget(form.mountPoint, {'attr': {'class': 'form-widget'}}) }}
+								{{ form_label_macro.form_error_stylized(form, 'mountPoint') }}
 							</div>
 						</div> #}
 						<div class="flex justify-end pt-3 mt-4 mb-2 xl:m-0 xl:p-0">
@@ -77,7 +58,6 @@
 								{{ heroicon(form.save.vars.icon_before, 'icon ' ~ form.save.vars.icon_class)|raw }}{{ form.save.vars.label }}
 							</button>
 						</div>
-						{{ form_errors(form) }}
 						{{ form_row(form._token) }}
 						{{ form_end(form, {'render_rest': false}) }}
 					</div>
