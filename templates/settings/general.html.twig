@@ -7,12 +7,24 @@
 	<div class="max-w-8xl md:mx-auto md:px-auto lg:px-6">
 		<div class="xl:pt-[2.3615rem] pt-[15rem]">
 			<div class="xl:pl-[25rem]">
-				<div class="w-full mx-auto pt-10 xl:max-w-none xl:ml-4 rounded-xl mb-4 ">
+				<div class="w-full mx-auto pt-10 xl:max-w-none xl:ml-4 rounded-xl mb-4">
 					<header id="header" class="relative bg-transparent">
 						<div class="px-4">
 							<p class="text-left text-2xl mb-2 leading-6 font-semibold text-sky-500 dark:text-sky-400">Settings</p>
 							<div class="flex items-center">
-								<h1 class="inline-block text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight dark:text-slate-200">General Settings</h1>
+								<h1 class="inline-block text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight dark:text-slate-200">General Settings
+									<a href="https://mediaease.github.io/docs" target="_blank" rel="noopener noreferrer">
+                                        <span 
+                                            class="form-label-span -mt-2" 
+                                            data-te-toggle="tooltip" 
+                                            data-te-html="true" 
+                                            data-te-ripple-init 
+                                            data-te-ripple-color="light" 
+                                            title="Go to documentation">
+                                            {{ heroicon('arrow-top-right-on-square', class='w-4 h-4 ordinal inline-block ml-1 mb-2') }}
+                                        </span>
+                                    </a>
+								</h1>
 							</div>
 						</div>
 						{% if catchphrase is defined and not null %}
