@@ -14,9 +14,9 @@
 			{{ encore_entry_script_tags('app') }}
 		{% endblock %}
 	</head>
-	<body class="bg-fixed lg:h-screen h-[100vh]" id="page-content" data-container-id={{ user.apiKey }}>
+	<body class="bg-fixed" id="page-content" data-container-id={{ user.apiKey }}>
 		{% include "components/navigation/sidebar.html.twig" %}
-		<div class="bottom-0 left-0 right-0 top-0 h-full w-full absolute p-6 text-center bg-white dark:bg-gray-800 text-white/80">
+		<div class="bottom-0 left-0 right-0 top-0 h-full w-full bg-fixed p-6 text-center bg-white dark:bg-gray-800 text-white/80">
 			{% include "components/navigation/settings_sidebar.html.twig" %}
 			{% block body %}{% endblock %}
 		</div>
