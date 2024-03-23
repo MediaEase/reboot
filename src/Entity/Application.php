@@ -20,7 +20,7 @@ class Application
     private ?int $id = null;
 
     #[ORM\Column(length: 60)]
-    #[Groups(['application:info', 'services:info', 'store:info'])]
+    #[Groups(['application:info', 'services:info', 'store:info', 'group:info'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 60)]

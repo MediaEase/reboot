@@ -1,0 +1,28 @@
+{% extends 'settings/base.html.twig' %}
+
+{% block title %}Access Groups Settings - {{ app.request.server.get('SITE_NAME') }}
+{% endblock %}
+
+{% block body %}
+	{% import '_macros/settings_macro.html.twig' as settings_macro %}
+	{% import '_macros/breadcrumb.html.twig' as breadcrumb %}
+	{% import '_macros/form_macros.html.twig' as form_macros %}
+	<div class="max-w-8xl md:mx-auto md:px-auto lg:px-6">
+		<div class="xl:pt-[2.3615rem] pt-[15rem]">
+			<div class="xl:pl-[25rem]">
+				<div class="w-full mx-auto pt-10 xl:max-w-none xl:ml-4 rounded-xl mb-4">
+					{{ breadcrumb.add('Access Groups Settings', 'https://mediaease.github.io/docs/')  }}
+					{{ settings_macro.infobox(
+                        'info', 
+                        'The below settings helps to define how your system is represented and monitored by your MediaEase instance.', 
+                        'While these settings do not directly impact the core functionality of your system, it\'s good to ensure they accurately represent your setup. For further details, you may refer to the <a href="link-to-documentation" class="text-sky-500 dark:text-sky-400 hover:underline">General Settings documentation</a>.',
+						'external'
+                    ) }}
+					<div id="content-wrapper" class="relative px-4 prose prose-slate mt-8 dark:prose-dark pb-3 mb-4">
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

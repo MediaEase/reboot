@@ -10,10 +10,12 @@ use App\Updater\DotenvUpdater;
 use App\Updater\PhpIniUpdater;
 use App\Security\SecretManager;
 use App\Form\Setting\GeneralType;
+use App\Repository\GroupRepository;
 use App\Repository\ServiceRepository;
 use App\Repository\SettingRepository;
 use Symfony\Component\Process\Process;
 use App\Repository\PreferenceRepository;
+use App\Repository\StoreRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -34,6 +36,8 @@ final class SettingsController extends AbstractController
         private ServiceRepository $serviceRepository,
         private PreferenceRepository $preferenceRepository,
         private DotenvUpdater $dotenvUpdater,
+        private GroupRepository $groupRepository,
+        private StoreRepository $storeRepository,
     ) {
     }
 
@@ -57,6 +61,7 @@ final class SettingsController extends AbstractController
                 $interfaces[] = trim($line);
             }
         }
+
         $form = $this->createForm(GeneralType::class, $settings, ['interfaces' => $interfaces]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -117,6 +122,17 @@ final class SettingsController extends AbstractController
     public function systemHelpSettings(Request $request): \Symfony\Component\HttpFoundation\Response
     {
         return $this->render('settings/help.html.twig');
+    }
+
+    #[Route('/system/access-groups', name: 'access_groups')]
+    #[IsGranted('ROLE_ADMIN')]
+    public function accessGroupsSettings(): \Symfony\Component\HttpFoundation\Response
+    {
+        $user = $this->getUser();
+
+        return $this->render('settings/access_groups.html.twig', [
+            'user' => $user,
+        ]);
     }
 
     #[Route('/system/php', name: 'system_php')]

@@ -42,6 +42,8 @@ nelmio_api_doc:
         description: Users related endpoints
       - name: Widgets
         description: Widgets related endpoints
+      - name: Groups
+        description: Groups related endpoints
     paths:
       /api/apps:
         get:
@@ -778,6 +780,133 @@ nelmio_api_doc:
               $ref: '#/components/responses/401'
             '500':
               $ref: '#/components/responses/500'
+      /api/groups:
+        get:
+          tags:
+            - Groups
+          summary: Get groups
+          operationId: getGroups
+          responses:
+            '200':
+              description: Returns groups
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: '#/components/schemas/Group'
+            '401':
+              $ref: '#/components/responses/401'
+            '500':
+              $ref: '#/components/responses/500'
+        post:
+          tags:
+            - Groups
+          summary: Create group
+          operationId: createGroup
+          requestBody:
+            content:
+              application/hal+json:
+                schema:
+                  $ref: '#/components/schemas/Group'
+          responses:
+            '201':
+              description: Group created
+              content:
+                application/hal+json:
+                  schema:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+            '401':
+              $ref: '#/components/responses/401'
+            '422':
+              $ref: '#/components/responses/422'
+            '500':
+              $ref: '#/components/responses/500'
+      /api/groups/{id}:
+        get:
+          tags:
+            - Groups
+          summary: Get group details
+          operationId: getGroup
+          parameters:
+            - name: id
+              in: path
+              description: Group Identifier
+              schema:
+                type: integer
+              required: true
+          responses:
+            '200':
+              description: Returns group details
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: '#/components/schemas/Group'
+            '401':
+              $ref: '#/components/responses/401'
+            '404':
+              $ref: '#/components/responses/404'
+            '500':
+              $ref: '#/components/responses/500'
+        put:
+          tags:
+            - Groups
+          summary: Update group
+          operationId: updateGroup
+          parameters:
+            - name: id
+              in: path
+              description: Group Identifier
+              schema:
+                type: integer
+              required: true
+          requestBody:
+            content:
+              application/hal+json:
+                schema:
+                  $ref: '#/components/schemas/Group'
+          responses:
+            '200':
+              description: Group updated
+              content:
+                application/hal+json:
+                  schema:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+            '204':
+              $ref: '#/components/responses/204'
+            '401':
+              $ref: '#/components/responses/401'
+            '404':
+              $ref: '#/components/responses/404'
+            '422':
+              $ref: '#/components/responses/422'
+            '500':
+              $ref: '#/components/responses/500'
+        delete:
+          tags:
+            - Groups
+          summary: Delete group
+          operationId: deleteGroup
+          parameters:
+            - name: id
+              in: path
+              description: Group Identifier
+              schema:
+                type: integer
+              required: true
+          responses:
+            '204':
+              $ref: '#/components/responses/204'
+            '401':
+              $ref: '#/components/responses/401'
+            '404':
+              $ref: '#/components/responses/404'
+            '500':
+              $ref: '#/components/responses/500'
     components:
       securitySchemes:
         Bearer:
@@ -934,6 +1063,11 @@ nelmio_api_doc:
               type: number
             percentage:
               type: number
+        Group:
+          type: object
+          properties:
+            name:
+              type: string
         Network:
           type: object
           properties:

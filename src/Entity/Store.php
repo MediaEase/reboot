@@ -17,7 +17,7 @@ class Store
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['store:info', 'application:info', 'services:info'])]
+    #[Groups(['store:info', 'application:info', 'services:info', 'group:info'])]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -25,19 +25,19 @@ class Store
     private ?string $description = null;
 
     #[ORM\Column]
-    #[Groups(['store:info', 'application:info'])]
+    #[Groups(['store:info', 'application:info', 'group:info'])]
     private ?bool $isPro = null;
 
     #[ORM\Column]
-    #[Groups(['store:info', 'application:info'])]
+    #[Groups(['store:info', 'application:info', 'group:info'])]
     private ?bool $isAvailable = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['store:info', 'application:info'])]
+    #[Groups(['store:info', 'application:info', 'group:info'])]
     private ?string $type = null;
 
     #[ORM\OneToOne(mappedBy: 'store', cascade: ['persist', 'remove'])]
-    #[Groups(['store:info'])]
+    #[Groups(['store:info', 'group:info'])]
     private ?Application $application = null;
 
     /**
