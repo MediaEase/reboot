@@ -4,31 +4,14 @@
 {% endblock %}
 
 {% block body %}
+    {% import '_macros/settings_macro.html.twig' as settings_macro %}
+    {% import '_macros/breadcrumb.html.twig' as breadcrumb %}
+    {% import '_macros/form_macros.html.twig' as form_macros %}
 	<div class="max-w-8xl md:mx-auto md:px-auto lg:px-6">
 		<div class="xl:pt-[2.3615rem] pt-[15rem]">
 			<div class="xl:pl-[25rem]">
 				<div class="w-full mx-auto pt-10 xl:max-w-none xl:ml-4 rounded-xl mb-4">
-					<header id="header" class="relative bg-transparent pb-2">
-						<div class="px-4">
-							<p class="text-left text-2xl mb-2 leading-6 font-semibold text-sky-500 dark:text-sky-400">{{ 'Settings'|trans }}</p>
-							<div class="flex items-center">
-								<h1 class="inline-block text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight dark:text-slate-200">{{ 'PHP Settings'|trans }}
-                                    <a href="https://mediaease.github.io/docs" target="_blank" rel="noopener noreferrer">
-                                        <span 
-                                            class="form-label-span -mt-2" 
-                                            data-te-toggle="tooltip" 
-                                            data-te-html="true" 
-                                            data-te-ripple-init 
-                                            data-te-ripple-color="light" 
-                                            title="Go to documentation">
-                                            {{ heroicon('arrow-top-right-on-square', class='w-4 h-4 ordinal inline-block ml-1 mb-2') }}
-                                        </span>
-                                    </a>
-                                </h1>
-							</div>
-						</div>
-					</header>
-                    {% import '_macros/settings_macro.html.twig' as settings_macro %}
+					{{ breadcrumb.add('PHP Settings', 'https://mediaease.github.io/docs/')  }}
                     {{ settings_macro.infobox(
                         'warning', 
                         'Adjustments here can significantly affect the performance and behavior of your applications.', 
@@ -36,7 +19,6 @@
                     ) }}
 					<div id="content-wrapper" class="relative px-4 prose prose-slate mt-8 dark:prose-dark pb-3 mb-4">
                         {{ form_start(form) }}
-                        {% import '_macros/form_macros.html.twig' as form_macros %}
                             <div class="flex flex-wrap -mx-3 xl:py-2">
                                 {% for field in form %}
                                     {% if field.vars.name not in ['_token', 'save'] %}

@@ -1,0 +1,23 @@
+{% macro add(current_page_title, docs_url) %}
+    <header id="header" class="relative bg-transparent">
+        <div class="px-4">
+            <p class="text-left text-2xl mb-2 leading-6 font-semibold text-sky-500 dark:text-sky-400">{{ 'Settings'|trans }}</p>
+            <div class="flex items-center">
+                <h1 class="inline-block text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight dark:text-slate-200">
+                    {{ current_page_title|trans }}
+                    <a href="{{ docs_url }}" target="_blank" rel="noopener noreferrer">
+                        <span 
+                            class="form-label-span -mt-2" 
+                            data-te-toggle="tooltip" 
+                            data-te-html="true" 
+                            data-te-ripple-init 
+                            data-te-ripple-color="light" 
+                            title="Go to documentation">
+                            {{ heroicon('arrow-top-right-on-square', class='w-4 h-4 ordinal inline-block ml-1 mb-2') }}
+                        </span>
+                    </a>
+                </h1>
+            </div>
+        </div>
+    </header>
+{% endmacro %}
