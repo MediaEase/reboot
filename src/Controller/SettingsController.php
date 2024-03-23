@@ -12,12 +12,14 @@ use App\Security\SecretManager;
 use App\Form\Setting\GeneralType;
 use App\Repository\ServiceRepository;
 use App\Repository\SettingRepository;
+use Symfony\Component\Process\Process;
 use App\Repository\PreferenceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 
@@ -100,6 +102,7 @@ final class SettingsController extends AbstractController
             $formData = $form->getData();
             $envFilePath = $this->containerBag->get('kernel.project_dir').'/.env.local';
             $this->dotenvUpdater->updateEnvFile($formData, $envFilePath);
+            $this->reloadPhpServices();
         }
 
         return $this->render('settings/smtp.html.twig', [
@@ -131,11 +134,24 @@ final class SettingsController extends AbstractController
             $cliIniPath = '/etc/php/8.3/cli/conf.d/99-mediaease.ini';
             $fpmIniPath = '/etc/php/8.3/fpm/conf.d/99-mediaease.ini';
             $phpIniUpdater->updateIniFiles($formData, [$cliIniPath, $fpmIniPath]);
+            $this->reloadPhpServices();
         }
 
         return $this->render('settings/php.html.twig', [
             'form' => $form->createView(),
             'user' => $user,
         ]);
+    }
+
+    private function reloadPhpServices(): void
+    {
+        $services = ['php8.3-fpm.service', 'php8.3-cli.service'];
+        foreach ($services as $service) {
+            $process = new Process(['systemctl', 'reload', $service]);
+            $process->run();
+            if (!$process->isSuccessful()) {
+                throw new ProcessFailedException($process);
+            }
+        }
     }
 }
