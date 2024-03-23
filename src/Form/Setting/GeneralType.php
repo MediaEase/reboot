@@ -24,23 +24,27 @@ final class GeneralType extends AbstractType
                     'placeholder' => $setting ? $setting->getSiteName() : 'Site Name',
                     'class' => 'w-full md:w-1/2 px-3 mb-6 md:mb-0',
                 ],
+                'help' => 'The name of the site',
             ])
             ->add('siteDescription', TextType::class, [
                 'label' => 'Site description',
                 'attr' => [
                     'placeholder' => $setting ? $setting->getSiteDescription() : 'Site description',
                 ],
+                'help' => 'The description of the site',
             ])
             ->add('rootUrl', UrlType::class, [
                 'label' => 'Root URL',
                 'attr' => [
                     'placeholder' => $setting ? $setting->getRootUrl() : 'Root URL',
                 ],
+                'help' => 'The root URL of the site',
             ])
             ->add('netInterface', ChoiceType::class, [
                 'label' => 'Network interface',
                 'choices' => array_flip($options['interfaces']),
                 'data' => $setting ? $setting->getNetInterface() : 'eth0',
+                'help' => 'The network interface to use in the network widget',
             ])
             ->add('save', ButtonType::class, [
                 'label' => 'Save',
