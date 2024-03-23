@@ -16,11 +16,11 @@ final class PhpType extends AbstractType
     {
         foreach ($options['data'] as $key => $value) {
             $formFieldName = str_replace('.', '_', $key);
-            $helpKey = 'form.help.php_' . $key;
+            $helpKey = 'form.help.php_'.$key;
             $fieldOptions = [
                 'required' => false,
                 'data' => $value,
-                'label' => 'forms.php.label.' . $key,
+                'label' => 'forms.php.label.'.$key,
                 'help' => $helpKey,
                 'attr' => [
                     'class' => 'input',
