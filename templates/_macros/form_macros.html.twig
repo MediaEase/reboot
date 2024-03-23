@@ -1,6 +1,6 @@
-{% macro label_with_icon(form, fieldName) %}
+{% macro label_with_icon(form, fieldName, context) %}
     {% set label = form[fieldName] %}
-    {% set tooltipKey = 'forms.help.' ~ fieldName %}
+    {% set tooltipKey = 'forms.help.' ~ context ~ fieldName %}
     <label class="form-label-text text-md xl:text-xs">
         {{ form_label(label) }}
         {% if tooltipKey|trans != tooltipKey %}
