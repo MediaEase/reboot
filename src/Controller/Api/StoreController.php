@@ -56,7 +56,7 @@ final class StoreController extends AbstractController
             }
 
             return $this->redirectToRoute('store_success');
-        } catch (\Exception $exception) {
+        } catch (\Exception) {
             if (TurboBundle::STREAM_FORMAT === $request->getPreferredFormat()) {
                 $request->setRequestFormat(TurboBundle::STREAM_FORMAT);
 
