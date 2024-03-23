@@ -27,11 +27,20 @@
 								</h1>
 							</div>
 						</div>
-						{% if catchphrase is defined and not null %}
-							<p class="mt-2 text-lg text-slate-700 dark:text-slate-400"></p>
-						{% endif %}
 					</header>
-					<div id="content-wrapper" class="relative px-4 pt-6 prose prose-slate mt-8 dark:prose-dark pb-3 mb-4">
+					<div class="mt-2 border-2 border-[#0ea5e9] dark:border-[#38bdf8] rounded-lg bg-success-100 px-6 py-5 text-base text-success-700" role="alert">
+						<div class="flex justify-center">
+							{{ heroicon('information-circle', class='w-8 h-8 mb-2 fill-[#0ea5e9] dark:fill-[#38bdf8]') }}
+						</div>
+						<p class="mb-4 text-neutral-700 dark:text-neutral-200">
+							The below settings helps to define how your system is represented and monitored by your MediaEase instance.
+						</p>
+						<hr class="border-neutral-700 dark:border-neutral-200 opacity-30" />
+                        <p class="mb-0 mt-4 text-neutral-700 dark:text-neutral-200">
+							While these settings do not directly impact the core functionality of your system, it's good to ensure they accurately represent your setup. For further details, you may refer to the <a href="link-to-documentation" class="text-success-700 hover:underline">General Settings documentation</a>.
+						</p>
+					</div>
+					<div id="content-wrapper" class="relative px-4 prose prose-slate mt-8 dark:prose-dark pb-3 mb-4">
 						{{ form_start(form) }}
 						{% import '_macros/form_macros.html.twig' as form_label_macro %}
 						<div class="flex flex-wrap -mx-3 xl:py-2">
