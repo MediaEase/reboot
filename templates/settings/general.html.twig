@@ -10,9 +10,9 @@
 				<div class="w-full mx-auto pt-10 xl:max-w-none xl:ml-4 rounded-xl mb-4">
 					<header id="header" class="relative bg-transparent">
 						<div class="px-4">
-							<p class="text-left text-2xl mb-2 leading-6 font-semibold text-sky-500 dark:text-sky-400">Settings</p>
+							<p class="text-left text-2xl mb-2 leading-6 font-semibold text-sky-500 dark:text-sky-400">{{ 'Settings'|trans }}</p>
 							<div class="flex items-center">
-								<h1 class="inline-block text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight dark:text-slate-200">General Settings
+								<h1 class="inline-block text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight dark:text-slate-200">{{ 'General Settings'|trans }}
 									<a href="https://mediaease.github.io/docs" target="_blank" rel="noopener noreferrer">
                                         <span 
                                             class="form-label-span -mt-2" 
@@ -33,51 +33,49 @@
 							{{ heroicon('information-circle', class='w-8 h-8 mb-2 fill-[#0ea5e9] dark:fill-[#38bdf8]') }}
 						</div>
 						<p class="mb-4 text-neutral-700 dark:text-neutral-200">
-							The below settings helps to define how your system is represented and monitored by your MediaEase instance.
+							{{ 'The below settings helps to define how your system is represented and monitored by your MediaEase instance.'|trans }}
 						</p>
 						<hr class="border-neutral-700 dark:border-neutral-200 opacity-30" />
                         <p class="mb-0 mt-4 text-neutral-700 dark:text-neutral-200">
-							While these settings do not directly impact the core functionality of your system, it's good to ensure they accurately represent your setup. For further details, you may refer to the <a href="link-to-documentation" class="text-success-700 hover:underline">General Settings documentation</a>.
+							{{ 'While these settings do not directly impact the core functionality of your system, it\'s good to ensure they accurately represent your setup. For further details, you may refer to the <a href="link-to-documentation" class="text-success-700 hover:underline">General Settings documentation</a>.'|trans|raw }}
 						</p>
 					</div>
 					<div id="content-wrapper" class="relative px-4 prose prose-slate mt-8 dark:prose-dark pb-3 mb-4">
 						{{ form_start(form) }}
-						{% import '_macros/form_macros.html.twig' as form_label_macro %}
+						{% import '_macros/form_macros.html.twig' as form_macros %}
 						<div class="flex flex-wrap -mx-3 xl:py-2">
 							<div class="w-full xl:w-1/2 px-3 xl:mb-6 md:mb-0 pt-2 xl:p-0">
-								{{ form_label_macro.label_with_icon(form, 'siteName') }}
+								{{ form_macros.label_with_icon(form, 'siteName', 'general') }}
 								{{ form_widget(form.siteName, {'attr': {'class': 'form-widget'}}) }}
-								{{ form_label_macro.form_error_stylized(form, 'siteName') }}
+								{{ form_macros.error_with_icon(form, 'siteName') }}
 							</div>
 							<div class="w-full xl:w-1/2 px-3 xl:mb-6 md:mb-0 pt-2 xl:p-0">
-								{{ form_label_macro.label_with_icon(form, 'siteDescription') }}
+								{{ form_macros.label_with_icon(form, 'siteDescription', 'general') }}
 								{{ form_widget(form.siteDescription, {'attr': {'class': 'form-widget'}}) }}
-								{{ form_label_macro.form_error_stylized(form, 'siteDescription') }}
+								{{ form_macros.error_with_icon(form, 'siteDescription') }}
 							</div>
                         </div>
 						<div class="flex flex-wrap -mx-3 xl:py-2">
 							<div class="w-full xl:w-1/2 px-3 xl:mb-6 md:mb-0 pt-2 xl:p-0">
-								{{ form_label_macro.label_with_icon(form, 'rootUrl') }}
+								{{ form_macros.label_with_icon(form, 'rootUrl', 'general') }}
 								{{ form_widget(form.rootUrl, {'attr': {'class': 'form-widget'}}) }}
-								{{ form_label_macro.form_error_stylized(form, 'rootUrl') }}
+								{{ form_macros.error_with_icon(form, 'rootUrl') }}
 							</div>
 							<div class="w-full xl:w-1/2 px-3 xl:mb-6 md:mb-0 pt-2 xl:p-0">
-								{{ form_label_macro.label_with_icon(form, 'netInterface') }}
+								{{ form_macros.label_with_icon(form, 'netInterface', 'general') }}
 								{{ form_widget(form.netInterface, {'attr': {'class': 'form-widget'}}) }}
-								{{ form_label_macro.form_error_stylized(form, 'netInterface') }}
+								{{ form_macros.error_with_icon(form, 'netInterface') }}
 							</div>
                         </div>
 						{# <div class="flex flex-wrap -mx-3 xl:mb-6 ">
 							<div class="w-full xl:w-1/2 px-3 xl:mb-6 md:mb-0 pt-2 xl:p-0">
-								{{ form_label_macro.label_with_icon(form, 'mountPoint') }}
+								{{ form_macros.label_with_icon(form, 'mountPoint') }}
 								{{ form_widget(form.mountPoint, {'attr': {'class': 'form-widget'}}) }}
-								{{ form_label_macro.form_error_stylized(form, 'mountPoint') }}
+								{{ form_macros.error_with_icon(form, 'mountPoint') }}
 							</div>
 						</div> #}
 						<div class="flex justify-end pt-3 mt-4 mb-2 xl:m-0 xl:p-0">
-							<button class="iconed-button bg-green-500 hover:bg-green-700 text-white font-bold pl-3 rounded h-14 pr-[1.25rem]">
-								{{ heroicon(form.save.vars.icon_before, 'icon ' ~ form.save.vars.icon_class)|raw }}{{ form.save.vars.label }}
-							</button>
+							{{ form_macros.save_button(form) }}
 						</div>
 						{{ form_row(form._token) }}
 						{{ form_end(form, {'render_rest': false}) }}

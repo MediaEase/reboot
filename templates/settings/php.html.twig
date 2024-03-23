@@ -10,9 +10,9 @@
 				<div class="w-full mx-auto pt-10 xl:max-w-none xl:ml-4 rounded-xl mb-4">
 					<header id="header" class="relative bg-transparent pb-2">
 						<div class="px-4">
-							<p class="text-left text-2xl mb-2 leading-6 font-semibold text-sky-500 dark:text-sky-400">Settings</p>
+							<p class="text-left text-2xl mb-2 leading-6 font-semibold text-sky-500 dark:text-sky-400">{{ 'Settings'|trans }}</p>
 							<div class="flex items-center">
-								<h1 class="inline-block text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight dark:text-slate-200">PHP Settings
+								<h1 class="inline-block text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight dark:text-slate-200">{{ 'PHP Settings'|trans }}
                                     <a href="https://mediaease.github.io/docs" target="_blank" rel="noopener noreferrer">
                                         <span 
                                             class="form-label-span -mt-2" 
@@ -33,35 +33,34 @@
                             {{ heroicon('exclamation-triangle', class='w-8 h-8 mb-2 fill-[#f59e0b] dark:fill-[#d97706]') }}
                         </div>
                         <p class="mb-4 text-neutral-700 dark:text-neutral-200">
-                            Adjustments here can significantly affect the performance and behavior of your applications.
+                            {{ 'Adjustments here can significantly affect the performance and behavior of your applications.' | trans }}
                         </p>
                         <hr class="border-neutral-700 dark:border-neutral-200 opacity-30" />
                         <p class="mb-0 mt-4 text-neutral-700 dark:text-neutral-200">
-                            Before making changes, ensure you understand the implications of each setting. Incorrect configurations may disrupt your service. For detailed guidance, refer to the <a href="link-to-documentation" class="text-success-700 hover:underline">PHP configuration documentation</a>
+                            {{ 'Before making changes, ensure you understand the implications of each setting. Incorrect configurations may disrupt your service. For detailed guidance, refer to the <a href="link-to-documentation" class="text-success-700 hover:underline">PHP configuration documentation</a>'|trans|raw }}
                         </p>
                     </div>
 					<div id="content-wrapper" class="relative px-4 prose prose-slate mt-8 dark:prose-dark pb-3 mb-4">
                         {{ form_start(form) }}
-                        {% import '_macros/form_macros.html.twig' as form_label_macro %}
+                        {% import '_macros/form_macros.html.twig' as form_macros %}
                             <div class="flex flex-wrap -mx-3 xl:py-2">
                                 {% for field in form %}
                                     {% if field.vars.name not in ['_token', 'save'] %}
                                         <div class="w-full xl:w-1/2 px-3 xl:mb-6 md:mb-0 pt-2 xl:p-0">
                                             {% set fieldName = field.vars.name %}
-                                            {{ form_label_macro.label_with_icon(form, fieldName, 'php_') }}
+                                            {{ form_macros.label_with_icon(form, fieldName, 'php') }}
                                             {% if 'force_extra_parameters' in field.vars.name %}
                                                 {{ form_widget(field, {'attr': {'class': 'form-widget cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-600 disabled:border-gray-300 dark:disabled:bg-gray-700 dark:disabled:text-gray-400 dark:disabled:border-gray-600 disabled:shadow-none'}}) }}
                                             {% else %}
                                                 {{ form_widget(field, {'attr': {'class': 'form-widget'}}) }}
                                             {% endif %}
+                                            {{ form_macros.error_with_icon(form, fieldName) }}
                                         </div>
                                     {% endif %}
                                 {% endfor %}
                             </div>
                             <div class="flex justify-end pt-3 mt-4 mb-2 xl:m-0 xl:p-0">
-                                <button class="iconed-button bg-green-500 hover:bg-green-700 text-white font-bold pl-3 rounded h-14 pr-[1.25rem]">
-                                    {{ heroicon(form.save.vars.icon_before, 'icon ' ~ form.save.vars.icon_class)|raw }}{{ form.save.vars.label }}
-                                </button>
+                                {{ form_macros.save_button(form) }}
                             </div>
                             {{ form_row(form._token) }}
                             {{ form_end(form, {'render_rest': false}) }}

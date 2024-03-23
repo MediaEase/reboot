@@ -10,9 +10,9 @@
 				<div class="w-full mx-auto pt-10 xl:max-w-none xl:ml-4 rounded-xl mb-4">
 					<header id="header" class="relative">
 						<div class="px-4">
-							<p class="text-left text-2xl mb-2 leading-6 font-semibold text-sky-500 dark:text-sky-400">Settings</p>
+							<p class="text-left text-2xl mb-2 leading-6 font-semibold text-sky-500 dark:text-sky-400">{{ 'Settings'|trans }}</p>
 							<div class="flex items-center">
-								<h1 class="inline-block text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight dark:text-slate-200">Session Settings
+								<h1 class="inline-block text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight dark:text-slate-200">{{ 'Session Settings'|trans }}
 									<a href="https://mediaease.github.io/docs" target="_blank" rel="noopener noreferrer">
                                         <span 
                                             class="form-label-span -mt-2" 
@@ -27,9 +27,6 @@
 								</h1>
 							</div>
 						</div>
-						{% if catchphrase is defined and not null %}
-							<p class="mt-2 text-lg text-slate-700 dark:text-slate-400">Getting the most performance out of Tailwind CSS projects.</p>
-						{% endif %}
 					</header>
 					<div id="content-wrapper" class="relative px-4 prose prose-slate mt-8 dark:prose-dark pb-3 mb-4">
 						{{ form_start(form) }}
@@ -85,9 +82,7 @@
 							</div>
 						</div>
 						<div class="flex justify-end pt-3 mt-4 mb-2 xl:m-0 xl:p-0">
-							<button class="iconed-button bg-green-500 hover:bg-green-700 text-white font-bold pl-3 rounded h-14 pr-[1.25rem]">
-								{{ heroicon(form.save.vars.icon_before, 'icon ' ~ form.save.vars.icon_class)|raw }}{{ form.save.vars.label }}
-							</button>
+							{{ form_macros.save_button(form) }}
 						</div>
 						{{ form_errors(form) }}
 						{{ form_row(form._token) }}

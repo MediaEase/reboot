@@ -1,6 +1,6 @@
 {% macro label_with_icon(form, fieldName, context) %}
     {% set label = form[fieldName] %}
-    {% set tooltipKey = 'forms.help.' ~ context ~ fieldName %}
+    {% set tooltipKey = 'forms.' ~ context ~ '.help.' ~ fieldName %}
     <label class="form-label-text text-md xl:text-xs">
         {{ form_label(label) }}
         {% if tooltipKey|trans != tooltipKey %}
@@ -16,9 +16,36 @@
     </label>
 {% endmacro %}
 
-{% macro form_error_stylized(form, fieldName) %}
+{% macro error_with_icon(form, fieldName) %}
     {% set label = form[fieldName] %}
     {% if form[fieldName].vars.errors|length > 0 %}
-        <p class="text-red-500 text-md xl:text-xs italic">{{ form_errors(form[fieldName]) }}.</p>
+        <p class="text-red-500 text-md xl:text-xs italic">
+            {{ heroicon('exclamation-circle', 'form-label-icon -pb-5') }}
+            {{ form_errors(form[fieldName]) }}.
+        </p>
     {% endif %}
+{% endmacro %}
+
+{% macro save_button(form) %}
+    <button class="iconed-button bg-green-500 hover:bg-green-700 text-white font-bold pl-3 rounded h-[2.5rem] pr-[1.25rem]">
+        {{ heroicon(form.save.vars.icon_before, 'icon ' ~ form.save.vars.icon_class)|raw }}{{ form.save.vars.label }}
+    </button>
+{% endmacro %}
+
+{% macro cancel_button(form) %}
+    <a href="{{ form.cancel.vars.url }}" class="iconed-button bg-red-500 hover:bg-red-700 text-white font-bold pl-3 rounded h-[2.5rem] pr-[1.25rem]">
+        {{ heroicon(form.cancel.vars.icon_before, 'icon ' ~ form.cancel.vars.icon_class)|raw }}{{ form.cancel.vars.label }}
+    </a>
+{% endmacro %}
+
+{% macro reset_button(form) %}
+    <button type="reset" class="iconed-button bg-gray-500 hover:bg-gray-700 text-white font-bold pl-3 rounded h-[2.5rem] pr-[1.25rem]">
+        {{ heroicon(form.reset.vars.icon_before, 'icon ' ~ form.reset.vars.icon_class)|raw }}{{ form.reset.vars.label }}
+    </button>
+{% endmacro %}
+
+{% macro delete_button(form) %}
+    <button class="iconed-button bg-red-500 hover:bg-red-700 text-white font-bold pl-3 rounded h-[2.5rem] pr-[1.25rem]">
+        {{ heroicon(form.delete.vars.icon_before, 'icon ' ~ form.delete.vars.icon_class)|raw }}{{ form.delete.vars.label }}
+    </button>
 {% endmacro %}

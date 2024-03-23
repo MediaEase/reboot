@@ -10,9 +10,9 @@
 				<div class="w-full mx-auto pt-10 xl:max-w-none xl:ml-4 rounded-xl mb-4">
 					<header id="header" class="relative bg-transparent">
 						<div class="px-4">
-							<p class="text-left text-2xl mb-2 leading-6 font-semibold text-sky-500 dark:text-sky-400">Settings</p>
+							<p class="text-left text-2xl mb-2 leading-6 font-semibold text-sky-500 dark:text-sky-400">{{ 'Settings'|trans }}</p>
 							<div class="flex items-center">
-								<h1 class="inline-block text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight dark:text-slate-200">SMTP Settings
+								<h1 class="inline-block text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight dark:text-slate-200">{{ 'SMTP Settings'|trans }}
 									<a href="https://mediaease.github.io/docs" target="_blank" rel="noopener noreferrer">
                                         <span 
                                             class="form-label-span -mt-2" 
@@ -27,62 +27,57 @@
 								</h1>
 							</div>
 						</div>
-						{% if catchphrase is defined and not null %}
-							<p class="mt-2 text-lg text-slate-700 dark:text-slate-400"></p>
-						{% endif %}
 					</header>
 					<div id="content-wrapper" class="relative px-4 pt-6 prose prose-slate mt-8 dark:prose-dark pb-3 mb-4">
 						{{ form_start(form) }}
-						{% import '_macros/form_macros.html.twig' as form_label_macro %}
+						{% import '_macros/form_macros.html.twig' as form_macros %}
 						<div class="flex flex-wrap -mx-3 xl:py-2">
 							<div class="w-full px-3 md:mb-0 pt-2 xl:p-0">
-								{{ form_label_macro.label_with_icon(form, 'mail_protocol') }}
+								{{ form_macros.label_with_icon(form, 'mail_protocol', 'mail') }}
 								{{ form_widget(form.mail_protocol, {'attr': {'class': 'form-widget'}}) }}
-								{{ form_label_macro.form_error_stylized(form, 'mail_protocol') }}
+								{{ form_macros.error_with_icon(form, 'mail_protocol') }}
 							</div>
                         </div>
                         <div class="flex flex-wrap -mx-3 xl:py-2">
 							<div class="w-full px-3 md:mb-0 pt-2 xl:p-0">
-								{{ form_label_macro.label_with_icon(form, 'mail_parameters') }}
+								{{ form_macros.label_with_icon(form, 'mail_parameters', 'mail') }}
 								{{ form_widget(form.mail_parameters, {'attr': {'class': 'form-widget'}}) }}
-								{{ form_label_macro.form_error_stylized(form, 'mail_parameters') }}
+								{{ form_macros.error_with_icon(form, 'mail_parameters') }}
 							</div>
                         </div>
                         <div class="flex flex-wrap -mx-3 xl:py-2">
 							<div class="w-full px-3 md:mb-0 pt-2 xl:p-0">
-								{{ form_label_macro.label_with_icon(form, 'smtp_hostname') }}
+								{{ form_macros.label_with_icon(form, 'smtp_hostname', 'mail') }}
 								{{ form_widget(form.smtp_hostname, {'attr': {'class': 'form-widget'}}) }}
-								{{ form_label_macro.form_error_stylized(form, 'smtp_hostname') }}
+								{{ form_macros.error_with_icon(form, 'smtp_hostname') }}
 							</div>
                         </div>
                         <div class="flex flex-wrap -mx-3 xl:py-2">
                             <div class="w-full px-3 md:mb-0 pt-2 xl:p-0">
-								{{ form_label_macro.label_with_icon(form, 'smtp_username') }}
+								{{ form_macros.label_with_icon(form, 'smtp_username', 'mail') }}
 								{{ form_widget(form.smtp_username, {'attr': {'class': 'form-widget'}}) }}
-								{{ form_label_macro.form_error_stylized(form, 'smtp_username') }}
+								{{ form_macros.error_with_icon(form, 'smtp_username') }}
 							</div>
 						</div>
                         <div class="flex flex-wrap -mx-3 xl:mb-2">
                             <div class="w-full px-3 md:mb-0 pt-2 xl:p-0">
-								{{ form_label_macro.label_with_icon(form, 'smtp_password') }}
+								{{ form_macros.label_with_icon(form, 'smtp_password', 'mail') }}
 								{{ form_widget(form.smtp_password, {'attr': {'class': 'form-widget', 'placeholder': '*********'}}) }}
-								{{ form_label_macro.form_error_stylized(form, 'smtp_password') }}
+								{{ form_macros.error_with_icon(form, 'smtp_password') }}
 							</div>
 						</div>
                         <div class="flex flex-wrap -mx-3 xl:mb-2">
                             <div class="w-full md:w-1/2 px-1 md:mb-0">
-                                {{ form_label_macro.label_with_icon(form, 'smtp_port') }}
+                                {{ form_macros.label_with_icon(form, 'smtp_port', 'mail') }}
                                 {{ form_widget(form.smtp_port, {'attr': {'class': 'form-widget'}}) }}
-								{{ form_label_macro.form_error_stylized(form, 'smtp_port') }}
+								{{ form_macros.error_with_icon(form, 'smtp_port') }}
                             </div>
                             <div class="w-full md:w-1/2 px-1 md:mb-0">
-                                {{ form_label_macro.label_with_icon(form, 'smtp_timeout') }}
+                                {{ form_macros.label_with_icon(form, 'smtp_timeout', 'mail') }}
                                 {{ form_widget(form.smtp_timeout, {'attr': {'class': 'form-widget'}}) }}
-								{{ form_label_macro.form_error_stylized(form, 'smtp_timeout') }}
+								{{ form_macros.error_with_icon(form, 'smtp_timeout') }}
                             <div class="flex justify-end pt-3 mt-4 mb-2 xl:m-0">
-                                <button class="iconed-button bg-green-500 hover:bg-green-700 text-white font-bold pl-3 rounded h-[2.75rem] pr-[1.25rem] mr-1">
-                                    {{ heroicon(form.save.vars.icon_before, 'icon ' ~ form.save.vars.icon_class)|raw }}{{ form.save.vars.label }}
-                                </button>
+                                {{ form_macros.save_button(form) }}
                             </div>
                         </div>
 						{{ form_errors(form) }}

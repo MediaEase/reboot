@@ -1,64 +1,98 @@
-forms.mail.label.mail_protocol: "Mail Protocol"
-forms.mail.label.mail_parameters: "Mail Parameters"
-forms.mail.label.smtp_hostname: "SMTP Hostname"
-forms.mail.label.smtp_username: "SMTP Username"
-forms.mail.label.smtp_password: "SMTP Password"
-forms.mail.label.smtp_port: "SMTP Port"
-forms.mail.label.smtp_timeout: "SMTP Timeout"
-forms.mail.choice.mail: "Mail"
-forms.mail.choice.smtp: "SMTP"
-forms.help.mail_protocol: "Only choose \"Mail\" unless your host has disabled the PHP mail function."
-forms.php.label.sendmail_path: "Sendmail Path"
-forms.php.label.mail.force_extra_parameters: "Mail Force Extra Parameters"
-forms.php.label.session.cookie_httponly: "Session Cookie HTTP Only"
-forms.php.label.max_file_uploads: "Max File Uploads"
-forms.php.label.session.cookie_secure: "Session Cookie Secure"
-forms.php.label.post_max_size: "Post Max Size"
-forms.php.label.upload_max_filesize: "Upload Max Filesize"
-forms.php.label.memory_limit: "Memory Limit"
-forms.php.label.max_execution_time: "Max Execution Time"
-forms.php.label.max_input_vars: "Max Input Vars"
-forms.php.label.session.gc_maxlifetime: "Session GC Maxlifetime"
-forms.php.label.date.timezone: "Date Timezone"
-forms.php.label.expose_php: "Expose PHP"
-forms.php.label.realpath_cache_size: "Realpath Cache Size"
-forms.php.label.realpath_cache_ttl: "Realpath Cache TTL"
-forms.php.label.file_uploads: "File Uploads"
-forms.php.label.disable_functions: "Disable Functions"
-forms.php.label.output_buffering: "Output Buffering"
-forms.php.label.display_errors: "Display Errors"
-forms.php.label.display_startup_errors: "Display Startup Errors"
-forms.php.label.error_reporting: "Error Reporting"
-forms.php.label.session.use_strict_mode: "Session Use Strict Mode"
-forms.php.label.opcache.enable: "OPcache Enable"
-forms.php.label.opcache.memory_consumption: "OPcache Memory Consumption"
-forms.php.label.opcache.interned_strings_buffer: "OPcache Interned Strings Buffer"
-forms.php.label.opcache.max_accelerated_files: "OPcache Max Accelerated Files"
-forms.php.label.opcache.validate_timestamps: "OPcache Validate Timestamps"
-forms.help.php_sendmail_path: "The path to the sendmail program. This setting is necessary for sending emails using the PHP mail() function."
-forms.help.php_mail_force_extra_parameters: "This setting should be changed through the Mail Parameters settings in the SMTP section."
-forms.help.php_session_cookie_httponly: "When enabled, the cookie will only be accessible through the HTTP protocol."
-forms.help.php_max_file_uploads: "The maximum number of files that can be uploaded in a single request."
-forms.help.php_session_cookie_secure: "When enabled, the cookie will only be sent over secure connections."
-forms.help.php_post_max_size: "The maximum size of POST data that PHP will accept."
-forms.help.php_upload_max_filesize: "The maximum size of an uploaded file."
-forms.help.php_memory_limit: "The maximum amount of memory that a script is allowed to allocate."
-forms.help.php_max_execution_time: "The maximum time in seconds that a script is allowed to run before it is terminated."
-forms.help.php_max_input_vars: "The maximum number of input variables that can be accepted."
-forms.help.php_session_gc_maxlifetime: "The number of seconds after which data will be seen as garbage and potentially cleaned up."
-forms.help.php_date_timezone: "The default timezone for date and time functions."
-forms.help.php_expose_php: "When enabled, PHP will send a header containing the PHP version."
-forms.help.php_realpath_cache_size: "The size of the realpath cache."
-forms.help.php_realpath_cache_ttl: "The time-to-live of the realpath cache."
-forms.help.php_file_uploads: "When enabled, file uploads are allowed."
-forms.help.php_disable_functions: "A comma-separated list of functions that are disabled."
-forms.help.php_output_buffering: "When enabled, PHP will turn on output buffering."
-forms.help.php_display_errors: "When enabled, PHP will display errors."
-forms.help.php_display_startup_errors: "When enabled, PHP will display startup errors."
-forms.help.php_error_reporting: "The level of errors that PHP will report."
-forms.help.php_session_use_strict_mode: "When enabled, PHP will use strict session mode."
-forms.help.php_opcache_enable: "When enabled, OPcache will be used."
-forms.help.php_opcache_memory_consumption: "The amount of memory that OPcache will use."
-forms.help.php_opcache_interned_strings_buffer: "The size of the interned strings buffer."
-forms.help.php_opcache_max_accelerated_files: "The maximum number of files that can be cached."
-forms.help.php_opcache_validate_timestamps: "When enabled, OPcache will validate timestamps."
+forms:
+  general:
+    help:
+      siteName: 'The name of your MediaEase instance.'
+      siteDescription: 'A brief description of your MediaEase instance.'
+      rootUrl: 'The URL of your MediaEase instance.'
+      netInterface: 'The network interface to use for network requests.'
+  mail:
+    label:
+      mail_protocol: 'Mail Protocol'
+      mail_parameters: 'Mail Parameters'
+      smtp_hostname: 'SMTP Hostname'
+      smtp_username: 'SMTP Username'
+      smtp_password: 'SMTP Password'
+      smtp_port: 'SMTP Port'
+      smtp_timeout: 'SMTP Timeout'
+    choice:
+      mail: 'Mail'
+      smtp: 'SMTP'
+    help:
+      mail_protocol: 'Only choose "Mail" unless your host has disabled the PHP mail function.'
+      mail_parameters: 'Additional mail parameters to be used when sending an email.'
+      smtp_hostname: 'The hostname of your SMTP server.'
+      smtp_username: 'The username to use when connecting to the SMTP server.'
+      smtp_password: 'The password to use when connecting to the SMTP server.'
+      smtp_port: 'The port to use when connecting to the SMTP server.'
+      smtp_timeout: 'The timeout to use when connecting to the SMTP server.'
+  php:
+    label:
+      sendmail_path: 'Sendmail Path'
+      max_file_uploads: 'Max File Uploads'
+      post_max_size: 'Post Max Size'
+      upload_max_filesize: 'Upload Max Filesize'
+      memory_limit: 'Memory Limit'
+      max_execution_time: 'Max Execution Time'
+      max_input_vars: 'Max Input Vars'
+      expose_php: 'Expose PHP'
+      realpath_cache_size: 'Realpath Cache Size'
+      realpath_cache_ttl: 'Realpath Cache TTL'
+      file_uploads: 'File Uploads'
+      disable_functions: 'Disable Functions'
+      output_buffering: 'Output Buffering'
+      display_errors: 'Display Errors'
+      display_startup_errors: 'Display Startup Errors'
+      error_reporting: 'Error Reporting'
+      session_use_strict_mode: 'Session Use Strict Mode'
+      opcache:
+        enable: 'OPcache Enable'
+        memory_consumption: 'OPcache Memory Consumption'
+        interned_strings_buffer: 'OPcache Interned Strings Buffer'
+        max_accelerated_files: 'OPcache Max Accelerated Files'
+        validate_timestamps: 'OPcache Validate Timestamps'
+      mail:
+        force_extra_parameters: 'Mail Force Extra Parameters'
+      session:
+        cookie_secure: 'Session Cookie Secure'
+        gc_maxlifetime: 'Session GC Maxlifetime'
+        use_strict_mode: 'Session Use Strict Mode'
+        cookie_httponly: 'Session Cookie HTTP Only'
+      date:
+        timezone: 'Date Timezone'
+    help:
+      sendmail_path: 'The path to the sendmail program. This setting is necessary for sending emails using the PHP mail() function.'
+      mail_force_extra_parameters: 'This setting should be changed through the Mail Parameters settings in the SMTP section.'
+      session_cookie_httponly: 'When enabled, the cookie will only be accessible through the HTTP protocol.'
+      max_file_uploads: 'The maximum number of files that can be uploaded in a single request.'
+      session_cookie_secure: 'When enabled, the cookie will only be sent over secure connections.'
+      post_max_size: 'The maximum size of POST data that PHP will accept.'
+      upload_max_filesize: 'The maximum size of an uploaded file.'
+      memory_limit: 'The maximum amount of memory that a script is allowed to allocate.'
+      max_execution_time: 'The maximum time in seconds that a script is allowed to run before it is terminated.'
+      max_input_vars: 'The maximum number of input variables that can be accepted.'
+      session_gc_maxlifetime: 'The number of seconds after which data will be seen as garbage and potentially cleaned up.'
+      date_timezone: 'The default timezone for date and time functions.'
+      expose_php: 'When enabled, PHP will send a header containing the PHP version.'
+      realpath_cache_size: 'The size of the realpath cache.'
+      realpath_cache_ttl: 'The time-to-live of the realpath cache.'
+      file_uploads: 'When enabled, file uploads are allowed.'
+      disable_functions: 'A comma-separated list of functions that are disabled.'
+      output_buffering: 'When enabled, PHP will turn on output buffering.'
+      display_errors: 'When enabled, PHP will display errors.'
+      display_startup_errors: 'When enabled, PHP will display startup errors.'
+      error_reporting: 'The level of errors that PHP will report.'
+      session_use_strict_mode: 'When enabled, PHP will use strict session mode.'
+      opcache_enable: 'When enabled, OPcache will be used.'
+      opcache_memory_consumption: 'The amount of memory that OPcache will use.'
+      opcache_interned_strings_buffer: 'The size of the interned strings buffer.'
+      opcache_max_accelerated_files: 'The maximum number of files that can be cached.'
+      opcache_validate_timestamps: 'When enabled, OPcache will validate timestamps.'
+'Adjustments here can significantly affect the performance and behavior of your applications.': 'Adjustments here can significantly affect the performance and behavior of your applications.'
+Settings: Settings
+'SMTP Settings': 'SMTP Settings'
+'General Settings': 'General Settings'
+'The below settings helps to define how your system is represented and monitored by your MediaEase instance.': 'The below settings helps to define how your system is represented and monitored by your MediaEase instance.'
+'While these settings do not directly impact the core functionality of your system, it''s good to ensure they accurately represent your setup. For further details, you may refer to the <a href="link-to-documentation" class="text-success-700 hover:underline">General Settings documentation</a>.': 'While these settings do not directly impact the core functionality of your system, it''s good to ensure they accurately represent your setup. For further details, you may refer to the <a href="link-to-documentation" class="text-success-700 hover:underline">General Settings documentation</a>.'
+'Session Settings': 'Session Settings'
+'PHP Settings': 'PHP Settings'
+'Before making changes, ensure you understand the implications of each setting. Incorrect configurations may disrupt your service. For detailed guidance, refer to the <a href="link-to-documentation" class="text-success-700 hover:underline">PHP configuration documentation</a>': 'Before making changes, ensure you understand the implications of each setting. Incorrect configurations may disrupt your service. For detailed guidance, refer to the <a href="link-to-documentation" class="text-success-700 hover:underline">PHP configuration documentation</a>'
