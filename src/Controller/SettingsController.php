@@ -9,7 +9,6 @@ use App\Form\Setting\SmtpType;
 use App\Updater\DotenvUpdater;
 use App\Updater\PhpIniUpdater;
 use App\Security\SecretManager;
-use App\Form\GeneralSettingType;
 use App\Form\Setting\GeneralType;
 use App\Repository\ServiceRepository;
 use App\Repository\SettingRepository;
@@ -48,9 +47,16 @@ final class SettingsController extends AbstractController
         $settings = $this->settingRepository->findLast();
         $user = $this->getUser();
         $preferences = $this->preferenceRepository->findOneBy(['user' => $user]);
-        $form = $this->createForm(GeneralType::class, $settings);
+        $interfaces = [];
+        $interfacesFile = '/etc/.mediaease/interfaces';
+        if (file_exists($interfacesFile)) {
+            $fileContent = file($interfacesFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+            foreach ($fileContent as $line) {
+                $interfaces[] = trim($line);
+            }
+        }
+        $form = $this->createForm(GeneralType::class, $settings, ['interfaces' => $interfaces]);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $this->entityManager->persist($settings);
             $this->entityManager->flush();

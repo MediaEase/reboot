@@ -9,6 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 final class GeneralType extends AbstractType
 {
@@ -36,11 +37,10 @@ final class GeneralType extends AbstractType
                     'placeholder' => $setting ? $setting->getRootUrl() : 'Root URL',
                 ],
             ])
-            ->add('netInterface', TextType::class, [
+            ->add('netInterface', ChoiceType::class, [
                 'label' => 'Network interface',
-                'attr' => [
-                    'placeholder' => $setting ? $setting->getNetInterface() : 'Network interface',
-                ],
+                'choices' => array_flip($options['interfaces']),
+                'data' => $setting ? $setting->getNetInterface() : 'eth0',
             ])
             ->add('save', ButtonType::class, [
                 'label' => 'Save',
@@ -55,6 +55,7 @@ final class GeneralType extends AbstractType
     {
         $optionsResolver->setDefaults([
             'data_class' => Setting::class,
+            'interfaces' => [],
         ]);
     }
 }
