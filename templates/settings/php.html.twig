@@ -28,18 +28,12 @@
 							</div>
 						</div>
 					</header>
-                    <div class="mt-2 border-2 border-[#f59e0b] dark:border-[#d97706] rounded-lg bg-success-100 px-6 py-5 text-base text-success-700" role="alert">
-                        <div class="flex justify-center">
-                            {{ heroicon('exclamation-triangle', class='w-8 h-8 mb-2 fill-[#f59e0b] dark:fill-[#d97706]') }}
-                        </div>
-                        <p class="mb-4 text-neutral-700 dark:text-neutral-200">
-                            {{ 'Adjustments here can significantly affect the performance and behavior of your applications.' | trans }}
-                        </p>
-                        <hr class="border-neutral-700 dark:border-neutral-200 opacity-30" />
-                        <p class="mb-0 mt-4 text-neutral-700 dark:text-neutral-200">
-                            {{ 'Before making changes, ensure you understand the implications of each setting. Incorrect configurations may disrupt your service. For detailed guidance, refer to the <a href="link-to-documentation" class="text-success-700 hover:underline">PHP configuration documentation</a>'|trans|raw }}
-                        </p>
-                    </div>
+                    {% import '_macros/settings_macro.html.twig' as settings_macro %}
+                    {{ settings_macro.infobox(
+                        'warning', 
+                        'Adjustments here can significantly affect the performance and behavior of your applications.', 
+                        'Before making changes, ensure you understand the implications of each setting. Incorrect configurations may disrupt your service. For detailed guidance, refer to the <a href="link-to-documentation" class="text-success-700 hover:underline">PHP configuration documentation</a>.'
+                    ) }}
 					<div id="content-wrapper" class="relative px-4 prose prose-slate mt-8 dark:prose-dark pb-3 mb-4">
                         {{ form_start(form) }}
                         {% import '_macros/form_macros.html.twig' as form_macros %}
