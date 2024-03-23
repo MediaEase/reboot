@@ -9,6 +9,22 @@
     display: none;
 }
 
+.border-info {
+    border-color: #0ea5e9;
+}
+
+.border-warning {
+    border-color: #f59e0b;
+}
+
+.fill-info {
+    fill: #0ea5e9;
+}
+
+.fill-warning {
+    fill: #f59e0b;
+}
+
 html[data-theme="dark"] {
     #header__moon {
         display: block;
@@ -16,6 +32,22 @@ html[data-theme="dark"] {
 
     .content-background {
         background-color: #171519;
+    }
+
+    .border-info {
+        border-color: #38bdf8;
+    }
+    
+    .border-warning {
+        border-color: #d97706;
+    }
+    
+    .fill-info {
+        fill: #38bdf8;
+    }
+    
+    .fill-warning {
+        fill: #d97706;
     }
 }
 

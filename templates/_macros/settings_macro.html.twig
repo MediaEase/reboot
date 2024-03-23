@@ -1,19 +1,20 @@
-{% macro infobox(context, message1, message2) %}
-    {% set border_color = context == 'info' ? '#0ea5e9' : '#f59e0b' %}
+{% macro infobox(context, message1, message2, external) %}
     {% set icon = context == 'info' ? 'information-circle' : 'exclamation-triangle' %}
-    {% set icon_fill = context == 'info' ? '#0ea5e9' : '#f59e0b' %}
-    {% set heroicon_dark = context == 'info' ? '#38bdf8' : '#d97706' %}
 
-    <div class="mt-2 border-2 border-[{{ border_color }}] dark:border-[{{ heroicon_dark }}] rounded-lg bg-success-100 px-6 py-5 text-base text-success-700" role="alert">
+    <div class="mt-2 border-2 border-{{ context }} dark:border-{{ context }} rounded-lg bg-success-100 px-6 py-5 text-base text-success-700" role="alert">
         <div class="flex justify-center">
-            {{ heroicon(icon, class='w-8 h-8 mb-2 fill-[' ~ icon_fill ~ '] dark:fill-[' ~ heroicon_dark ~ ']') }}
+            {{ heroicon(icon, class='w-8 h-8 mb-2 fill-' ~ context ~ ' dark:fill-' ~ context) }}
         </div>
         <p class="mb-4 text-neutral-700 dark:text-neutral-200">
             {{ message1|trans }}
         </p>
         <hr class="border-neutral-700 dark:border-neutral-200 opacity-30" />
         <p class="mb-0 mt-4 text-neutral-700 dark:text-neutral-200">
-            {{ message2|trans|raw }}
+            {% if external and message2 matches '/<a/' %}
+                {{ message2|replace({'</a>.': heroicon('arrow-top-right-on-square', 'w-4 h-4 ordinal inline-block ml-1 mb-2') ~ '</a>.'})|trans|raw }}
+            {% else %}
+                {{ message2|trans|raw }}
+            {% endif %}
         </p>
     </div>
 {% endmacro %}
