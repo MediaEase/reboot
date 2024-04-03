@@ -27,6 +27,7 @@ class AppStoreUI {
         this.container = container;
         this.storeData = appStoreManager.storeData
         this.apps = appStoreManager.apps;
+        this.userGroup = appStoreManager.userGroup;
     }
 
     /**
@@ -66,7 +67,6 @@ class AppStoreUI {
      */
     renderNavigation(parentContainer) {
         const appTypeCounts = this.appStoreManager.getAppTypeCounts();
-
         const types = Object.keys(appTypeCounts).length > 0 ? Object.keys(appTypeCounts).sort() : ['home'];
         let navItems = this.createNavItems(types, appTypeCounts);
 
@@ -104,16 +104,18 @@ class AppStoreUI {
      * @returns {string} HTML representing the app card.
      */
     renderAppCard(app) {
+        const shouldApplyBlur = this.userGroup !== "full" && this.userGroup !== app.type;
         const logoPath = `/soft_logos/${app.application.logo}`;
+        const cardClasses = `shadow-md gap-x-8 lg:gap-x-8 text-lg content-background dark:content-background light:border-2 border-gray-500 border-opacity-75 rounded-xl hover:shadow-xl p-4`;
         return `
-            <div class="shadow-md gap-x-8 lg:gap-x-8 text-lg content-background dark:content-background light:border-2 border-gray-500 border-opacity-75 rounded-xl hover:shadow-xl p-4">
+            <div class="${cardClasses}">
                 <div class="flex">
                     <div class="flex-shrink-0 w-24 h-24 mb-4 rounded-full mr-4 pr-4">    
                         <img class="h-auto max-w-[90px] p-1 rounded-full" src="${logoPath}" alt="${app.application.name}_logo">
                     </div>
                     <div class="flex-grow ml-4 text-left">
                         <h3 class="mb-2 font-semibold text-xl leading-tight text-gray-900 dark:text-neutral-200">${app.application.name}</h3>
-                        <p class="text-gray-500 text-md mb-2 pb-2">${app.description}</p>
+                        <p class="text-gray-500 text-md mb-2 pb-2 ${shouldApplyBlur ? 'blur-[1px]' : ''}">${app.description}</p>
                         <span class="prose text-sm mt-4 py-3 text-gray-500">Category: 
                             <a href="#" class="text-blue-500 text-sm category-link"data-type="${app.type}" target="blank">
                                 ${app.type}
@@ -133,24 +135,26 @@ class AppStoreUI {
      */
     renderActionButton(app) {
         const isAppInstalled = this.apps.some(installedApp => installedApp.application.id === app.application.id);
+        const isButtonDisabled = this.userGroup !== "full" && this.userGroup !== app.type;
+        const disabledClass = isButtonDisabled ? 'blur-[1px] cursor-not-allowed' : '';
+        const actionButtonClasses = isAppInstalled ? 'bg-red-500 hover:bg-red-600 pl-4' : 'px-4 bg-green-500 hover:bg-green-600 rounded-r-lg';
         const svgPath = isAppInstalled
             ? '<path fill-rule="evenodd" d="M10.5 3.75a6 6 0 0 0-5.98 6.496A5.25 5.25 0 0 0 6.75 20.25H18a4.5 4.5 0 0 0 2.206-8.423 3.75 3.75 0 0 0-4.133-4.303A6.001 6.001 0 0 0 10.5 3.75Zm2.25 6a.75.75 0 0 0-1.5 0v4.94l-1.72-1.72a.75.75 0 0 0-1.06 1.06l3 3a.75.75 0 0 0 1.06 0l3-3a.75.75 0 1 0-1.06-1.06l-1.72 1.72V9.75Z" clip-rule="evenodd"></path>'
             : '<path fill-rule="evenodd" d="M10.5 3.75a6 6 0 0 0-5.98 6.496A5.25 5.25 0 0 0 6.75 20.25H18a4.5 4.5 0 0 0 2.206-8.423 3.75 3.75 0 0 0-4.133-4.303A6.001 6.001 0 0 0 10.5 3.75Zm2.25 6a.75.75 0 0 0-1.5 0v4.94l-1.72-1.72a.75.75 0 0 0-1.06 1.06l3 3a.75.75 0 0 0 1.06 0l3-3a.75.75 0 1 0-1.06-1.06l-1.72 1.72V9.75Z" clip-rule="evenodd"></path>';
 
-        const actionButtonClasses = isAppInstalled ? 'bg-red-500 hover:bg-red-600 pl-4' : 'px-4 bg-green-500 hover:bg-green-600 rounded-r-lg';
         const popoverArrowSvg = '<path d="m19.5 8.25-7.5 7.5-7.5-7.5" stroke-linecap="round" stroke-linejoin="round"></path>';
         const popoverClasses = isAppInstalled ? 'bg-red-500 hover:bg-red-600 popover-arrow-button' : 'hidden';
+        const links = isButtonDisabled ? ['Remove'] : ['Backup', 'Reinstall', 'Remove', 'Reset', 'Update'];
+        const listItems = links.map(link => `<li><a>${link}</a></li>`).join('');
         const popoverButton = `
         <div class="dropdown dropdown-bottom">
-            <div tabindex="0" role="button" class="rounded-r-lg inline-flex items-center py-2 ${popoverClasses}">
+            <div tabindex="0" role="button" class="rounded-r-lg inline-flex items-center py-2 ${popoverClasses} ${isButtonDisabled ? 'blur-[2px]' : ''}">
                 <svg class="w-7 h-7 fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" data-slot="icon">
                     ${popoverArrowSvg}
                 </svg>
             </div>
-            <ul tabindex="0" class="dropdown-content z-[1000] menu p-2 shadow w-52 text-xs bg-base-100 bg-opacity-95">
-                <li><a>Backup</a></li>
-                <li><a>Reinstall</a></li>
-                <li><a>Reset</a></li>
+            <ul tabindex="0" class="dropdown-content z-[1000] menu p-2 shadow w-52 text-xs bg-base-100 bg-opacity-95 blur-none">
+                ${listItems}
             </ul>
         </div>
         `;
@@ -158,8 +162,9 @@ class AppStoreUI {
         const action = isAppInstalled ? 'uninstall' : 'install';
         const actionButton = `
         <div class="relative inline-flex items-center">
-            <a class="rounded-l-lg inline-flex items-center cursor-pointer py-1 ${actionButtonClasses}"
-                data-action="click->storeactions#handleAction"
+            <a class="${actionButtonClasses} ${disabledClass} rounded-l-lg inline-flex items-center cursor-pointer py-1"
+                ${isButtonDisabled ? 'disabled' : ''}
+                data-action="${isButtonDisabled ? '' : 'click->storeactions#handleAction'}"
                 data-storeactions-url-value="/api/store"
                 data-app-name="${app.application.altname}"
                 data-action-type="${action}">

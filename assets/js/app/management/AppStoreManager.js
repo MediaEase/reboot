@@ -18,10 +18,12 @@ class AppStoreManager {
      * Creates an instance of AppStoreManager.
      * @param {Array} storeData - The store data from the API.
      * @param {Array} appsData - The apps data from the API.
+     * @param {Array} userGroup - The user group data from the API.
      */
-    constructor(storeData, appsData) {
+    constructor(storeData, appsData, userGroup) {
         this.apps = appsData;
         this.storeData = storeData.filter(app => app.application.name !== 'AppStore');
+        this.userGroup = userGroup;
     }
 
     /**

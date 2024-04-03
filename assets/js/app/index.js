@@ -10,13 +10,14 @@ import AppTableUI from './ui/AppTableUI';
         /* Fetch data from the API */
         const storeData = await fetchData('/api/store');
         const appsData = await fetchData('/api/me/my_apps');
-        const preferencesData = await fetchData('/api/me/preferences');
-
+        const userData = await fetchData('/api/me');
+        const userGroup = userData.group.name;
+        const preferencesData = userData.preference;
         /* Initialize the application */
         const container = document.querySelector('#appStoreModal #appStoreContainer');
 
-        const appStoreManager = new AppStoreManager(storeData, appsData);
-        const appStoreUI = new AppStoreUI(appStoreManager, container, storeData);
+        const appStoreManager = new AppStoreManager(storeData, appsData, userGroup);
+        const appStoreUI = new AppStoreUI(appStoreManager, container);
         appStoreUI.initialize();
 
         const appManager = new AppManager(5000, appsData, preferencesData);
