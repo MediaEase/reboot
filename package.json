@@ -43,6 +43,7 @@
     "stimulus-popover": "^6.2.0",
     "stimulus-use": "^0.52.2",
     "tailwindcss-base-buttons": "^1.0.1",
+    "tom-select": "^2.3.1",
     "turbo-view-transitions": "^0.3.0",
     "tw-elements": "1.*"
   }
