@@ -38,7 +38,7 @@ final class PhpType extends AbstractType
             ->add('save', ButtonType::class, [
                 'label' => 'Save',
                 'icon_before' => 'check',
-                'button_class' => 'bg-gradient-to-r from-green-400 to-blue-500 text-white font-bold py-2 px-4 rounded',
+                'button_class' => 'bg-gradient-to-r from-green-400 to-green-600 text-white font-bold py-2 px-4 rounded',
                 'icon_class' => 'w-8 h-8 fill-white button-icon',
             ])
         ;
