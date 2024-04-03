@@ -15,8 +15,13 @@
 		{% endblock %}
 	</head>
 	<body class="bg-fixed background-cover">
-		<div class="bottom-0 left-0 right-0 top-0 h-full w-full bg-fixed p-6 text-center text-white/80"> {% block body %}{% endblock %}
-			</div>
-			<script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/tw-elements.umd.min.js"></script>
-		</body>
-	</html>
+		<div class="bottom-0 left-0 right-0 top-0 h-full w-full bg-fixed p-6 text-center text-white/80"
+			{% if backdrop is not null %}
+				style="background-image: url('{{ backdrop }}');"
+				{% endif %}
+			>
+			{% block body %}{% endblock %}
+		</div>
+		<script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/tw-elements.umd.min.js"></script>
+	</body>
+</html>

@@ -15,7 +15,11 @@
 			{{ encore_entry_script_tags('dashboard') }}
 		{% endblock %}
 	</head>
-	<body class="bg-fixed background-cover" id="page-content" data-container-id={{ user.apiKey }}>
+	<body class="bg-fixed background-cover" id="page-content" data-container-id={{ user.apiKey }}
+		{% if user.preference and user.preference.backdrop is not null %}
+			style="background-image: url('{{ user.preference.backdrop }}');"
+		{% endif %}
+		>
 		{% include "components/navigation/sidebar.html.twig" %}
 		<div class="bottom-0 left-0 right-0 top-0 h-full w-full bg-fixed p-2 text-center text-white/80"> {% block body %}{% endblock %}
 			</div>

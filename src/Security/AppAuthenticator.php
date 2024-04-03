@@ -48,27 +48,41 @@ final class AppAuthenticator extends AbstractLoginFormAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        $firewall = $this->getTargetPath($request->getSession(), $firewallName);
-        $targetUrl = $firewall !== null && $firewall !== '' ? $firewall : $this->urlGenerator->generate('app_home');
-        $username = $request->request->get('username');
-        $password = $request->request->get('password');
-        $url = 'http://localhost:8000/api/login_check';
         try {
-            $apiResponse = $this->sendRequest($url, $username, $password);
-            $apiToken = $apiResponse['token'];
+            $targetUrl = $this->urlGenerator->generate('app_home');
+
+            $username = $request->request->get('username');
+            $password = $request->request->get('password');
+            $host = $request->server->get('HTTP_HOST');
+            $jwtAccessToken = $this->getJwtAccessToken($username, $password, $host);
+            $expire = time() + 3600;
+            $cookie = new Cookie(
+                'thegate',
+                $jwtAccessToken,
+                $expire,
+                '/',
+                null,
+                false,
+                false,
+                false,
+                'lax'
+            );
             $redirectResponse = new RedirectResponse($targetUrl);
-            $cookie = new Cookie('thegate', $apiToken, time() + 3600, '/', null, false, false);
             $redirectResponse->headers->setCookie($cookie);
 
             return $redirectResponse;
-        } catch (\Exception) {
+        } catch (\Exception $exception) {
             return new RedirectResponse($this->urlGenerator->generate('app_login'));
         }
     }
 
-    protected function getLoginUrl(Request $request): string
+    private function getJwtAccessToken(string $username, string $password, string $host): string
     {
-        return $this->urlGenerator->generate(self::LOGIN_ROUTE);
+        $url = sprintf('http://%s/api/login_check', $host);
+        $apiResponse = $this->sendRequest($url, $username, $password);
+        dump($apiResponse['token']);
+
+        return $apiResponse['token'];
     }
 
     /**
@@ -87,5 +101,10 @@ final class AppAuthenticator extends AbstractLoginFormAuthenticator
         ]);
 
         return $apiResponse->toArray();
+    }
+
+    protected function getLoginUrl(Request $request): string
+    {
+        return $this->urlGenerator->generate(self::LOGIN_ROUTE);
     }
 }
