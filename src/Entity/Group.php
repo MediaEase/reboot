@@ -21,14 +21,14 @@ class Group
     private ?int $id = null;
 
     #[ORM\Column(length: 60)]
-    #[Groups(['group:info', 'application:info', 'services:info,', 'store:info'])]
+    #[Groups(['group:info', 'application:info', 'services:info,', 'store:info', 'user:info'])]
     private ?string $name = null;
 
     /**
      * @var Collection<int, User>
      */
     #[ORM\OneToMany(mappedBy: 'group', targetEntity: User::class)]
-    #[Groups(['group:info', 'application:info', 'user:info'])]
+    #[Groups(['group:info', 'application:info'])]
     private Collection $users;
 
     /**
@@ -73,7 +73,7 @@ class Group
     {
         if (! $this->users->contains($user)) {
             $this->users->add($user);
-            $user->setAppGroup($this);
+            $user->setGroup($this);
         }
 
         return $this;
@@ -86,11 +86,11 @@ class Group
             return $this;
         }
 
-        if ($user->getAppGroup() !== $this) {
+        if ($user->getGroup() !== $this) {
             return $this;
         }
 
-        $user->setAppGroup(null);
+        $user->setGroup(null);
 
         return $this;
     }

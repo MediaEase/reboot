@@ -43,6 +43,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToOne(inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['user:info'])]
     private ?Group $group = null;
 
     /**
@@ -157,12 +158,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getAppGroup(): ?Group
+    public function getGroup(): ?Group
     {
         return $this->group;
     }
 
-    public function setAppGroup(?Group $group): static
+    public function setGroup(?Group $group): static
     {
         $this->group = $group;
 

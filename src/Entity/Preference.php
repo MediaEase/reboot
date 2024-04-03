@@ -48,6 +48,10 @@ class Preference
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
     private ?User $user = null;
 
+    #[ORM\Column(length: 255)]
+    #[Groups(['user:info', 'preferences:info', 'preferences:update'])]
+    private ?string $backdrop = 'user-backdrop.jpg';
+
     public function getId(): ?int
     {
         return $this->id;
@@ -137,6 +141,18 @@ class Preference
         }
 
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getBackdrop(): ?string
+    {
+        return $this->backdrop;
+    }
+
+    public function setBackdrop(string $backdrop): static
+    {
+        $this->backdrop = $backdrop;
 
         return $this;
     }

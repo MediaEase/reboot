@@ -33,7 +33,7 @@ class Store
     private ?bool $isAvailable = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['store:info', 'application:info', 'group:info'])]
+    #[Groups(['store:info', 'application:info', 'group:info', 'user:info'])]
     private ?string $type = null;
 
     #[ORM\OneToOne(mappedBy: 'store', cascade: ['persist', 'remove'])]
