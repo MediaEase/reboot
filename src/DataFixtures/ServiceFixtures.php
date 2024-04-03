@@ -243,15 +243,16 @@ final class ServiceFixtures extends BaseFixtures implements DependentFixtureInte
     private function getPaths(string $username, string $appReference, int $defaultPort): array
     {
         $appLower = strtolower(str_replace(' ', '', $appReference));
-        $subdomain = array_rand([true, false]) !== 0 && (array_rand([true, false]) !== '' && array_rand([true, false]) !== '0') && array_rand([true, false]) !== [] ? sprintf("'subdomain' => %s.%s,", $username, $appLower) : "'subdomain' => false,";
+        $subdomainDecision = array_rand([true, false]) !== 0 && (array_rand([true, false]) !== '' && array_rand([true, false]) !== '0') && array_rand([true, false]) !== [];
+        $subdomainValue = $subdomainDecision ? sprintf('%s.%s', $username, $appLower) : false;
 
         return [
+            'subdomain' => $subdomainValue,
             'config_path' => '/home/'.$username.'/.config/'.$appLower,
             'database_path' => '/home/'.$username.'/.config/'.$appLower.'/database.db',
             'caddyfile_path' => '/etc/nginx/sites-enabled/'.$username.'.'.$appLower.'.conf',
             'backup_path' => '/home/'.$username.'/.mediaease/backups/'.$appLower,
-            'root_url' => 'https://localhost:'.$defaultPort.'/'.$username.'/'.$appLower,
-            $subdomain,
+            'root_url' => 'https://localhost:'.$defaultPort.'/'.$username.'/'.$appLower
         ];
     }
 
