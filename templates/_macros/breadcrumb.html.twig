@@ -1,7 +1,7 @@
 {% macro add(current_page_title, docs_url) %}
-    <header id="header" class="relative bg-transparent">
+    <header id="header" class="relative bg-transparent dark:bg-gray-950/10 rounded-lg">
         <div class="px-4">
-            <p class="text-left text-2xl mb-2 leading-6 font-semibold text-sky-500 dark:text-sky-400">{{ 'Settings'|trans }}</p>
+            <p class="text-left text-2xl mb-2 leading-6 font-bold text-sky-600 dark:text-sky-400" style="text-shadow: 0px 0px 5px rgba(56,189,248,0.4);">{{ 'Settings'|trans }}</p>
             <div class="flex items-center">
                 <h1 class="inline-block text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight dark:text-slate-200">
                     {{ current_page_title|trans }}
