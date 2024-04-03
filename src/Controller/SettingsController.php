@@ -124,17 +124,6 @@ final class SettingsController extends AbstractController
         return $this->render('settings/help.html.twig');
     }
 
-    #[Route('/system/access-groups', name: 'access_groups')]
-    #[IsGranted('ROLE_ADMIN')]
-    public function accessGroupsSettings(): \Symfony\Component\HttpFoundation\Response
-    {
-        $user = $this->getUser();
-
-        return $this->render('settings/access_groups.html.twig', [
-            'user' => $user,
-        ]);
-    }
-
     #[Route('/system/php', name: 'system_php')]
     #[IsGranted('ROLE_ADMIN')]
     public function systemPhpSetting(Request $request, PhpIniUpdater $phpIniUpdater): \Symfony\Component\HttpFoundation\Response

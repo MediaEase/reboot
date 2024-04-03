@@ -18,9 +18,12 @@
                         'While these settings do not directly impact the core functionality of your system, it\'s good to ensure they accurately represent your setup. For further details, you may refer to the <a href="link-to-documentation" class="text-sky-500 dark:text-sky-400 hover:underline">General Settings documentation</a>.',
 						'external'
                     ) }}
-					<div id="content-wrapper" class="relative px-4 prose prose-slate mt-8 dark:prose-dark pb-3 mb-4">
-						
-					</div>
+					<section class="mb-32 mt-6 text-center text-slate-900 dark:text-slate-200">
+						<div id="list" class="container mx-auto card bg-gray-200/85 dark:bg-gray-900/85 px-2 py-6">
+                            <h1>Create new Group</h1>
+                            {{ include('settings/access_groups/_form.html.twig', {'button_label': 'Create', 'action': 'create'}) }}
+                        </div>
+					</section>
 				</div>
 			</div>
 		</div>
