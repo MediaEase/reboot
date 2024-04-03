@@ -18,7 +18,7 @@
                         'Before making changes, ensure you understand the implications of each setting. Incorrect configurations may disrupt your service. For detailed guidance, refer to the <a href="link-to-documentation" class="text-sky-500 dark:text-sky-400 hover:underline">PHP configuration documentation</a>.',
                         'external'
                     ) }}
-					<div id="content-wrapper" class="relative px-4 prose prose-slate mt-8 dark:prose-dark pb-3 mb-4">
+					<div id="content-wrapper" class="relative px-4 prose prose-slate mt-8 dark:prose-dark pb-3 mb-4 bg-gray-200/55 dark:bg-gray-900/85 rounded-lg">
                         {{ form_start(form) }}
                             <div class="flex flex-wrap -mx-3 xl:py-2">
                                 {% for field in form %}
@@ -27,7 +27,7 @@
                                             {% set fieldName = field.vars.name %}
                                             {{ form_macros.label_with_icon(form, fieldName, 'php') }}
                                             {% if 'force_extra_parameters' in field.vars.name %}
-                                                {{ form_widget(field, {'attr': {'class': 'form-widget cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-600 disabled:border-gray-300 dark:disabled:bg-gray-700 dark:disabled:text-gray-400 dark:disabled:border-gray-600 disabled:shadow-none'}}) }}
+                                                {{ form_widget(field, {'attr': {'class': 'form-widget cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-600 disabled:border-gray-300 dark:disabled:bg-gray-700 dark:disabled:text-gray-400 dark:disabled:border-gray-600 disabled:shadow-none'}}) }}
                                             {% else %}
                                                 {{ form_widget(field, {'attr': {'class': 'form-widget'}}) }}
                                             {% endif %}
