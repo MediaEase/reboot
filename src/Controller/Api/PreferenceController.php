@@ -5,26 +5,28 @@ declare(strict_types=1);
 namespace App\Controller\Api;
 
 use App\Entity\User;
-use App\Repository\PreferenceRepository;
-use App\Repository\WidgetRepository;
 use App\Service\PinService;
+use App\Repository\GroupRepository;
+use App\Repository\WidgetRepository;
 use App\Validator\PreferenceValidator;
+use App\Repository\PreferenceRepository;
 use App\Validator\WidgetToggleValidator;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[Route('/api/me/preferences', name: 'api_me_')]
+#[Route('/api/me', name: 'api_me_')]
 #[IsGranted('ROLE_USER')]
 final class PreferenceController extends AbstractController
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
+        private GroupRepository $groupRepository,
         private PreferenceRepository $preferenceRepository,
         private PinService $pinService,
         private PreferenceValidator $preferenceValidator,
@@ -33,7 +35,13 @@ final class PreferenceController extends AbstractController
     ) {
     }
 
-    #[Route('', name: 'my_preferences', methods: ['GET'])]
+    #[Route('', name: 'my_profile', methods: ['GET'])]
+    public function getProfile(#[CurrentUser] ?User $user): Response
+    {
+        return $this->json($user, Response::HTTP_OK, [], ['groups' => 'user:info']);
+    }
+
+    #[Route('/preferences', name: 'my_preferences', methods: ['GET'])]
     public function getPreferences(#[CurrentUser] ?User $user, Request $request): Response
     {
         $preferences = $this->preferenceRepository->findOneBy(['user' => $user]);
@@ -41,7 +49,7 @@ final class PreferenceController extends AbstractController
         return $this->json($preferences, Response::HTTP_OK, [], ['groups' => 'preferences:info']);
     }
 
-    #[Route('/pin', name: 'pin_app', methods: ['PATCH'])]
+    #[Route('/preferences/pin', name: 'pin_app', methods: ['PATCH'])]
     public function pinApp(#[CurrentUser] ?User $user, Request $request): Response
     {
         if (! $user instanceof User) {
@@ -60,7 +68,7 @@ final class PreferenceController extends AbstractController
         }
     }
 
-    #[Route('/widgets', name: 'update_widgets', methods: ['PATCH'])]
+    #[Route('/preferences/widgets', name: 'update_widgets', methods: ['PATCH'])]
     public function updateWidgets(#[CurrentUser] ?User $user, Request $request): Response
     {
         try {
@@ -79,7 +87,7 @@ final class PreferenceController extends AbstractController
         }
     }
 
-    #[Route('/{preferenceKey}', name: 'update_preference', methods: ['PATCH'])]
+    #[Route('/preferences/{preferenceKey}', name: 'update_preference', methods: ['PATCH'])]
     public function updatePreference(
         #[CurrentUser]
         ?User $user,
@@ -103,6 +111,14 @@ final class PreferenceController extends AbstractController
         } catch (\InvalidArgumentException $invalidArgumentException) {
             return $this->json(['message' => $invalidArgumentException->getMessage()], Response::HTTP_BAD_REQUEST);
         }
+    }
+
+    #[Route('/group', name: 'getUserGroups', methods: ['GET'])]
+    public function getUserGroups(User $user): Response
+    {
+        $groups = $this->groupRepository->findGroupsByUser($user);
+
+        return $this->json($groups, Response::HTTP_OK, [], ['groups' => 'group:info']);
     }
 
     /**

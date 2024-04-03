@@ -373,6 +373,23 @@ nelmio_api_doc:
               $ref: '#/components/responses/403'
             '500':
               $ref: '#/components/responses/500'
+      /api/me:
+        get:
+          tags:
+            - Profile
+          summary: Get user profile
+          operationId: getProfile
+          responses:
+            '200':
+              description: Returns user profile
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: '#/components/schemas/User'
+            '401':
+              $ref: '#/components/responses/401'
+            '403':
+              $ref: '#/components/responses/403'
       /api/me/preferences:
         get:
           tags:
@@ -1092,6 +1109,11 @@ nelmio_api_doc:
               type: array
               items:
                 type: string
+            group:
+              type: object
+              properties:
+                name:
+                  type: string
             mounts:
               type: array
               items:
