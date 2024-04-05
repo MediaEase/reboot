@@ -1,0 +1,16 @@
+{% macro badge(content, context) %}
+    {% if context == 'user_role' %}
+        {% set content = content|replace({'ROLE_': ''})|lower %}
+        {% set backgroundColor = 'bg-sky-700' %}
+    {% elseif context == 'user_group' %}
+        {% set content = content|lower ~ ' group' %}
+        {% set backgroundColor = 'bg-rose-700' %}
+    {% endif %}
+    <div class="relative inline-block select-none whitespace-nowrap rounded-full {{ backgroundColor }} px-3.5 sm:py-1.5 align-baseline text-2xl md:text-sm font-medium md:font-light md:font-mono uppercase text-white">
+        <div class="mt-px">
+            <p class="block capitalize text-white antialiased md:mb-0 md:mt-0 xs:mb-1.5 xs:mt-1">
+                {{ content }}
+            </p>
+        </div>
+    </div>
+{% endmacro %}
