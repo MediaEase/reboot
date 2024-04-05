@@ -23,4 +23,5 @@ return [
     Symfony\UX\Turbo\TurboBundle::class => ['all' => true],
     Nelmio\ApiDocBundle\NelmioApiDocBundle::class => ['all' => true],
     Lexik\Bundle\JWTAuthenticationBundle\LexikJWTAuthenticationBundle::class => ['all' => true],
+    Pyrrah\GravatarBundle\PyrrahGravatarBundle::class => ['all' => true],
 ];
