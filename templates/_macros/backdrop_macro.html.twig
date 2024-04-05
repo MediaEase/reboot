@@ -1,3 +1,11 @@
+{% macro init(user) %}
+    {% set backdropPath = asset('default/default-backdrop.jpg') %}
+    {% if user.preference and user.preference.backdrop %}
+        {% set backdropPath = user.preference.backdrop starts with 'http' ? user.preference.backdrop : asset('uploads/' ~ user.preference.backdrop) %}
+    {% endif %}
+    style="background-image: url('{{ backdropPath }}');"
+{% endmacro %}
+
 {% macro splashscreen(settings) %}
     {% set backdropPath = asset('default/default-backdrop.jpg') %}
     {% if settings and settings.backdrop %}

@@ -15,14 +15,14 @@
 			{{ encore_entry_script_tags('dashboard') }}
 		{% endblock %}
 	</head>
-	<body class="bg-fixed background-cover" id="page-content" data-container-id={{ user.apiKey }}
-		{% if user.preference and user.preference.backdrop is not null %}
-			style="background-image: url('{{ user.preference.backdrop }}');"
-		{% endif %}
-		>
+	<body class="bg-fixed bg-gray-100 dark:bg-gray-800" id="page-content" data-container-id={{ user.apiKey }}>
 		{% include "components/navigation/sidebar.html.twig" %}
-		<div class="bottom-0 left-0 right-0 top-0 h-full w-full bg-fixed p-2 text-center text-white/80"> {% block body %}{% endblock %}
-			</div>
-			<script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/tw-elements.umd.min.js"></script>
-		</body>
-	</html>
+		{% import '_macros/backdrop_macro.html.twig' as backdrop %}
+		<div class="bottom-0 left-0 right-0 top-0 h-full w-full bg-fixed p-6 text-center background-cover text-white/80"
+			{{ backdrop.init(user) }}
+			>
+			{% block body %}{% endblock %}
+		</div>
+		<script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/tw-elements.umd.min.js"></script>
+	</body>
+</html>
