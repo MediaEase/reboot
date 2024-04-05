@@ -25,8 +25,9 @@
 			id="pinned-apps" 
 			data-controller="pins">
 		</div>
-		<a class="flex items-center justify-center w-12 h-12 mt-auto rounded bg-gray-900 hover:bg-gray-700 hover:text-gray-300" href="#">
-			{{ heroicon('user-circle', "w-6 h-6 " ~ (is_active_route('app_home') ? 'fill-sky-400 dark:fill-sky-500' : '')) }}
+		<a class="flex items-center justify-center w-12 h-12 mt-auto rounded-full bg-gray-900 hover:bg-gray-700 hover:text-gray-300" href="#">
+			{% import '_macros/profile_macro.html.twig' as profile %}
+			{{ profile.avatar_link(user) }}
 		</a>
 	</div>
 </nav>

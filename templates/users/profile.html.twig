@@ -6,10 +6,10 @@
 {% block body %}
 	{% import '_macros/settings_macro.html.twig' as settings_macro %}
 	{% import '_macros/form_macros.html.twig' as form_macros %}
-    {% import '_macros/profile_banner_macro.html.twig' as profile_banner %}
+    {% import '_macros/profile_macro.html.twig' as profile %}
 	<div class="max-w-[98%] md:mx-auto md:px-auto lg:pl-[5rem]">
         <div class="xl:pt-[.3615rem] pt-[6.5rem]">
-            {{ profile_banner.init(user) }}
+            {{ profile.banner(user) }}
         </div>
         <div class="xl:pt-[2.3615rem] pt-[6.5rem] text-gray-600 dark:text-slate-200">
             <div class="flex flex-wrap -mx-3">
