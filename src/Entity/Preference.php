@@ -52,6 +52,13 @@ class Preference
     #[Groups(['user:info', 'preferences:info', 'preferences:update'])]
     private ?string $backdrop = 'user-backdrop.jpg';
 
+    #[ORM\Column(length: 255)]
+    #[Groups(['user:info', 'preferences:info', 'preferences:update'])]
+    private ?string $avatar = 'user-avatar.jpg';
+
+    #[Groups(['user:info', 'preferences:info', 'preferences:update'])]
+    private ?bool $isFullAppListingEnabled = true;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -153,6 +160,30 @@ class Preference
     public function setBackdrop(string $backdrop): static
     {
         $this->backdrop = $backdrop;
+
+        return $this;
+    }
+
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(string $avatar): static
+    {
+        $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    public function isIsFullAppListingEnabled(): ?bool
+    {
+        return $this->isFullAppListingEnabled;
+    }
+
+    public function setIsFullAppListingEnabled(bool $isFullAppListingEnabled): static
+    {
+        $this->isFullAppListingEnabled = $isFullAppListingEnabled;
 
         return $this;
     }

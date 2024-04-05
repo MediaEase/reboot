@@ -31,9 +31,7 @@ final class SecurityController extends AbstractController
         $lastUsername = $authenticationUtils->getLastUsername();
         $settingsRepository = $this->entityManager->getRepository(Setting::class);
         $settings = $settingsRepository->find(1);
-        $backdropImage = $settings ? $settings->getBackdrop() : null;
-
-        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error, 'backdrop' => $backdropImage]);
+        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error, 'settings' => $settings]);
     }
 
     #[Route(path: '/logout', name: 'app_logout')]

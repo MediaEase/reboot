@@ -1,0 +1,7 @@
+{% macro splashscreen(settings) %}
+    {% set backdropPath = asset('default/default-backdrop.jpg') %}
+    {% if settings and settings.backdrop %}
+        {% set backdropPath = settings.backdrop starts with 'http' ? settings.backdrop : asset('uploads/' ~ settings.backdrop) %}
+    {% endif %}
+    style="background-image: url('{{ backdropPath }}');"
+{% endmacro %}

@@ -47,7 +47,7 @@ final class UserFixtures extends Fixture implements DependentFixtureInterface, F
 
         $user->setUsername($username)
             ->setRoles([$role])
-            ->setAppGroup($group)
+            ->setGroup($group)
             ->setEmail($username.'@example.com')
             ->setIsVerified(true)
             ->setPassword($this->userPasswordHasher->hashPassword($user, 'password'))
