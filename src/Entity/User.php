@@ -4,35 +4,45 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+use App\Repository\UserRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Security\Core\User\UserInterface;
+use OpenApi\Attributes as OA;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
+use App\Entity\Group;
+use JMS\Serializer\Annotation\Expose;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
+#[OA\Schema(description: 'User entity representing a user in the system.')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    public ArrayCollection $preferences;
+    public const GROUP_GET_USERS = 'get:users';
+    public const GROUP_GET_USER_LIMITED = 'get:user-limited';
+    public const GROUP_GET_USER = 'get:user';
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['application:info', 'user:info'])]
+    #[Groups([self::GROUP_GET_USER, self::GROUP_GET_USERS])]
+    #[OA\Property(description: 'The unique identifier of the user.', format: 'int')]
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
-    #[Groups(['application:info', 'user:info', 'group:info'])]
+    #[Groups([self::GROUP_GET_USER_LIMITED, self::GROUP_GET_USER, self::GROUP_GET_USERS])]
+    #[OA\Property(description: 'The username of the user.', maxLength: 180)]
     private ?string $username = null;
 
     /**
      * @var array<string>
      */
     #[ORM\Column]
-    #[Groups(['user:info'])]
+    #[Groups([self::GROUP_GET_USER_LIMITED, self::GROUP_GET_USER, self::GROUP_GET_USERS])]
+    #[OA\Property(description: 'The roles of the user.', type: 'array', items: new OA\Items(type: 'string'))]
     private array $roles = [];
 
     /**
@@ -43,42 +53,51 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToOne(inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['user:info'])]
+    #[Groups([self::GROUP_GET_USER_LIMITED, self::GROUP_GET_USER, self::GROUP_GET_USERS])]
+    #[OA\Property(description: 'The group of the user.', ref: '#/components/schemas/Group.item')]
+    #[MaxDepth(2)]
     private ?Group $group = null;
 
     /**
      * @var Collection<int, Mount>
      */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Mount::class, cascade: ['persist'])]
-    #[Groups(['user:info'])]
+    #[OA\Property(description: 'The mounts of the user.', type: 'array', items: new OA\Items(ref: '#/components/schemas/Mount.item'))]
+    #[Groups([self::GROUP_GET_USER_LIMITED, self::GROUP_GET_USER])]
+    #[MaxDepth(2)]
     private Collection $mounts;
 
     /**
      * @var Collection<int, Service>
      */
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Service::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Service::class, cascade: ['persist'])]
+    #[OA\Property(description: 'The services of the user.', type: 'array', items: new OA\Items(ref: '#/components/schemas/Service.item'))]
+    #[Groups([self::GROUP_GET_USER_LIMITED, self::GROUP_GET_USER])]
+    #[MaxDepth(2)]
     private Collection $services;
 
     #[ORM\Column(length: 180, nullable: true)]
-    #[Groups(['user:info'])]
+    #[Groups([self::GROUP_GET_USER])]
+    #[OA\Property(description: 'The email of the user.', maxLength: 180)]
     private ?string $email = null;
 
     #[ORM\Column]
-    #[Groups(['user:info'])]
+    #[Groups([self::GROUP_GET_USER, self::GROUP_GET_USERS])]
+    #[OA\Property(description: 'The verification status of the user.', type: 'boolean')]
     private ?bool $isVerified = null;
 
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: Preference::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
-    #[Groups(['user:info'])]
-    private ?Preference $preference = null;
+    #[OA\Property(description: 'The preferences of the user.', ref: '#/components/schemas/Preference.item')]
+    #[Groups([self::GROUP_GET_USER_LIMITED, self::GROUP_GET_USER])]
+    private Preference|null $preferences = null;
 
     #[ORM\Column(length: 32, nullable: true)]
-    #[Groups(['user:info'])]
+    #[Groups([self::GROUP_GET_USER_LIMITED, self::GROUP_GET_USER])]
     private ?string $apiKey = null;
 
     public function __construct()
     {
-        $this->preferences = new ArrayCollection();
         $this->mounts = new ArrayCollection();
         $this->services = new ArrayCollection();
     }
@@ -207,7 +226,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection<int, Service>
      */
-    public function getService(): Collection
+    public function getServices(): Collection
     {
         return $this->services;
     }
@@ -262,14 +281,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getPreference(): ?Preference
+    public function getPreferences(): ?Preference 
     {
-        return $this->preference;
+        return $this->preferences;
     }
 
-    public function setPreference(Preference $preference): static
+    public function setPreferences(?Preference $preferences): self
     {
-        $this->preference = $preference;
+        $this->preferences = $preferences;
 
         return $this;
     }

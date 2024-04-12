@@ -9,33 +9,37 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use OpenApi\Attributes as OA;
 
 #[ORM\Entity(repositoryClass: GroupRepository::class)]
 #[ORM\Table(name: '`group`')]
+#[OA\Schema(description: 'Group entity representing a user group in the system.')]
 class Group
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['group:info', 'application:info'])]
+    #[Groups([Store::GROUP_GET_STORES])]
+    #[OA\Property(description: 'The unique identifier of the group.', format: 'int')]
     private ?int $id = null;
 
     #[ORM\Column(length: 60)]
-    #[Groups(['group:info', 'application:info', 'services:info,', 'store:info', 'user:info'])]
+    #[Groups([Store::GROUP_GET_STORES, User::GROUP_GET_USER_LIMITED, User::GROUP_GET_USER, User::GROUP_GET_USERS])]
+    #[OA\Property(description: 'The name of the group.', maxLength: 60)]
     private ?string $name = null;
 
     /**
      * @var Collection<int, User>
      */
     #[ORM\OneToMany(mappedBy: 'group', targetEntity: User::class)]
-    #[Groups(['group:info', 'application:info'])]
+    #[OA\Property(description: 'The users in the group.', type: 'array', items: new OA\Items(ref: '#/components/schemas/User.item'))]
     private Collection $users;
 
     /**
      * @var Collection<int, Store>
      */
     #[ORM\ManyToMany(targetEntity: Store::class, inversedBy: 'groups')]
-    #[Groups(['group:info', 'store:info', 'application:info'])]
+    #[OA\Property(description: 'The stores associated with the group.', type: 'array', items: new OA\Items(ref: '#/components/schemas/Store.item'))]
     private Collection $stores;
 
     public function __construct()

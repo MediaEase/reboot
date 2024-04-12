@@ -10,60 +10,74 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use OpenApi\Attributes as OA;
 
 #[ORM\Entity(repositoryClass: ServiceRepository::class)]
+#[ORM\Table(name: '`service`')]
+#[OA\Schema(description: 'Service entity representing a service in the system.')]
 class Service
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['services:info', 'services:update'])]
+    #[Groups([User::GROUP_GET_USER, User::GROUP_GET_USERS])]
+    #[OA\Property(description: 'The unique identifier of the service.', format: 'int')]
     private ?int $id = null;
 
     #[ORM\Column(length: 60)]
-    #[Groups(['services:info', 'services:update'])]
+    #[Groups([User::GROUP_GET_USER, User::GROUP_GET_USERS, User::GROUP_GET_USER_LIMITED, User::GROUP_GET_USER])]
+    #[OA\Property(description: 'The name of the service.', maxLength: 60)]
     private ?string $name = null;
 
     #[ORM\Column(length: 40, nullable: true)]
-    #[Groups(['services:info', 'services:update'])]
+    #[Groups([User::GROUP_GET_USER_LIMITED])]
+    #[OA\Property(description: 'The version of the service.', maxLength: 40)]
     private ?string $version = null;
 
     #[ORM\Column(length: 25, nullable: true)]
-    #[Groups(['services:info', 'services:update'])]
+    #[Groups([User::GROUP_GET_USER_LIMITED])]
+    #[OA\Property(description: 'The status of the service.', maxLength: 25)]
     private ?string $status = null;
 
     #[ORM\Column(length: 80, nullable: true)]
-    #[Groups(['services:info', 'services:update'])]
+    #[Groups([User::GROUP_GET_USER_LIMITED])]
+    #[OA\Property(description: 'The API key of the service.', maxLength: 80)]
     private ?string $apikey = null;
 
     /**
      * @var ?array<string>
      */
     #[ORM\Column(type: Types::JSON, nullable: true)]
-    #[Groups(['services:info', 'services:update'])]
+    #[Groups([User::GROUP_GET_USER, User::GROUP_GET_USER_LIMITED])]
+    #[OA\Property(description: 'The ports used by the service.', type: 'array', items: new OA\Items(type: 'string'))]
     private ?array $ports = null;
 
     /**
      * @var ?array<string>
      */
     #[ORM\Column(type: Types::JSON, nullable: true)]
-    #[Groups(['services:info', 'services:update'])]
+    #[Groups([User::GROUP_GET_USER, User::GROUP_GET_USER_LIMITED])]
+    #[OA\Property(description: 'The configuration of the service.', type: 'array', items: new OA\Items(type: 'string'))]
     private ?array $configuration = null;
 
     #[ORM\ManyToOne(inversedBy: 'services')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['services:info', 'services:update'])]
+    #[OA\Property(description: 'The application associated with the service.', ref: '#/components/schemas/Application.item')]
+    #[Groups([User::GROUP_GET_USER_LIMITED])]
     private ?Application $application = null;
 
     #[ORM\ManyToOne(inversedBy: 'services')]
     #[ORM\JoinColumn(nullable: false)]
+    #[OA\Property(description: 'The user associated with the service.', ref: '#/components/schemas/User.item')]
     private ?User $user = null;
 
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'childServices')]
-    #[Groups(['services:info', 'services:update'])]
+    #[Groups([User::GROUP_GET_USER, User::GROUP_GET_USERS, User::GROUP_GET_USER_LIMITED])]
+    #[OA\Property(description: 'The parent service, if any.', ref: '#/components/schemas/Service.item')]
     private ?self $parentService = null;
 
     #[ORM\OneToMany(mappedBy: 'parentService', targetEntity: self::class)]
+    #[OA\Property(description: 'The child services of this service.', type: 'array', items: new OA\Items(ref: '#/components/schemas/Service.item'))]
     private Collection $childServices;
 
     public function __construct()

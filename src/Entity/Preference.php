@@ -8,55 +8,66 @@ use App\Repository\PreferenceRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use OpenApi\Attributes as OA;
 
 #[ORM\Entity(repositoryClass: PreferenceRepository::class)]
+#[ORM\Table(name: 'preference')]
+#[OA\Schema(description: 'Preference entity representing user preferences.')]
 class Preference
 {
+    public const GROUP_GET_PREFERENCES = 'get:preferences';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['preferences:info'])]
+    #[Groups([User::GROUP_GET_USER, User::GROUP_GET_USERS])]
+    #[OA\Property(description: 'The unique identifier of the preference.', format: 'int')]
     private ?int $id = null;
 
-    /**
-     * @var array<string>|null
-     */
     #[ORM\Column(type: Types::JSON, nullable: true)]
-    #[Groups(['user:info', 'preferences:info', 'preferences:update'])]
+    #[Groups([User::GROUP_GET_USER, User::GROUP_GET_USERS, self::GROUP_GET_PREFERENCES])]
+    #[OA\Property(description: 'A list of pinned applications.', type: 'array', items: new OA\Items(type: 'string'))]
     private ?array $pinnedApps = null;
 
     #[ORM\Column(length: 5)]
-    #[Groups(['user:info', 'preferences:info', 'preferences:update'])]
+    #[Groups([User::GROUP_GET_USER, User::GROUP_GET_USERS, self::GROUP_GET_PREFERENCES])]
+    #[OA\Property(description: 'The display preference.', maxLength: 5)]
     private ?string $display = null;
 
     #[ORM\Column(length: 10)]
-    #[Groups(['user:info', 'preferences:info', 'preferences:update'])]
+    #[Groups([User::GROUP_GET_USER, User::GROUP_GET_USERS, self::GROUP_GET_PREFERENCES])]
+    #[OA\Property(description: 'The shell preference.', maxLength: 10)]
     private ?string $shell = null;
 
-    /**
-     * @var array<string>|null
-     */
     #[ORM\Column(type: Types::JSON, nullable: true)]
-    #[Groups(['user:info', 'preferences:info', 'preferences:update'])]
+    #[Groups([User::GROUP_GET_USER, User::GROUP_GET_USERS, self::GROUP_GET_PREFERENCES])]
+    #[OA\Property(description: 'A list of selected widgets.', type: 'array', items: new OA\Items(type: 'string'))]
     private ?array $selectedWidgets = null;
 
     #[ORM\Column(length: 15)]
-    #[Groups(['user:info', 'preferences:info', 'preferences:update'])]
+    #[Groups([User::GROUP_GET_USER, User::GROUP_GET_USERS, self::GROUP_GET_PREFERENCES])]
+    #[OA\Property(description: 'The theme preference.', maxLength: 15)]
     private ?string $theme = null;
 
-    #[ORM\OneToOne(targetEntity: User::class, inversedBy: 'preference')]
+    #[ORM\OneToOne(targetEntity: User::class, inversedBy: 'preferences')]
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
+    #[Groups([User::GROUP_GET_USER, User::GROUP_GET_USERS])]
+    #[OA\Property(description: 'The user associated with these preferences.', ref: '#/components/schemas/User.item')]
     private ?User $user = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:info', 'preferences:info', 'preferences:update'])]
+    #[Groups([User::GROUP_GET_USER, User::GROUP_GET_USERS])]
+    #[OA\Property(description: 'The backdrop preference.', maxLength: 255)]
     private ?string $backdrop = 'user-backdrop.jpg';
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:info', 'preferences:info', 'preferences:update'])]
+    #[Groups([User::GROUP_GET_USER, User::GROUP_GET_USERS])]
+    #[OA\Property(description: 'The avatar preference.', maxLength: 255)]
     private ?string $avatar = 'user-avatar.jpg';
 
-    #[Groups(['user:info', 'preferences:info', 'preferences:update'])]
+    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => true])]
+    #[Groups([User::GROUP_GET_USER, User::GROUP_GET_USERS])]
+    #[OA\Property(description: 'Indicator if full app listing is enabled.', type: 'boolean')]
     private ?bool $isFullAppListingEnabled = true;
 
     public function getId(): ?int
@@ -143,8 +154,8 @@ class Preference
 
     public function setUser(User $user): static
     {
-        if ($user->getPreference() !== $this) {
-            $user->setPreference($this);
+        if ($user->getPreferences() !== $this) {
+            $user->setPreferences($this);
         }
 
         $this->user = $user;

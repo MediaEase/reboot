@@ -9,37 +9,46 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use OpenApi\Attributes as OA;
 
 #[ORM\Entity(repositoryClass: ApplicationRepository::class)]
+#[ORM\Table(name: '`application`')]
+#[OA\Schema(description: 'Application entity representing an application in the system.')]
 class Application
 {
+    public const GROUP_GET_APPLICATIONS = 'get_applications';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['application:info', 'services:info', 'store:info'])]
+    #[Groups([User::GROUP_GET_USER, User::GROUP_GET_USERS, self::GROUP_GET_APPLICATIONS])]
+    #[OA\Property(description: 'The unique identifier of the application.', format: 'int')]
     private ?int $id = null;
 
     #[ORM\Column(length: 60)]
-    #[Groups(['application:info', 'services:info', 'store:info', 'group:info'])]
+    #[Groups([User::GROUP_GET_USER, User::GROUP_GET_USERS, self::GROUP_GET_APPLICATIONS, User::GROUP_GET_USER_LIMITED, Store::GROUP_GET_STORES])]
+    #[OA\Property(description: 'The name of the application.', maxLength: 60)]
     private ?string $name = null;
 
     #[ORM\Column(length: 60)]
-    #[Groups(['application:info', 'services:info', 'store:info'])]
+    #[Groups([User::GROUP_GET_USER, User::GROUP_GET_USERS, self::GROUP_GET_APPLICATIONS, User::GROUP_GET_USER_LIMITED, Store::GROUP_GET_STORES])]
+    #[OA\Property(description: 'The alternative name of the application.', maxLength: 60)]
     private ?string $altname = null;
 
     #[ORM\Column(length: 120)]
-    #[Groups(['application:info', 'services:info', 'store:info'])]
+    #[Groups([User::GROUP_GET_USER, User::GROUP_GET_USERS, self::GROUP_GET_APPLICATIONS, User::GROUP_GET_USER_LIMITED, Store::GROUP_GET_STORES])]
+    #[OA\Property(description: 'The logo of the application.', maxLength: 120)]
     private ?string $logo = null;
 
     /**
      * @var Collection<int, Service>
      */
     #[ORM\OneToMany(mappedBy: 'application', targetEntity: Service::class)]
-    #[Groups(['application:info'])]
+    #[OA\Property(description: 'The services associated with the application.', type: 'array', items: new OA\Items(ref: '#/components/schemas/Service.item'))]
     private Collection $services;
 
     #[ORM\OneToOne(inversedBy: 'application', cascade: ['persist', 'remove'])]
-    #[Groups(['application:info'])]
+    #[OA\Property(description: 'The store associated with the application.', ref: '#/components/schemas/Store.item')]
     private ?Store $store = null;
 
     public function __construct()

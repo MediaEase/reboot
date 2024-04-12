@@ -10,41 +10,53 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use OpenApi\Attributes as OA;
 
 #[ORM\Entity(repositoryClass: StoreRepository::class)]
+#[ORM\Table(name: '`store`')]
+#[OA\Schema(description: 'Store entity representing a store in the system.')]
 class Store
 {
+    public const GROUP_GET_STORES = 'get_stores';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    #[Groups(['store:info', 'application:info', 'services:info', 'group:info'])]
+    #[ORM\Column(type: Types::INTEGER)]
+    #[Groups([self::GROUP_GET_STORES])]
+    #[OA\Property(description: 'The unique identifier of the store.', format: 'int')]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['store:info', 'application:info'])]
+    #[Groups([self::GROUP_GET_STORES])]
+    #[OA\Property(description: 'The description of the store.')]
     private ?string $description = null;
 
-    #[ORM\Column]
-    #[Groups(['store:info', 'application:info', 'group:info'])]
+    #[ORM\Column(type: Types::BOOLEAN)]
+    #[Groups([self::GROUP_GET_STORES])]
+    #[OA\Property(description: 'Indicator whether the store is a pro version.', type: 'boolean')]
     private ?bool $isPro = null;
 
-    #[ORM\Column]
-    #[Groups(['store:info', 'application:info', 'group:info'])]
+    #[ORM\Column(type: Types::BOOLEAN)]
+    #[Groups([self::GROUP_GET_STORES])]
+    #[OA\Property(description: 'Indicator whether the store is available.', type: 'boolean')]
     private ?bool $isAvailable = null;
 
-    #[ORM\Column(length: 50)]
-    #[Groups(['store:info', 'application:info', 'group:info', 'user:info'])]
+    #[ORM\Column(type: Types::STRING, length: 50)]
+    #[Groups([self::GROUP_GET_STORES])]
+    #[OA\Property(description: 'The type of the store.', maxLength: 50)]
     private ?string $type = null;
 
     #[ORM\OneToOne(mappedBy: 'store', cascade: ['persist', 'remove'])]
-    #[Groups(['store:info', 'group:info'])]
+    #[Groups(Application::GROUP_GET_APPLICATIONS)]
+    #[OA\Property(description: 'The application associated with the store.', ref: '#/components/schemas/Application.item')]
     private ?Application $application = null;
 
     /**
      * @var Collection<int, Group>
      */
     #[ORM\ManyToMany(targetEntity: Group::class, mappedBy: 'stores')]
-    private Collection $groups;
+    #[OA\Property(description: 'The groups associated with the store.', type: 'array', items: new OA\Items(ref: '#/components/schemas/Group.item'))]
+    private ?Collection $groups;
 
     public function __construct()
     {

@@ -4,18 +4,10 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\Put;
 use App\Repository\SettingRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ApiResource(
-    operations: [
-        new Get(),
-        new Put(),
-    ]
-)]
+
 #[ORM\Entity(repositoryClass: SettingRepository::class)]
 class Setting
 {
