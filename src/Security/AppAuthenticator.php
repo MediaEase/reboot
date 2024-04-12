@@ -71,16 +71,15 @@ final class AppAuthenticator extends AbstractLoginFormAuthenticator
             $redirectResponse->headers->setCookie($cookie);
 
             return $redirectResponse;
-        } catch (\Exception $exception) {
+        } catch (\Exception) {
             return new RedirectResponse($this->urlGenerator->generate('app_login'));
         }
     }
 
     private function getJwtAccessToken(string $username, string $password, string $host): string
     {
-        $url = sprintf('http://%s/api/login_check', $host);
+        $url = sprintf('http://%s/api/auth/login', $host);
         $apiResponse = $this->sendRequest($url, $username, $password);
-        dump($apiResponse['token']);
 
         return $apiResponse['token'];
     }
