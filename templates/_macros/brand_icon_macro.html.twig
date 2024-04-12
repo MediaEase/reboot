@@ -1,0 +1,15 @@
+{% macro favicon(brand_icon) %}
+    {% if brand_icon %}
+        <link rel="icon" type="image/png" href="{{ asset('brand/' ~ brand_icon ~ '-favicon') }}.ico" />
+    {% endif %}
+{% endmacro %}
+
+{% macro logo(brand_icon, context, size) %}
+    {% if brand_icon %}
+        {% if context == 'login' %}
+            <img src="{{ asset('brand/' ~ brand_icon) }}.png" width="150" alt="{{ app.request.server.get('SITE_NAME') }} logo">
+        {% else %}
+            <img src="{{ asset('brand/' ~ brand_icon) }}.png" class="{{ size }}" alt="{{ app.request.server.get('SITE_NAME') }} logo">
+        {% endif %}
+    {% endif %}
+{% endmacro %}
