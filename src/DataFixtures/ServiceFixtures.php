@@ -252,7 +252,7 @@ final class ServiceFixtures extends BaseFixtures implements DependentFixtureInte
             'database_path' => '/home/'.$username.'/.config/'.$appLower.'/database.db',
             'caddyfile_path' => '/etc/nginx/sites-enabled/'.$username.'.'.$appLower.'.conf',
             'backup_path' => '/home/'.$username.'/.mediaease/backups/'.$appLower,
-            'root_url' => 'https://localhost:'.$defaultPort.'/'.$username.'/'.$appLower
+            'root_url' => 'https://localhost:'.$defaultPort.'/'.$username.'/'.$appLower,
         ];
     }
 
