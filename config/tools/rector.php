@@ -13,6 +13,7 @@ return static function (RectorConfig $rectorConfig): void {
     // get root dir
     $srcDir = dirname(__DIR__, 2).'/src';
     $testsDir = dirname(__DIR__, 2).'/tests';
+    $entityDir = $srcDir.'/Entity';
     if (! is_dir($srcDir) || ! is_dir($testsDir)) {
         throw new \Exception(
             "Directories do not exist: $srcDir or $testsDir \n"
@@ -35,7 +36,7 @@ return static function (RectorConfig $rectorConfig): void {
         SetList::CODE_QUALITY,
     ]);
 
-    $rectorConfig->skip([ForeachItemsAssignToEmptyArrayToAssignRector::class,RemoveNonExistingVarAnnotationRector::class]);
+    $rectorConfig->skip([ForeachItemsAssignToEmptyArrayToAssignRector::class,RemoveNonExistingVarAnnotationRector::class,$entityDir."/User.php"]);
 
     $rectorConfig->rule(TypedPropertyFromStrictConstructorRector::class);
 
