@@ -2,16 +2,19 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
+		{% import '_macros/brand_icon_macro.html.twig' as brand %}
 		<title>
-			{% block title %}{% endblock %}
+			{% block title %}Dashboard  - {{ app.request.server.get('SITE_NAME') }}
+			{% endblock %}
 		</title>
+		{{ brand.favicon(settings.logo) }}
 		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
 		{% block stylesheets %}
-			{{ encore_entry_link_tags('login') }}
+			{{ encore_entry_link_tags('dashboard') }}
 		{% endblock %}
 
 		{% block javascripts %}
-			{{ encore_entry_script_tags('login') }}
+			{{ encore_entry_script_tags('dashboard') }}
 		{% endblock %}
 	</head>
 	<body class="bg-fixed bg-gray-100 dark:bg-gray-800" id="page-content">

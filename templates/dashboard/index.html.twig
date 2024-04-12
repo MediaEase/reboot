@@ -7,7 +7,7 @@
 	<div class="container my-2 mx-auto md:px-2">
 		<div class="grid lg:grid-cols-6 lg:gap-x-8">
 			{% import '_macros/widget_card.html.twig' as card_content %}
-			{% for widget in preferences.selectedWidgets %}
+			{% for widget in user.preferences.selectedWidgets %}
 				{% set unique_name = widget %}
 				{% set type = unique_name|slice(0, -2) %}
 				{% set name = type|capitalize %}
@@ -62,9 +62,9 @@
 		</div>
 		
 		<section class="mb-32 text-center">
-			<div id="grid" class="grid lg:grid-cols-4 lg:gap-x-6" style="{{ preferences.display == 'grid' ? 'display: grid;' : 'display: none;' }}"></div>
+			<div id="grid" class="grid lg:grid-cols-4 lg:gap-x-6" style="{{ user.preferences.display == 'grid' ? 'display: grid;' : 'display: none;' }}"></div>
 
-			<div id="list" class="container mx-auto card card-blur px-2 py-6" style="{{ preferences.display == 'list' ? 'display: grid;' : 'display: none;' }}">
+			<div id="list" class="container mx-auto card card-blur px-2 py-6" style="{{ user.preferences.display == 'list' ? 'display: grid;' : 'display: none;' }}">
 				<div class="mx-[0.25rem] px-4 sm:px-2 overflow-x-auto">
 					<div class="relative mb-4 flex w-full flex-wrap items-stretch">
 						<input id="app-finder" type="search" class="relative m-0 block w-[1px] min-w-0 flex-auto rounded-l border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-200 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-blue focus:text-neutral-200 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-blue" placeholder="Search" aria-label="Search" aria-describedby="button-addon1"/>
