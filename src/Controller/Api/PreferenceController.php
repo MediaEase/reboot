@@ -20,7 +20,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[Route('/api/me', name: 'api_me_')]
+#[Route('/api/me/preferences', name: 'api_me_preferences_')]
 #[IsGranted('ROLE_USER')]
 final class PreferenceController extends AbstractController
 {
@@ -35,22 +35,8 @@ final class PreferenceController extends AbstractController
     ) {
     }
 
-    #[Route('', name: 'my_profile', methods: ['GET'])]
-    public function getProfile(#[CurrentUser] ?User $user): Response
-    {
-        return $this->json($user, Response::HTTP_OK, [], ['groups' => 'user:info']);
-    }
-
-    #[Route('/preferences', name: 'my_preferences', methods: ['GET'])]
-    public function getPreferences(#[CurrentUser] ?User $user, Request $request): Response
-    {
-        $preferences = $this->preferenceRepository->findOneBy(['user' => $user]);
-
-        return $this->json($preferences, Response::HTTP_OK, [], ['groups' => 'preferences:info']);
-    }
-
-    #[Route('/preferences/pin', name: 'pin_app', methods: ['PATCH'])]
-    public function pinApp(#[CurrentUser] ?User $user, Request $request): Response
+    #[Route('/pin', name: 'pin', methods: ['PATCH'])]
+    public function pin(#[CurrentUser] ?User $user, Request $request): Response
     {
         if (! $user instanceof User) {
             return $this->json(['message' => 'User not found'], Response::HTTP_NOT_FOUND);
@@ -68,7 +54,7 @@ final class PreferenceController extends AbstractController
         }
     }
 
-    #[Route('/preferences/widgets', name: 'update_widgets', methods: ['PATCH'])]
+    #[Route('/widgets', name: 'widgets_update', methods: ['PATCH'])]
     public function updateWidgets(#[CurrentUser] ?User $user, Request $request): Response
     {
         try {
@@ -87,38 +73,36 @@ final class PreferenceController extends AbstractController
         }
     }
 
-    #[Route('/preferences/{preferenceKey}', name: 'update_preference', methods: ['PATCH'])]
-    public function updatePreference(
-        #[CurrentUser]
-        ?User $user,
+    #[Route('/{preferenceKey}', name: 'key_update', methods: ['PATCH'])]
+    public function updateKey(
+        #[CurrentUser] ?User $user,
         Request $request,
         string $preferenceKey
     ): Response {
-        try {
-            $this->preferenceValidator->validate($preferenceKey, $request);
+        if (!$user instanceof \App\Entity\User) {
+            return $this->json(['message' => 'User not found'], Response::HTTP_NOT_FOUND);
+        }
 
-            $data = json_decode($request->getContent(), true);
-            if (! $this->preferenceValidator->isAllowedValue($preferenceKey, $data[$preferenceKey])) {
+        $value = $request->query->get('value');
+        if (null === $value) {
+            return $this->json(['message' => 'Bad request: Missing expected data'], Response::HTTP_BAD_REQUEST);
+        }
+
+        try {
+            $this->preferenceValidator->validate($preferenceKey, $value);
+            if (!$this->preferenceValidator->isAllowedValue($preferenceKey, $value)) {
                 throw new \InvalidArgumentException(sprintf('Invalid value for %s', $preferenceKey));
             }
 
-            $this->updateUserPreference($user, $preferenceKey, $data[$preferenceKey]);
+            $this->updateUserPreferences($user, $preferenceKey, $value);
             $this->entityManager->flush();
 
-            $message = sprintf("Preference '%s' updated", $preferenceKey);
-
-            return $this->json(['message' => $message], Response::HTTP_OK);
+            return $this->json(['message' => sprintf("Preference '%s' updated", $preferenceKey)], Response::HTTP_OK);
         } catch (\InvalidArgumentException $invalidArgumentException) {
             return $this->json(['message' => $invalidArgumentException->getMessage()], Response::HTTP_BAD_REQUEST);
+        } catch (\Exception $exception) {
+            return $this->json(['message' => 'Server error: '.$exception->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-    }
-
-    #[Route('/group', name: 'getUserGroups', methods: ['GET'])]
-    public function getUserGroups(User $user): Response
-    {
-        $groups = $this->groupRepository->findGroupsByUser($user);
-
-        return $this->json($groups, Response::HTTP_OK, [], ['groups' => 'group:info']);
     }
 
     /**
@@ -143,7 +127,7 @@ final class PreferenceController extends AbstractController
      */
     private function updateUserWidgets(User $user, array $widgets): void
     {
-        $preference = $user->getPreference();
+        $preference = $user->getPreferences();
         $preference->setSelectedWidgets($widgets);
 
         $this->entityManager->persist($preference);
@@ -158,12 +142,12 @@ final class PreferenceController extends AbstractController
     /**
      * @param array<string> $preferenceValue
      */
-    private function updateUserPreference(
+    private function updateUserPreferences(
         User $user,
         string $preferenceKey,
         string $preferenceValue,
     ): void {
-        $preferences = $user->getPreference();
+        $preferences = $this->preferenceRepository->findOneBy(['user' => $user->getId()]);
         $setterMethod = 'set'.ucfirst($preferenceKey);
         if (! method_exists($preferences, $setterMethod)) {
             throw new \InvalidArgumentException('Invalid preference key: '.$preferenceKey);

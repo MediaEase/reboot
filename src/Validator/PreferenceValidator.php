@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Validator;
 
-use Symfony\Component\HttpFoundation\Request;
-
 final class PreferenceValidator
 {
     private const ALLOWED_PREFERENCES = [
@@ -15,16 +13,18 @@ final class PreferenceValidator
         'lang' => ['en', 'fr'],
     ];
 
-    public function validate(string $preferenceKey, Request $request): void
+    public function validate(string $preferenceKey, $value): void
     {
-        if (! array_key_exists($preferenceKey, self::ALLOWED_PREFERENCES)) {
+        if (!array_key_exists($preferenceKey, self::ALLOWED_PREFERENCES)) {
             throw new \InvalidArgumentException(sprintf('Invalid preference key: %s', $preferenceKey));
         }
 
-        $data = json_decode($request->getContent(), true);
-        if (! isset($data[$preferenceKey])) {
-            $key = array_keys($data)[0];
-            throw new \InvalidArgumentException(sprintf('Wrong key used for this method. Key used: %s', $key));
+        if ($value === null) {
+            throw new \InvalidArgumentException(sprintf('Missing value for preference key: %s', $preferenceKey));
+        }
+
+        if (!$this->isAllowedValue($preferenceKey, $value)) {
+            throw new \InvalidArgumentException(sprintf('Invalid value for %s', $preferenceKey));
         }
     }
 
