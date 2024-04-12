@@ -29,8 +29,9 @@ final class SecurityController extends AbstractController
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
-        $settingsRepository = $this->entityManager->getRepository(Setting::class);
-        $settings = $settingsRepository->find(1);
+        $entityRepository = $this->entityManager->getRepository(Setting::class);
+        $settings = $entityRepository->find(1);
+
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error, 'settings' => $settings]);
     }
 
