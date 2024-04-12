@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
-use App\Entity\User;
 use App\Entity\Group;
+use App\Entity\Store;
+use App\Entity\Application;
 use App\Repository\GroupRepository;
 use App\Repository\StoreRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,16 +26,16 @@ final class GroupController extends AbstractController
     ) {
     }
 
-    #[Route('', name: 'getGroups', methods: ['GET'])]
-    public function getGroups(): Response
+    #[Route('', name: 'list', methods: ['GET'])]
+    public function list(): Response
     {
         $groups = $this->groupRepository->findAll();
 
-        return $this->json($groups, Response::HTTP_OK, [], ['groups' => 'group:info']);
+        return $this->json($groups, Response::HTTP_OK, [], ['groups' => Store::GROUP_GET_STORES]);
     }
 
-    #[Route('', name: 'createGroup', methods: ['POST'])]
-    public function createGroup(Group $group): Response
+    #[Route('', name: 'add', methods: ['POST'])]
+    public function add(Group $group): Response
     {
         $this->entityManager->persist($group);
         $this->entityManager->flush();
@@ -42,14 +43,14 @@ final class GroupController extends AbstractController
         return $this->json(['message' => 'Group created'], Response::HTTP_OK);
     }
 
-    #[Route('/{id}', name: 'getGroup', methods: ['GET'])]
-    public function getGroup(Group $group): Response
+    #[Route('/{id}', name: 'show', methods: ['GET'])]
+    public function show(Group $group): Response
     {
-        return $this->json($group, Response::HTTP_OK, [], ['groups' => 'group:info']);
+        return $this->json($group, Response::HTTP_OK, [], ['groups' => 'basic', 'details', 'confidential']);
     }
 
-    #[Route('/{id}', name: 'deleteGroup', methods: ['DELETE'])]
-    public function deleteGroup(Group $group): Response
+    #[Route('/{id}', name: 'delete', methods: ['DELETE'])]
+    public function delete(Group $group): Response
     {
         $this->entityManager->remove($group);
         $this->entityManager->flush();
@@ -57,8 +58,8 @@ final class GroupController extends AbstractController
         return $this->json(['message' => 'Group deleted'], Response::HTTP_OK);
     }
 
-    #[Route('/{id}', name: 'updateGroup', methods: ['PUT'])]
-    public function updateGroup(Group $group): Response
+    #[Route('/{id}', name: 'update', methods: ['PUT'])]
+    public function update(Group $group): Response
     {
         $this->entityManager->persist($group);
         $this->entityManager->flush();
@@ -67,7 +68,7 @@ final class GroupController extends AbstractController
     }
 
     #[Route('/{id}/apps', name: 'addAppsToGroup', methods: ['POST'])]
-    public function addAppsToGroup(Group $group): Response
+    public function addAppsToGroup(Group $group, Application $application): Response
     {
         return $this->json(['message' => 'Apps added to group'], Response::HTTP_OK);
     }
