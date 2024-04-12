@@ -1,7 +1,7 @@
 {% macro init(user) %}
     {% set backdropPath = asset('default/default-backdrop.jpg') %}
-    {% if user.preference and user.preference.backdrop %}
-        {% set backdropPath = user.preference.backdrop starts with 'http' ? user.preference.backdrop : asset('uploads/' ~ user.preference.backdrop) %}
+    {% if user.preferences and user.preferences.backdrop %}
+        {% set backdropPath = user.preferences.backdrop starts with 'http' ? user.preferences.backdrop : asset('uploads/' ~ user.preferences.backdrop) %}
     {% endif %}
     style="background-image: url('{{ backdropPath }}');"
 {% endmacro %}
