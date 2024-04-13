@@ -26,10 +26,10 @@ class IconButtonExtension extends AbstractTypeExtension
     public function configureOptions(OptionsResolver $optionsResolver): void
     {
         $optionsResolver->setDefaults([
-        'icon_before' => null,
-        'icon_after' => null,
-        'button_class' => null,
-        'icon_class' => 'w-6 h-6 fill-white',
-    ]);
+            'icon_before' => null,
+            'icon_after' => null,
+            'button_class' => null,
+            'icon_class' => 'w-6 h-6 fill-white',
+        ]);
     }
 }
