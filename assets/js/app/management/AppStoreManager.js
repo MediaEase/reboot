@@ -22,7 +22,7 @@ class AppStoreManager {
      */
     constructor(storeData, appsData, userGroup) {
         this.apps = appsData;
-        this.storeData = storeData.filter(app => app.application.name !== 'AppStore');
+        this.storeData = storeData.filter(app => app.name !== 'AppStore');
         this.userGroup = userGroup;
     }
 

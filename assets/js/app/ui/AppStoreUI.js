@@ -105,16 +105,17 @@ class AppStoreUI {
      */
     renderAppCard(app) {
         const shouldApplyBlur = this.userGroup !== "full" && this.userGroup !== app.type;
-        const logoPath = `/soft_logos/${app.application.logo}`;
+        const application = app.application;
+        const logoPath = `/soft_logos/${application.logo}`;
         const cardClasses = `shadow-md gap-x-8 lg:gap-x-8 text-lg content-background dark:content-background light:border-2 border-gray-500 border-opacity-75 rounded-xl hover:shadow-xl p-4`;
         return `
             <div class="${cardClasses}">
                 <div class="flex">
-                    <div class="flex-shrink-0 w-24 h-24 mb-4 rounded-full mr-4 pr-4">    
-                        <img class="h-auto max-w-[90px] p-1 rounded-full" src="${logoPath}" alt="${app.application.name}_logo">
+                    <div class="flex-shrink-0 w-20 h-20 mb-4 rounded-full mr-4 pr-4">    
+                        <img class="h-auto max-w-[70px] p-1 rounded-full" src="${logoPath}" alt="${application.name}_logo">
                     </div>
                     <div class="flex-grow ml-4 text-left">
-                        <h3 class="mb-2 font-semibold text-xl leading-tight text-gray-900 dark:text-neutral-200">${app.application.name}</h3>
+                        <h3 class="mb-2 font-semibold text-xl leading-tight text-gray-900 dark:text-neutral-200">${application.name}</h3>
                         <p class="text-gray-500 text-md mb-2 pb-2 ${shouldApplyBlur ? 'blur-[1px]' : ''}">${app.description}</p>
                         <span class="prose text-sm mt-4 py-3 text-gray-500">Category: 
                             <a href="#" class="text-blue-500 text-sm category-link"data-type="${app.type}" target="blank">
@@ -134,7 +135,7 @@ class AppStoreUI {
      * @returns {string} HTML representing the action button.
      */
     renderActionButton(app) {
-        const isAppInstalled = this.apps.some(installedApp => installedApp.application.id === app.application.id);
+        const isAppInstalled = this.apps.some(installedApp => installedApp.application.id === app.id);
         const isButtonDisabled = this.userGroup !== "full" && this.userGroup !== app.type;
         const disabledClass = isButtonDisabled ? 'blur-[1px] cursor-not-allowed' : '';
         const actionButtonClasses = isAppInstalled ? 'bg-red-500 hover:bg-red-600 pl-4' : 'px-4 bg-green-500 hover:bg-green-600 rounded-r-lg';
@@ -166,7 +167,7 @@ class AppStoreUI {
                 ${isButtonDisabled ? 'disabled' : ''}
                 data-action="${isButtonDisabled ? '' : 'click->storeactions#handleAction'}"
                 data-storeactions-url-value="/api/store"
-                data-app-name="${app.application.altname}"
+                data-app-name="${app.altname}"
                 data-action-type="${action}">
                 <svg class="w-8 h-8 fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" data-slot="icon">
                     ${svgPath}
