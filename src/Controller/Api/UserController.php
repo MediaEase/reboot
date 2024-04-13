@@ -20,14 +20,14 @@ final class UserController extends AbstractController
     ) {
     }
 
-    #[Route('/{id}', name: 'getUser', methods: ['GET'])]
-    public function getUserInfo(User $user): Response
+    #[Route('/{id}', name: 'show', methods: ['GET'])]
+    public function show(User $user): Response
     {
-        return $this->json($user, Response::HTTP_OK, [], ['groups' => 'user:info']);
+        return $this->json($user, Response::HTTP_OK, [], ['groups' => 'confidential']);
     }
 
-    #[Route('/{id}', name: 'updateUser', methods: ['PUT'])]
-    public function updateUser(User $user): Response
+    #[Route('/{id}', name: 'update', methods: ['PUT'])]
+    public function update(User $user): Response
     {
         $this->entityManager->persist($user);
         $this->entityManager->flush();
@@ -35,7 +35,7 @@ final class UserController extends AbstractController
         return $this->json(['message' => 'User updated'], Response::HTTP_OK);
     }
 
-    #[Route('/{id}', name: 'deleteUser', methods: ['DELETE'])]
+    #[Route('/{id}', name: 'delate', methods: ['DELETE'])]
     public function deleteUser(User $user): Response
     {
         $this->entityManager->remove($user);

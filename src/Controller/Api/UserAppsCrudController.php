@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[Route('/api/me/services', name: 'api_me_')]
+#[Route('/api/me/services', name: 'api_me_services_')]
 #[IsGranted('ROLE_USER')]
 final class UserAppsCrudController extends AbstractController
 {
@@ -21,8 +21,8 @@ final class UserAppsCrudController extends AbstractController
     ) {
     }
 
-    #[Route('/{id}', name: 'deleteService', methods: ['DELETE'])]
-    public function deleteService(int $id, ServiceRepository $serviceRepository): Response
+    #[Route('/{id}', name: 'delete', methods: ['DELETE'])]
+    public function delete(int $id, ServiceRepository $serviceRepository): Response
     {
         $service = $this->serviceRepository->findOneBy(['id' => $id]);
 

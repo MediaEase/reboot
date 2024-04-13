@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/api/me/my_apps', name: 'api_me_')]
+#[Route('/api/me/my_apps', name: 'api_me_services_')]
 #[IsGranted('ROLE_USER')]
 final class UserAppsController extends AbstractController
 {
@@ -19,8 +19,8 @@ final class UserAppsController extends AbstractController
     ) {
     }
 
-    #[Route('', name: 'my_apps', methods: ['GET'])]
-    public function getMyApps(): Response
+    #[Route('', name: 'list', methods: ['GET'])]
+    public function list(): Response
     {
         $services = $this->serviceRepository->findBy(['user' => $this->getUser()]);
         $services = array_filter($services, static function ($service): bool {
@@ -30,6 +30,6 @@ final class UserAppsController extends AbstractController
             return strcmp($a->getName(), $b->getName());
         });
 
-        return $this->json($services, Response::HTTP_OK, [], ['groups' => 'services:info']);
+        return $this->json($services, Response::HTTP_OK, [], ['groups' => 'basic']);
     }
 }

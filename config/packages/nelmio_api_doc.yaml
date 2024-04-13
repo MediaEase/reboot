@@ -1,8 +1,9 @@
 nelmio_api_doc:
+  use_validation_groups: true
   areas:
     default:
       path_patterns:
-        - ^/api 
+        - ^/api
       disable_default_routes: true
   documentation:
     openapi: 3.0.0
@@ -20,159 +21,240 @@ nelmio_api_doc:
         url: https://opensource.org/licenses/MIT
       version: 1.0.0
     servers:
-      - url: 'http://localhost:8000'
+      - url: "http://localhost:8000"
         description: Local development server
     security:
       - Bearer: []
       - apiKey: []
     tags:
       - name: Apps
-        description: Apps related endpoints
+        description: Operations involving applications
       - name: Authentication
-        description: Authentication related endpoints
-      - name: Logs
-        description: Logs related endpoints
-      - name: Metrics
-        description: Metrics related endpoints
-      - name: Profile
-        description: Profile related endpoints
-      - name: Store
-        description: Store related endpoints
-      - name: Users
-        description: Users related endpoints
-      - name: Widgets
-        description: Widgets related endpoints
+        description: Authentication and authorization processes
       - name: Groups
-        description: Groups related endpoints
+        description: Group management and information
+      - name: Logs
+        description: Access and management of log data
+      - name: Metrics
+        description: Metrics and performance data interactions
+      - name: Mounts
+        description: File system mount management
+      - name: Profile
+        description: User profile settings and information
+      - name: Services
+        description: Service management and operations
+      - name: Store
+        description: Store functionalities and data
+      - name: Users
+        description: User management and details
+      - name: Widgets
+        description: Widget functionalities and settings
+    models:
+      names:
+        - {
+            alias: User.list,
+            type: App\Entity\User,
+            groups: ["get:users", "get:user-limited", "get:user"],
+          }
+        - { alias: User.item, type: App\Entity\User, groups: ["get:user"] }
+        - {
+            alias: Application.list,
+            type: App\Entity\Application,
+            groups: ["get:users", "get:user-limited", "get:user"],
+          }
+        - {
+            alias: Group.list,
+            type: App\Entity\Group,
+            groups: ["get:users", "get:user-limited", "get:user"],
+          }
+        - {
+            alias: Mount.list,
+            type: App\Entity\Mount,
+            groups: ["get:users", "get:user-limited", "get:user"],
+          }
+        - {
+            alias: Preference.list,
+            type: App\Entity\Preference,
+            groups: ["get:users", "get:user-limited", "get:user"],
+          }
+        - {
+            alias: Service.list,
+            type: App\Entity\Service,
+            groups: ["get:users", "get:user-limited", "get:user"],
+          }
+        - {
+            alias: Store.list,
+            type: App\Entity\Store,
+            groups: ["get:users", "get:user-limited", "get:user"],
+          }
+        - {
+            alias: Widget.list,
+            type: App\Entity\Widget,
+            groups: ["get:users", "get:user-limited", "get:user", "get:widget"],
+          }
+        - {
+            alias: Widget.item,
+            type: App\Entity\Widget,
+            groups: ["get:widget"],
+          }
     paths:
+      # APPS
       /api/apps:
         get:
           tags:
             - Apps
-          summary: Get apps
-          operationId: getApps
+          summary: Get all applications
+          operationId: api_apps_list
           responses:
-            '200':
-              description: Returns apps
+            "200":
+              description: OK
               content:
                 application/hal+json:
                   schema:
-                    $ref: '#/components/schemas/App'
-            '401':
-              $ref: '#/components/responses/401'
-            '500':
-              $ref: '#/components/responses/500'
+                    $ref: "#/components/schemas/Application.list"
+            "400":
+              $ref: "#/components/responses/400"
+            "401":
+              $ref: "#/components/responses/401"
+            "403":
+              $ref: "#/components/responses/403"
+            "404":
+              $ref: "#/components/responses/404"
+            "405":
+              $ref: "#/components/responses/405"
+            "500":
+              $ref: "#/components/responses/500"
         post:
           tags:
             - Apps
-          summary: Create app
-          operationId: createApp
+          summary: Create a new application
+          operationId: api_apps_create
           requestBody:
             content:
-              application/hal+json:
+              application/json:
                 schema:
-                  $ref: '#/components/schemas/App'
+                  $ref: "#/components/schemas/Application.item"
           responses:
-            '201':
-              description: App created
+            "201":
+              description: Created
               content:
                 application/hal+json:
                   schema:
-                    type: object
-                    properties:
-                      message:
-                        type: string
-            '401':
-              $ref: '#/components/responses/401'
-            '422':
-              $ref: '#/components/responses/422'
-            '500':
-              $ref: '#/components/responses/500'
+                    $ref: "#/components/schemas/Application.item"
+            "400":
+              $ref: "#/components/responses/400"
+            "401":
+              $ref: "#/components/responses/401"
+            "403":
+              $ref: "#/components/responses/403"
+            "405":
+              $ref: "#/components/responses/405"
+            "422":
+              $ref: "#/components/responses/422"
+            "500":
+              $ref: "#/components/responses/500"
       /api/apps/{id}:
         get:
           tags:
             - Apps
-          summary: Get app details
-          operationId: getApp
+          summary: Get an application by ID
+          operationId: api_apps_get
           parameters:
             - name: id
               in: path
-              description: App Identifier
+              required: true
+              description: ID of the application to get
               schema:
                 type: integer
-              required: true
+                format: int64
           responses:
-            '200':
-              description: Returns app details
+            "200":
+              description: OK
               content:
                 application/hal+json:
                   schema:
-                    $ref: '#/components/schemas/App'
-            '401':
-              $ref: '#/components/responses/401'
-            '404':
-              $ref: '#/components/responses/404'
-            '500':
-              $ref: '#/components/responses/500'
+                    $ref: "#/components/schemas/Application.item"
+            "400":
+              $ref: "#/components/responses/400"
+            "401":
+              $ref: "#/components/responses/401"
+            "403":
+              $ref: "#/components/responses/403"
+            "404":
+              $ref: "#/components/responses/404"
+            "405":
+              $ref: "#/components/responses/405"
+            "500":
+              $ref: "#/components/responses/500"
         put:
           tags:
             - Apps
-          summary: Update app
-          operationId: updateApp
+          summary: Update an application by ID
+          operationId: api_apps_update
           parameters:
             - name: id
               in: path
-              description: App Identifier
+              required: true
+              description: ID of the application to update
               schema:
                 type: integer
-              required: true
+                format: int64
           requestBody:
             content:
-              application/hal+json:
+              application/json:
                 schema:
-                  $ref: '#/components/schemas/App'
+                  $ref: "#/components/schemas/Application.item"
           responses:
-            '200':
-              description: App updated
+            "200":
+              description: OK
               content:
                 application/hal+json:
                   schema:
-                    type: object
-                    properties:
-                      message:
-                        type: string
-            '204':
-              $ref: '#/components/responses/204'
-            '401':
-              $ref: '#/components/responses/401'
-            '404':
-              $ref: '#/components/responses/404'
-            '422':
-              $ref: '#/components/responses/422'
-            '500':
-              $ref: '#/components/responses/500'
+                    $ref: "#/components/schemas/Application.item"
+            "400":
+              $ref: "#/components/responses/400"
+            "401":
+              $ref: "#/components/responses/401"
+            "403":
+              $ref: "#/components/responses/403"
+            "404":
+              $ref: "#/components/responses/404"
+            "405":
+              $ref: "#/components/responses/405"
+            "422":
+              $ref: "#/components/responses/422"
+            "500":
+              $ref: "#/components/responses/500"
         delete:
           tags:
             - Apps
-          summary: Delete app
-          operationId: deleteApp
+          summary: Delete an application by ID
+          operationId: api_apps_delete
           parameters:
             - name: id
               in: path
-              description: App Identifier
+              required: true
+              description: ID of the application to delete
               schema:
                 type: integer
-              required: true
+                format: int64
           responses:
-            '204':
-              $ref: '#/components/responses/204'
-            '401':
-              $ref: '#/components/responses/401'
-            '404':
-              $ref: '#/components/responses/404'
-            '500':
-              $ref: '#/components/responses/500'
-      /api/login_check:
+            "204":
+              $ref: "#/components/responses/204"
+            "400":
+              $ref: "#/components/responses/400"
+            "401":
+              $ref: "#/components/responses/401"
+            "403":
+              $ref: "#/components/responses/403"
+            "404":
+              $ref: "#/components/responses/404"
+            "405":
+              $ref: "#/components/responses/405"
+            "500":
+              $ref: "#/components/responses/500"
+      # AUTHENTICATION
+      /api/auth/login:
         post:
           tags:
             - Authentication
@@ -189,7 +271,7 @@ nelmio_api_doc:
                       type: string
                   type: object
           responses:
-            '200':
+            "200":
               description: OK
               content:
                 application/hal+json:
@@ -198,105 +280,172 @@ nelmio_api_doc:
                     properties:
                       token:
                         type: string
-            '400':
-              $ref: '#/components/responses/400'
-            '405':
-              $ref: '#/components/responses/405'
-            '422':
-              $ref: '#/components/responses/422'
-            '500':
-              $ref: '#/components/responses/500'
+            "400":
+              $ref: "#/components/responses/400"
+            "405":
+              $ref: "#/components/responses/405"
+            "422":
+              $ref: "#/components/responses/422"
+            "500":
+              $ref: "#/components/responses/500"
           security: []
-      /api/users/{id}:
+      # GROUPS
+      /api/groups:
         get:
           tags:
-            - Users
-          summary: Get user details
-          operationId: getUser
-          parameters:
-            - name: id
-              in: path
-              description: User Identifier
-              schema:
-                type: integer
-              required: true
+            - Groups
+          summary: Get all groups
+          operationId: api_groups_list
           responses:
-            '200':
-              description: Returns user details
+            "200":
+              description: OK
               content:
                 application/hal+json:
                   schema:
-                    $ref: '#/components/schemas/User'
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '404':
-              $ref: '#/components/responses/404'
-            '500':
-              $ref: '#/components/responses/500'
-        put:
+                    $ref: "#/components/schemas/Group.list"
+            "400":
+              $ref: "#/components/responses/400"
+            "401":
+              $ref: "#/components/responses/401"
+            "403":
+              $ref: "#/components/responses/403"
+            "404":
+              $ref: "#/components/responses/404"
+            "405":
+              $ref: "#/components/responses/405"
+            "500":
+              $ref: "#/components/responses/500"
+        post:
           tags:
-            - Users
-          summary: Update user
-          operationId: updateCustomer
-          parameters:
-            - name: id
-              in: path
-              description: User Identifier
-              schema:
-                type: integer
-              required: true
+            - Groups
+          summary: Create a new group
+          operationId: api_groups_create
           requestBody:
             content:
-              application/hal+json:
+              application/json:
                 schema:
-                  properties:
-                    email:
-                      type: string
-                  type: object
+                  $ref: "#/components/schemas/Group.item"
           responses:
-            '200':
-              description: User updated
+            "201":
+              description: Created
               content:
                 application/hal+json:
                   schema:
-                    $ref: '#/components/schemas/User'
-            '204':
-              $ref: '#/components/responses/204'
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '404':
-              $ref: '#/components/responses/404'
-            '422':
-              $ref: '#/components/responses/422'
-            '500':
-              $ref: '#/components/responses/500'
-        delete:
+                    $ref: "#/components/schemas/Group.item"
+            "400":
+              $ref: "#/components/responses/400"
+            "401":
+              $ref: "#/components/responses/401"
+            "403":
+              $ref: "#/components/responses/403"
+            "405":
+              $ref: "#/components/responses/405"
+            "422":
+              $ref: "#/components/responses/422"
+            "500":
+              $ref: "#/components/responses/500"
+      /api/groups/{id}:
+        get:
           tags:
-            - Users
-          summary: Delete user
-          operationId: deleteCustomer
+            - Groups
+          summary: Get a group by ID
+          operationId: api_groups_get
           parameters:
             - name: id
               in: path
-              description: User Identifier
+              required: true
+              description: ID of the group to get
               schema:
                 type: integer
-              required: true
+                format: int64
           responses:
-            '204':
-              $ref: '#/components/responses/204'
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '404':
-              $ref: '#/components/responses/404'
-            '500':
-              $ref: '#/components/responses/500'
+            "200":
+              description: OK
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: "#/components/schemas/Group.item"
+            "400":
+              $ref: "#/components/responses/400"
+            "401":
+              $ref: "#/components/responses/401"
+            "403":
+              $ref: "#/components/responses/403"
+            "404":
+              $ref: "#/components/responses/404"
+            "405":
+              $ref: "#/components/responses/405"
+            "500":
+              $ref: "#/components/responses/500"
+        put:
+          tags:
+            - Groups
+          summary: Update a group by ID
+          operationId: api_groups_update
+          parameters:
+            - name: id
+              in: path
+              required: true
+              description: ID of the group to update
+              schema:
+                type: integer
+                format: int64
+          requestBody:
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Group.item"
+          responses:
+            "200":
+              description: OK
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: "#/components/schemas/Group.item"
+            "400":
+              $ref: "#/components/responses/400"
+            "401":
+              $ref: "#/components/responses/401"
+            "403":
+              $ref: "#/components/responses/403"
+            "404":
+              $ref: "#/components/responses/404"
+            "405":
+              $ref: "#/components/responses/405"
+            "422":
+              $ref: "#/components/responses/422"
+            "500":
+              $ref: "#/components/responses/500"
+        delete:
+          tags:
+            - Groups
+          summary: Delete a group by ID
+          operationId: api_groups_delete
+          parameters:
+            - name: id
+              in: path
+              required: true
+              description: ID of the group to delete
+              schema:
+                type: integer
+                format: int64
+          responses:
+            "204":
+              $ref: "#/components/responses/204"
+            "400":
+              $ref: "#/components/responses/400"
+            "401":
+              $ref: "#/components/responses/401"
+            "403":
+              $ref: "#/components/responses/403"
+            "404":
+              $ref: "#/components/responses/404"
+            "405":
+              $ref: "#/components/responses/405"
+            "500":
+              $ref: "#/components/responses/500"
+      # LOGS
+      # METRICS
       /api/metric/cpu:
         get:
           tags:
@@ -304,18 +453,14 @@ nelmio_api_doc:
           summary: Get CPU metrics
           operationId: getCpuUsage
           responses:
-            '200':
+            "200":
               description: Returns CPU metrics
               content:
                 application/hal+json:
                   schema:
-                    $ref: '#/components/schemas/Cpu'
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '500':
-              $ref: '#/components/responses/500'
+                    $ref: "#/components/schemas/Widget.cpu.item"
+            "401":
+              $ref: "#/components/responses/401"
       /api/metric/disk:
         get:
           tags:
@@ -323,18 +468,14 @@ nelmio_api_doc:
           summary: Get disk metrics
           operationId: getDiskUsage
           responses:
-            '200':
+            "200":
               description: Returns disk metrics
               content:
                 application/hal+json:
                   schema:
-                    $ref: '#/components/schemas/Disk'
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '500':
-              $ref: '#/components/responses/500'
+                    $ref: "#/components/schemas/Widget.disk.item"
+            "401":
+              $ref: "#/components/responses/401"
       /api/metric/mem:
         get:
           tags:
@@ -342,18 +483,14 @@ nelmio_api_doc:
           summary: Get ram metrics
           operationId: getMetricsMem
           responses:
-            '200':
+            "200":
               description: Returns ram metrics
               content:
                 application/hal+json:
                   schema:
-                    $ref: '#/components/schemas/Memory'
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '500':
-              $ref: '#/components/responses/500'
+                    $ref: "#/components/schemas/Widget.memory.item"
+            "401":
+              $ref: "#/components/responses/401"
       /api/metric/net:
         get:
           tags:
@@ -361,18 +498,16 @@ nelmio_api_doc:
           summary: Get network metrics
           operationId: getNetworkUsage
           responses:
-            '200':
+            "200":
               description: Returns network metrics
               content:
                 application/hal+json:
                   schema:
-                    $ref: '#/components/schemas/Network'
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '500':
-              $ref: '#/components/responses/500'
+                    $ref: "#/components/schemas/Widget.network.item"
+            "401":
+              $ref: "#/components/responses/401"
+      # MOUNTS
+      # PROFILE
       /api/me:
         get:
           tags:
@@ -380,63 +515,16 @@ nelmio_api_doc:
           summary: Get user profile
           operationId: getProfile
           responses:
-            '200':
+            "200":
               description: Returns user profile
               content:
                 application/hal+json:
                   schema:
-                    $ref: '#/components/schemas/User'
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-      /api/me/preferences:
-        get:
-          tags:
-            - Profile
-          summary: Get user preferences
-          operationId: getPreferences
-          responses:
-            '200':
-              description: Returns user preferences
-              content:
-                application/hal+json:
-                  schema:
-                    $ref: '#/components/schemas/Preferences'
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-        patch:
-          tags:
-            - Profile
-          summary: Update user preferences
-          operationId: updatePreferences
-          requestBody:
-            content:
-              application/hal+json:
-                schema:
-                  $ref: '#/components/schemas/Preferences'
-          responses:
-            '200':
-              description: User preferences updated
-              content:
-                application/hal+json:
-                  schema:
-                    type: object
-                    properties:
-                      preferences:
-                        type: string
-            '204':
-              $ref: '#/components/responses/204'
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '422':
-              $ref: '#/components/responses/422'
-            '500':
-              $ref: '#/components/responses/500'
+                    $ref: "#/components/schemas/User.item"
+            "401":
+              $ref: "#/components/responses/401"
+            "500":
+              $ref: "#/components/responses/500"
       /api/me/preferences/pin:
         patch:
           tags:
@@ -447,136 +535,69 @@ nelmio_api_doc:
             content:
               application/hal+json:
                 schema:
-                  $ref: '#/components/schemas/PinnedApp'
+                  $ref: "#/components/schemas/PinnedApps"
           responses:
-            '200':
+            "200":
               description: User pin updated
               content:
                 application/hal+json:
                   schema:
-                    $ref: '#/components/schemas/PinnedApp'
-            '204':
-              $ref: '#/components/responses/204'
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '422':
-              $ref: '#/components/responses/422'
-            '500':
-              $ref: '#/components/responses/500'
-      /api/me/preferences/theme:
+                    $ref: "#/components/schemas/PinnedApps"
+            "204":
+              $ref: "#/components/responses/204"
+            "401":
+              $ref: "#/components/responses/401"
+            "403":
+              $ref: "#/components/responses/403"
+            "422":
+              $ref: "#/components/responses/422"
+            "500":
+              $ref: "#/components/responses/500"
+      /api/me/preferences/{preferenceKey}:
         patch:
           tags:
             - Profile
-          summary: Update user theme
-          operationId: updateTheme
-          requestBody:
-            content:
-              application/hal+json:
-                schema:
-                  $ref: '#/components/schemas/Theme'
+          summary: Update a user preference
+          description: Update a specific user preference by key.
+          operationId: updatePreference
+          parameters:
+            - in: path
+              name: preferenceKey
+              required: true
+              schema:
+                type: string
+                description: The key of the preference to update.
+            - in: query
+              name: value
+              required: true
+              schema:
+                type: string
+                description: The value to set the preference to.
           responses:
-            '200':
-              description: User theme updated
+            "200":
+              description: Preference updated successfully.
               content:
-                application/hal+json:
+                application/json:
                   schema:
-                    $ref: '#/components/schemas/Theme'
-            '204':
-              $ref: '#/components/responses/204'
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '422':
-              $ref: '#/components/responses/422'
-            '500':
-              $ref: '#/components/responses/500'
-      /api/me/preferences/lang:
-        patch:
-          tags:
-            - Profile
-          summary: Update user language
-          operationId: updateLanguage
-          requestBody:
-            content:
-              application/hal+json:
-                schema:
-                  $ref: '#/components/schemas/Lang'
-          responses:
-            '200':
-              description: User language updated
-              content:
-                application/hal+json:
-                  schema:
-                    $ref: '#/components/schemas/Lang'
-            '204':
-              $ref: '#/components/responses/204'
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '422':
-              $ref: '#/components/responses/422'
-            '500':
-              $ref: '#/components/responses/500'
-      /api/me/preferences/shell:
-        patch:
-          tags:
-            - Profile
-          summary: Update user shell
-          operationId: updateShell
-          requestBody:
-            content:
-              application/hal+json:
-                schema:
-                  $ref: '#/components/schemas/Shell'
-          responses:
-            '200':
-              description: User shell updated
-              content:
-                application/hal+json:
-                  schema:
-                    $ref: '#/components/schemas/Shell'
-            '204':
-              $ref: '#/components/responses/204'
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '422':
-              $ref: '#/components/responses/422'
-            '500':
-              $ref: '#/components/responses/500'
-      /api/me/preferences/display:
-        patch:
-          tags:
-            - Profile
-          summary: Update user display
-          operationId: updateDisplay
-          requestBody:
-            content:
-              application/hal+json:
-                schema:
-                  $ref: '#/components/schemas/Display'
-          responses:
-            '200':
-              description: User display updated
-              content:
-                application/hal+json:
-                  schema:
-                    $ref: '#/components/schemas/Display'
-            '204':
-              $ref: '#/components/responses/204'
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '422':
-              $ref: '#/components/responses/422'
-            '500':
-              $ref: '#/components/responses/500'
+                    oneOf:
+                      - $ref: "#/components/schemas/Theme"
+                      - $ref: "#/components/schemas/Lang"
+                      - $ref: "#/components/schemas/Shell"
+                      - $ref: "#/components/schemas/Display"
+            "204":
+              $ref: "#/components/responses/204"
+            "400":
+              $ref: "#/components/responses/400"
+            "401":
+              $ref: "#/components/responses/401"
+            "403":
+              $ref: "#/components/responses/403"
+            "404":
+              $ref: "#/components/responses/404"
+            "422":
+              $ref: "#/components/responses/422"
+            "500":
+              $ref: "#/components/responses/500"
       /api/me/preferences/widgets:
         patch:
           tags:
@@ -587,41 +608,24 @@ nelmio_api_doc:
             content:
               application/hal+json:
                 schema:
-                  $ref: '#/components/schemas/Widget'
+                  $ref: "#/components/schemas/Widget.item"
           responses:
-            '200':
+            "200":
               description: User widgets updated
               content:
                 application/hal+json:
                   schema:
-                    $ref: '#/components/schemas/Widget'
-            '204':
-              $ref: '#/components/responses/204'
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '422':
-              $ref: '#/components/responses/422'
-            '500':
-              $ref: '#/components/responses/500'
-      /api/me/my_apps:
-        get:
-          tags:
-            - Profile
-          summary: Get user apps
-          operationId: getUserApps
-          responses:
-            '200':
-              description: Returns user apps
-              content:
-                application/hal+json:
-                  schema:
-                    $ref: '#/components/schemas/MyApps'
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
+                    $ref: "#/components/schemas/Widget.item"
+            "204":
+              $ref: "#/components/responses/204"
+            "401":
+              $ref: "#/components/responses/401"
+            "403":
+              $ref: "#/components/responses/403"
+            "422":
+              $ref: "#/components/responses/422"
+            "500":
+              $ref: "#/components/responses/500"
       /api/me/services:
         post:
           tags:
@@ -632,20 +636,20 @@ nelmio_api_doc:
             content:
               application/hal+json:
                 schema:
-                  $ref: '#/components/schemas/Service'
+                  $ref: "#/components/schemas/Service.item"
           responses:
-            '201':
+            "201":
               description: Service added
               content:
                 application/hal+json:
                   schema:
-                    $ref: '#/components/schemas/Service'
-            '401':
-              $ref: '#/components/responses/401'
-            '422':
-              $ref: '#/components/responses/422'
-            '500':
-              $ref: '#/components/responses/500'
+                    $ref: "#/components/schemas/Service.item"
+            "401":
+              $ref: "#/components/responses/401"
+            "422":
+              $ref: "#/components/responses/422"
+            "500":
+              $ref: "#/components/responses/500"
       /api/me/services/{id}:
         delete:
           tags:
@@ -660,14 +664,14 @@ nelmio_api_doc:
                 type: integer
               required: true
           responses:
-            '204':
-              $ref: '#/components/responses/204'
-            '401':
-              $ref: '#/components/responses/401'
-            '404':
-              $ref: '#/components/responses/404'
-            '500':
-              $ref: '#/components/responses/500'
+            "204":
+              $ref: "#/components/responses/204"
+            "401":
+              $ref: "#/components/responses/401"
+            "404":
+              $ref: "#/components/responses/404"
+            "500":
+              $ref: "#/components/responses/500"
         patch:
           tags:
             - Profile
@@ -684,266 +688,91 @@ nelmio_api_doc:
             content:
               application/hal+json:
                 schema:
-                  $ref: '#/components/schemas/Service'
+                  $ref: "#/components/schemas/Service.item"
           responses:
-            '200':
+            "200":
               description: Service updated
               content:
                 application/hal+json:
                   schema:
-                    $ref: '#/components/schemas/Service'
-            '204':
-              $ref: '#/components/responses/204'
-            '401':
-              $ref: '#/components/responses/401'
-            '404':
-              $ref: '#/components/responses/404'
-            '422':
-              $ref: '#/components/responses/422'
-            '500':
-              $ref: '#/components/responses/500'
+                    $ref: "#/components/schemas/Service.item"
+            "204":
+              $ref: "#/components/responses/204"
+            "401":
+              $ref: "#/components/responses/401"
+            "404":
+              $ref: "#/components/responses/404"
+            "422":
+              $ref: "#/components/responses/422"
+            "500":
+              $ref: "#/components/responses/500"
       /api/me/services/status:
         get:
           tags:
             - Profile
           summary: Get services status
-          operationId: getServicesStatus
+          operationId: api_me_services_status
           responses:
-            '200':
+            "200":
               description: Returns services status
               content:
                 application/hal+json:
                   schema:
-                    $ref: '#/components/schemas/ServiceStatus'
-            '401':
-              $ref: '#/components/responses/401'
-            '500':
-              $ref: '#/components/responses/500'
-      /api/store:
-        get:
-          tags:
-            - Store
-          summary: Get store
-          operationId: getStore
-          responses:
-            '200':
-              description: Returns store
-              content:
-                application/hal+json:
-                  schema:
-                    $ref: '#/components/schemas/Store'
-            '401':
-              $ref: '#/components/responses/401'
-            '500':
-              $ref: '#/components/responses/500'
-      /api/store/install:
-        post:
-          tags:
-            - Store
-          summary: Install app
-          operationId: installApp
-          requestBody:
-            content:
-              application/hal+json:
-                schema:
-                  $ref: '#/components/schemas/AppManagement'
-          responses:
-            '201':
-              description: App installed
-              content:
-                application/hal+json:
-                  schema:
-                    type: object
-                    properties:
-                      altName:
-                        type: string
-            '401':
-              $ref: '#/components/responses/401'
-            '422':
-              $ref: '#/components/responses/422'
-            '500':
-              $ref: '#/components/responses/500'
-      /api/store/pid-status:
-        get:
-          tags:
-            - Store
-          summary: Get pid status
-          operationId: getPidStatus
-          responses:
-            '200':
-              description: Returns pid status
-              content:
-                application/hal+json:
-                  schema:
-                    $ref: '#/components/schemas/ServiceStatus'
-            '401':
-              $ref: '#/components/responses/401'
-            '500':
-              $ref: '#/components/responses/500'
+                    $ref: "#/components/schemas/ServiceStatus"
+            "401":
+              $ref: "#/components/responses/401"
+            "500":
+              $ref: "#/components/responses/500"
+      # SERVICES
+      # STORE
+      # USERS
+      # WIDGETS
       /api/widgets:
         get:
           tags:
             - Widgets
-          summary: Get widgets
-          operationId: getWidgets
+          summary: Get all widgets
+          operationId: api_widgets_list
           responses:
-            '200':
-              description: Returns widgets
+            "200":
+              description: OK
               content:
                 application/hal+json:
                   schema:
-                    $ref: '#/components/schemas/Widget'
-            '401':
-              $ref: '#/components/responses/401'
-            '500':
-              $ref: '#/components/responses/500'
-      /api/groups:
-        get:
-          tags:
-            - Groups
-          summary: Get groups
-          operationId: getGroups
-          responses:
-            '200':
-              description: Returns groups
-              content:
-                application/hal+json:
-                  schema:
-                    $ref: '#/components/schemas/Group'
-            '401':
-              $ref: '#/components/responses/401'
-            '500':
-              $ref: '#/components/responses/500'
-        post:
-          tags:
-            - Groups
-          summary: Create group
-          operationId: createGroup
-          requestBody:
-            content:
-              application/hal+json:
-                schema:
-                  $ref: '#/components/schemas/Group'
-          responses:
-            '201':
-              description: Group created
-              content:
-                application/hal+json:
-                  schema:
-                    type: object
-                    properties:
-                      message:
-                        type: string
-            '401':
-              $ref: '#/components/responses/401'
-            '422':
-              $ref: '#/components/responses/422'
-            '500':
-              $ref: '#/components/responses/500'
-      /api/groups/{id}:
-        get:
-          tags:
-            - Groups
-          summary: Get group details
-          operationId: getGroup
-          parameters:
-            - name: id
-              in: path
-              description: Group Identifier
-              schema:
-                type: integer
-              required: true
-          responses:
-            '200':
-              description: Returns group details
-              content:
-                application/hal+json:
-                  schema:
-                    $ref: '#/components/schemas/Group'
-            '401':
-              $ref: '#/components/responses/401'
-            '404':
-              $ref: '#/components/responses/404'
-            '500':
-              $ref: '#/components/responses/500'
-        put:
-          tags:
-            - Groups
-          summary: Update group
-          operationId: updateGroup
-          parameters:
-            - name: id
-              in: path
-              description: Group Identifier
-              schema:
-                type: integer
-              required: true
-          requestBody:
-            content:
-              application/hal+json:
-                schema:
-                  $ref: '#/components/schemas/Group'
-          responses:
-            '200':
-              description: Group updated
-              content:
-                application/hal+json:
-                  schema:
-                    type: object
-                    properties:
-                      message:
-                        type: string
-            '204':
-              $ref: '#/components/responses/204'
-            '401':
-              $ref: '#/components/responses/401'
-            '404':
-              $ref: '#/components/responses/404'
-            '422':
-              $ref: '#/components/responses/422'
-            '500':
-              $ref: '#/components/responses/500'
-        delete:
-          tags:
-            - Groups
-          summary: Delete group
-          operationId: deleteGroup
-          parameters:
-            - name: id
-              in: path
-              description: Group Identifier
-              schema:
-                type: integer
-              required: true
-          responses:
-            '204':
-              $ref: '#/components/responses/204'
-            '401':
-              $ref: '#/components/responses/401'
-            '404':
-              $ref: '#/components/responses/404'
-            '500':
-              $ref: '#/components/responses/500'
+                    $ref: "#/components/schemas/Widget.list"
+            "400":
+              $ref: "#/components/responses/400"
+            "401":
+              $ref: "#/components/responses/401"
+            "403":
+              $ref: "#/components/responses/403"
+            "404":
+              $ref: "#/components/responses/404"
+            "405":
+              $ref: "#/components/responses/405"
+            "500":
+              $ref: "#/components/responses/500"
     components:
       securitySchemes:
         Bearer:
           type: http
           scheme: bearer
+          bearerFormat: JWT
         apiKey:
           type: apiKey
-          description: 'Value: {apiKey}'
+          description: "Value: {apiKey}"
           in: header
           name: X-API-KEY
       responses:
-        '204':
+        "204":
           description: No content - indicates the request was successful but there is no content to be returned in the response.
-        '400':
+        "400":
           description: Client Error - Returned if the request body is invalid.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponseDto'
-        '401':
+                $ref: "#/components/schemas/ErrorResponseDto"
+        "401":
           description: Unauthorized - Returned if there is no authorization header, or if the JWT token is expired.
           content:
             application/json:
@@ -952,15 +781,15 @@ nelmio_api_doc:
                 properties:
                   error:
                     description: A message describing the error
-                    example: 'JWT validation failed: JWT is expired'
-        '403':
+                    example: "JWT validation failed: JWT is expired"
+        "403":
           description: Forbidden - Returned if the user you are running as, doesn't have access to this end-point.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponseDto'
+                $ref: "#/components/schemas/ErrorResponseDto"
               examples:
-                '403':
+                "403":
                   summary: An example of a 403 response object
                   value:
                     detailCode: 403 Forbidden
@@ -969,14 +798,14 @@ nelmio_api_doc:
                       - locale: en-US
                         localeOrigin: DEFAULT
                         text: The server understood the request but refuses to authorize it.
-        '404':
+        "404":
           description: Not Found - returned if the request URL refers to a resource or object that does not exist
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponseDto'
+                $ref: "#/components/schemas/ErrorResponseDto"
               examples:
-                '404':
+                "404":
                   summary: An example of a 404 response object
                   value:
                     detailCode: 404 Not found
@@ -985,7 +814,7 @@ nelmio_api_doc:
                       - locale: en-US
                         localeOrigin: DEFAULT
                         text: The server did not find a current representation for the target resource.
-        '405':
+        "405":
           description: Method Not Allowed - indicates that the server knows the request method, but the target resource doesn't support this method.
           content:
             application/json:
@@ -1002,16 +831,16 @@ nelmio_api_doc:
                     type: string
                     description: Unique tracking id for the error.
                     example: e7eab60924f64aa284175b9fa3309599
-        '422':
+        "422":
           description: Unprocessable Entity - Returned if the request was not processed due to validation errors.
-        '500':
+        "500":
           description: Internal Server Error - Returned if there is an unexpected error.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponseDto'
+                $ref: "#/components/schemas/ErrorResponseDto"
               examples:
-                '500':
+                "500":
                   summary: An example of a 500 response object
                   value:
                     detailCode: 500.0 Internal Fault
@@ -1021,35 +850,267 @@ nelmio_api_doc:
                         localeOrigin: DEFAULT
                         text: An internal fault occurred.
       schemas:
-        App:
+        # PROPERTY SCHEMAS
+        PinnedApps:
+          type: array
+          items:
+            $ref: "#/components/schemas/Service.item"
+        Theme:
           type: object
           properties:
+            theme:
+              type: string
+        Lang:
+          type: object
+          properties:
+            language:
+              type: string
+        Shell:
+          type: object
+          properties:
+            shell:
+              type: string
+        Display:
+          type: object
+          properties:
+            display:
+              type: string
+        ServiceStatus:
+          type: object
+          properties:
+            message:
+              type: string
+        # OBJECTS SCHEMAS
+        Application.item:
+          type: object
+          properties:
+            id:
+              type: integer
+              format: int64
             name:
               type: string
             altname:
               type: string
             logo:
               type: string
-            type:
+            store:
+              $ref: "#/components/schemas/Store.item"
+        Application.list:
+          type: object
+          properties:
+            applications:
+              type: array
+              items:
+                $ref: "#/components/schemas/Application.item"
+        Group.item:
+          type: object
+          properties:
+            id:
+              type: integer
+              format: int64
+            name:
               type: string
-              enum:
-                - remote
-                - media
-                - automation
-                - download
+            users:
+              type: array
+              items:
+                $ref: "#/components/schemas/User.item"
+            stores:
+              type: array
+              items:
+                $ref: "#/components/schemas/Store.item"
+        Group.list:
+          type: object
+          properties:
             groups:
               type: array
               items:
-                type: object
-                properties:
-                  id:
-                    type: integer
-            store:
-              type: object
-              properties:
-                id:
-                  type: integer
-        Cpu:
+                $ref: "#/components/schemas/Group.item"
+        Mount.item:
+          type: object
+          properties:
+            id:
+              type: integer
+              format: int64
+            path:
+              type: string
+            rclone:
+              type: boolean
+            user:
+              $ref: "#/components/schemas/User.item"
+        Mount.list:
+          type: object
+          properties:
+            mounts:
+              type: array
+              items:
+                $ref: "#/components/schemas/Mount.item"
+        Preference.item:
+          type: object
+          properties:
+            id:
+              type: integer
+              format: int64
+            pinnedApps:
+              type: array
+              items:
+                type: string
+            display:
+              type: string
+            shell:
+              type: string
+            selectedWidgets:
+              type: array
+              items:
+                type: string
+            theme:
+              type: string
+            user:
+              $ref: "#/components/schemas/User.item"
+            backdrop:
+              type: string
+            avatar:
+              type: string
+            isFullAppListingEnabled:
+              type: boolean
+        Preference.list:
+          type: object
+          properties:
+            preferences:
+              type: array
+              items:
+                $ref: "#/components/schemas/Preference.item"
+        Service.item:
+          type: object
+          properties:
+            id:
+              type: integer
+              format: int64
+            name:
+              type: string
+            version:
+              type: string
+            status:
+              type: string
+            apikey:
+              type: string
+            ports:
+              type: array
+              items:
+                type: string
+            configuration:
+              type: array
+              items:
+                type: string
+            application:
+              $ref: "#/components/schemas/Application.item"
+            user:
+              $ref: "#/components/schemas/User.item"
+            parentService:
+              $ref: "#/components/schemas/Service.item"
+            childServices:
+              type: array
+              items:
+                $ref: "#/components/schemas/Service.item"
+        Service.list:
+          type: object
+          properties:
+            services:
+              type: array
+              items:
+                $ref: "#/components/schemas/Service.item"
+        Store.item:
+          type: object
+          properties:
+            id:
+              type: integer
+              format: int64
+            description:
+              type: string
+            isPro:
+              type: boolean
+            isAvailable:
+              type: boolean
+            type:
+              type: string
+            application:
+              $ref: "#/components/schemas/Application.item"
+            groups:
+              type: array
+              items:
+                $ref: "#/components/schemas/Group.item"
+        Store.list:
+          type: object
+          properties:
+            stores:
+              type: array
+              items:
+                $ref: "#/components/schemas/Store.item"
+        User.item:
+          type: object
+          properties:
+            username:
+              type: string
+            roles:
+              type: array
+              items:
+                type: string
+            services:
+              type: array
+              items:
+                $ref: "#/components/schemas/Service.item"
+            email:
+              type: string
+              format: email
+            isVerified:
+              type: boolean
+            group:
+              type: array
+              items:
+                $ref: "#/components/schemas/Group.item"
+            preferences:
+              $ref: "#/components/schemas/Preference.item"
+            mounts:
+              type: array
+              items:
+                $ref: "#/components/schemas/Mount.item"
+            apiKey:
+              type: string
+        User.list:
+          type: object
+          properties:
+            users:
+              type: array
+              items:
+                $ref: "#/components/schemas/User.item"
+        Widget.item:
+          type: object
+          properties:
+            id:
+              type: integer
+              format: int64
+              example: 1
+            name:
+              type: string
+              example: "CPU 1"
+            description:
+              type: string
+              example: "cpu_1"
+            type:
+              type: string
+              example: "cpu"
+        Widget.list:
+          type: object
+          properties:
+            widgets:
+              type: array
+              items:
+                $ref: "#/components/schemas/Widget.item"
+            totalResults:
+              type: integer
+              example: 10
+              description: "Total number of widgets in the list"
+        # WIDGET SCHEMAS
+        Widget.cpu.item:
           type: object
           properties:
             model:
@@ -1069,7 +1130,7 @@ nelmio_api_doc:
                 15min:
                   type: number
                   format: double
-        Disk:
+        Widget.disk.item:
           type: object
           properties:
             total:
@@ -1080,12 +1141,7 @@ nelmio_api_doc:
               type: number
             percentage:
               type: number
-        Group:
-          type: object
-          properties:
-            name:
-              type: string
-        Network:
+        Widget.network.item:
           type: object
           properties:
             interface:
@@ -1096,127 +1152,7 @@ nelmio_api_doc:
             uploadSpeed:
               type: number
               format: float
-        Ram:
-          $ref: '#/components/schemas/Memory'
-        User:
-          type: object
-          properties:
-            id:
-              type: integer
-            username:
-              type: string
-            roles:
-              type: array
-              items:
-                type: string
-            group:
-              type: object
-              properties:
-                name:
-                  type: string
-            mounts:
-              type: array
-              items:
-                type: object
-                properties:
-                  path:
-                    type: string
-                  rclone:
-                    type: boolean
-            email:
-              type: string
-            isVerified:
-              type: boolean
-            preference:
-              type: object
-              properties:
-                pinnedApps:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      id:
-                        type: integer
-                display:
-                  type: string
-                shell:
-                  type: string
-                selectedWidgets:
-                  type: array
-                  items:
-                    type: string
-                theme:
-                  type: string
-            apiKey:
-              type: string
-        Service:
-          type: object
-          properties:
-            name:
-              type: string
-            url:
-              type: string
-            icon:
-              type: string
-            color:
-              type: string
-        Store:
-          type: object
-          properties:
-            name:
-              type: string
-            altName:
-              type: string
-            description:
-              type: string
-            type:
-              type: string
-            isPro:
-              type: boolean
-            isAvailable:
-              type: boolean
-        LocaleOrigin:
-          type: string
-          enum:
-            - DEFAULT
-            - REQUEST
-          description: An indicator of how the locale was selected. *DEFAULT* means the locale is the system default. *REQUEST* means the locale was selected from the request context (i.e., best match based on the *Accept-Language* header). Additional values may be added in the future without notice.
-          example: DEFAULT
-        ErrorMessageDto:
-          type: object
-          properties:
-            locale:
-              type: string
-              description: The locale for the message text, a BCP 47 language tag.
-              example: en-US
-            localeOrigin:
-              $ref: '#/components/schemas/LocaleOrigin'
-            text:
-              type: string
-              description: Actual text of the error message in the indicated locale.
-              example: The request was syntactically correct but its content is semantically invalid.
-        ErrorResponseDto:
-          type: object
-          properties:
-            detailCode:
-              type: string
-              description: Fine-grained error code providing more detail of the error.
-              example: 400.1 Bad Request Content
-            trackingId:
-              type: string
-              description: Unique tracking id for the error.
-              example: e7eab60924f64aa284175b9fa3309599
-            messages:
-              type: array
-              description: Generic localized reason for error
-              items:
-                $ref: '#/components/schemas/ErrorMessageDto'
-            causes:
-              type: array
-              description: Plain-text descriptive reasons to provide additional detail to the text provided in the messages field
-              items:
-                $ref: '#/components/schemas/ErrorMessageDto'
-        Memory:
+        Widget.memory.item:
           type: object
           properties:
             total:
@@ -1239,70 +1175,47 @@ nelmio_api_doc:
               type: number
               format: float
               description: Percentage of RAM currently used.
-        Preferences:
+        Widget.ram.item:
+          $ref: "#/components/schemas/Widget.memory.item"
+        # ERROR SCHEMAS
+        LocaleOrigin:
+          type: string
+          enum:
+            - DEFAULT
+            - REQUEST
+          description: An indicator of how the locale was selected. *DEFAULT* means the locale is the system default. *REQUEST* means the locale was selected from the request context (i.e., best match based on the *Accept-Language* header). Additional values may be added in the future without notice.
+          example: DEFAULT
+        ErrorMessageDto:
           type: object
           properties:
-            pinnedApps:
+            locale:
+              type: string
+              description: The locale for the message text, a BCP 47 language tag.
+              example: en-US
+            localeOrigin:
+              $ref: "#/components/schemas/LocaleOrigin"
+            text:
+              type: string
+              description: Actual text of the error message in the indicated locale.
+              example: The request was syntactically correct but its content is semantically invalid.
+        ErrorResponseDto:
+          type: object
+          properties:
+            detailCode:
+              type: string
+              description: Fine-grained error code providing more detail of the error.
+              example: 400.1 Bad Request Content
+            trackingId:
+              type: string
+              description: Unique tracking id for the error.
+              example: e7eab60924f64aa284175b9fa3309599
+            messages:
               type: array
+              description: Generic localized reason for error
               items:
-                type: object
-                properties:
-                  id:
-                    type: integer
-            display:
-              type: string
-            shell:
-              type: string
-            selectedWidgets:
+                $ref: "#/components/schemas/ErrorMessageDto"
+            causes:
               type: array
+              description: Plain-text descriptive reasons to provide additional detail to the text provided in the messages field
               items:
-                type: string
-            theme:
-              type: string
-        PinnedApp:
-          type: object
-          properties:
-            service:
-              type: int
-        Theme:
-          type: object
-          properties:
-            theme:
-              type: string
-        Lang:
-          type: object
-          properties:
-            language:
-              type: string
-        Shell:
-          type: object
-          properties:
-            shell:
-              type: string
-        Display:
-          type: object
-          properties:
-            display:
-              type: string
-        Widget:
-          type: object
-          properties:
-            widgets:
-              type: array
-              items:
-                type: string
-        MyApps:
-          type: object
-          properties:
-            apps:
-              type: string
-        ServiceStatus:
-          type: object
-          properties:
-            message:
-              type: string
-        AppManagement:
-          type: object
-          properties:
-            altName:
-              type: string
+                $ref: "#/components/schemas/ErrorMessageDto"

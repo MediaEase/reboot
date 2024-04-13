@@ -23,7 +23,7 @@ final class UserAppsStatusController extends AbstractController
     }
 
     #[Route('', name: 'status', methods: ['GET'])]
-    public function getStatus(): Response
+    public function update(): Response
     {
         $services = $this->serviceRepository->findBy(['user' => $this->getUser()]);
 

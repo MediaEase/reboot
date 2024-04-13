@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
+use App\Entity\User;
+use App\Entity\Store;
+use App\Entity\Application;
 use Psr\Log\LoggerInterface;
 use Symfony\UX\Turbo\TurboBundle;
 use App\Repository\StoreRepository;
@@ -15,8 +18,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use OpenApi\Attributes as OA;
 
-#[Route('/api', name: 'api_apps_')]
+#[Route('/api/store', name: 'api_store_')]
 #[IsGranted('ROLE_USER')]
 final class StoreController extends AbstractController
 {
@@ -28,15 +32,26 @@ final class StoreController extends AbstractController
     ) {
     }
 
-    #[Route('/store', name: 'getStore', methods: ['GET'])]
-    public function getStore(): Response
+    #[Route('', name: 'list', methods: ['GET'])]
+    #[OA\Get(
+        operationId: 'getStoreList',
+        summary: 'Get a list of stores',
+        description: 'Retrieve all available stores',
+        tags: ['Store'],
+    )]
+    #[OA\Response(
+        response: Response::HTTP_OK,
+        description: 'OK',
+        content: new OA\JsonContent(ref: '#/components/schemas/Store.list'),
+    )]
+    public function list(): Response
     {
         $stores = $this->storeRepository->findAll();
 
-        return $this->json($stores, Response::HTTP_OK, [], ['groups' => 'store:info']);
+        return $this->json($stores, Response::HTTP_OK, [], ['groups' => [Store::GROUP_GET_STORES, Application::GROUP_GET_APPLICATIONS, User::GROUP_GET_USER]]);
     }
 
-    #[Route('/store/install', name: 'store_install', methods: ['POST'])]
+    #[Route('/install', name: 'install', methods: ['POST'])]
     public function install(Request $request): Response
     {
         $scriptPath = '/usr/local/bin/zen';
