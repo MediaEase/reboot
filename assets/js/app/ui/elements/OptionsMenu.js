@@ -94,8 +94,8 @@ export class OptionsMenu {
                 if (response) {
                     const pinLink = event.target.closest('.pin-link');
                     pinLink.innerText = response.pinned ? 'Unpin' : 'Pin';
-                    const preferencesData = fetchData('/api/me/preferences');
-                    preferencesData.then(data => {
+                    const myProfile = fetchData('/api/me');
+                    myProfile.preferencesData.then(data => {
                         data = this.data;
                     });
                 }
