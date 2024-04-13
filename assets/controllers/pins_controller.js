@@ -11,10 +11,12 @@ export default class extends Controller {
     }
 
     async initializePinnedApps() {
-        const appsData = await fetchData('/api/me/my_apps');
-        const preferencesData = await fetchData('/api/me/preferences');
+        const appsData = fetchData('/api/apps');
+        const myProfile = await fetchData('/api/me');
+        const pinnedAppsData = myProfile.preferences.pinnedApps;
+        
         this.appPinUI = new AppPinUI('pinned-apps');
-        this.appPinUI.initialize(preferencesData, appsData);
+        this.appPinUI.initialize(pinnedAppsData, appsData);
     }
 
     updatePins() {
