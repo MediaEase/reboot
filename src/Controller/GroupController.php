@@ -20,10 +20,10 @@ class GroupController extends AbstractController
     {
         $user = $this->getUser();
         $groups = $groupRepository->findAll();
-        $editableGroups = ['media', 'automation', 'download', 'full', 'remote'];
+        $baseGroups = ['media', 'automation', 'download', 'full', 'remote'];
         $groupApplications = [];
         foreach ($groups as $group) {
-            $isEditable = in_array($group->getName(), $editableGroups, true);
+            $isEditable = !in_array($group->getName(), $baseGroups, true);
 
             $groupApplications[$group->getId()] = [
                 'group' => $group,
@@ -37,7 +37,7 @@ class GroupController extends AbstractController
                 $groupApplications[$group->getId()]['applications'][] = $applications;
             }
 
-            usort($groupApplications, static function (array $a, array $b) : int {
+            usort($groupApplications, static function (array $a, array $b): int {
                 $groupNameA = strtolower($a['group']->getName());
                 $groupNameB = strtolower($b['group']->getName());
                 if ($groupNameA === 'full') {
