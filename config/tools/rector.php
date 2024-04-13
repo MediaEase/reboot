@@ -36,7 +36,7 @@ return static function (RectorConfig $rectorConfig): void {
         SetList::CODE_QUALITY,
     ]);
 
-    $rectorConfig->skip([ForeachItemsAssignToEmptyArrayToAssignRector::class,RemoveNonExistingVarAnnotationRector::class,$entityDir."/User.php"]);
+    $rectorConfig->skip([ForeachItemsAssignToEmptyArrayToAssignRector::class,RemoveNonExistingVarAnnotationRector::class,$entityDir."/User.php",$entityDir."/Group.php"]);
 
     $rectorConfig->rule(TypedPropertyFromStrictConstructorRector::class);
 
