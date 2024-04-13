@@ -13,8 +13,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use OpenApi\Attributes as OA;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
-use App\Entity\Group;
-use JMS\Serializer\Annotation\Expose;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -22,7 +20,9 @@ use JMS\Serializer\Annotation\Expose;
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     public const GROUP_GET_USERS = 'get:users';
+
     public const GROUP_GET_USER_LIMITED = 'get:user-limited';
+
     public const GROUP_GET_USER = 'get:user';
 
     #[ORM\Id]
@@ -88,9 +88,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: Preference::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
-    #[OA\Property(description: 'The preferences of the user.', ref: '#/components/schemas/Preference.item')]
+    #[OA\Property(description: 'The preferencess of the user.', ref: '#/components/schemas/Preference.item')]
     #[Groups([self::GROUP_GET_USER_LIMITED, self::GROUP_GET_USER])]
-    private Preference|null $preferences = null;
+    private ?Preference $preferences = null;
 
     #[ORM\Column(length: 32, nullable: true)]
     #[Groups([self::GROUP_GET_USER_LIMITED, self::GROUP_GET_USER])]
@@ -281,7 +281,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getPreferences(): ?Preference 
+    public function getPreferences(): ?Preference
     {
         return $this->preferences;
     }
