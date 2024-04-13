@@ -1,4 +1,4 @@
-import { updateWidget, headers, fetchData } from '../utils.js';
+import { updateWidget, headers } from '../utils.js';
 import { initializeNetworkChart, startNetworkDataFetch } from './networkWidget.js';
 
 class WidgetManager {
