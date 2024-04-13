@@ -13,13 +13,14 @@ export const toLightMode = () => {
 }
 
 function updateTheme() {
-    if (!('theme' in localStorage)) {
-        localStorage.theme = 'dark';
-    }
-    const theme = localStorage.theme;
+    const theme = localStorage.getItem('theme') || 'dark';
+    localStorage.setItem('theme', theme);
     document.documentElement.setAttribute('data-theme', theme);
-    const data = { theme: theme };
-    fetchData('/api/me/preferences/theme', 'PATCH', data)
+
+    fetchData(`/api/me/preferences/theme?value=${theme}`, 'PATCH')
+        .catch(error => {
+            console.error("Failed to update theme:", error);
+        });
 }
 
 switch (localStorage.theme) {
