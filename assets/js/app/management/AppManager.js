@@ -2,10 +2,10 @@ import AppStatusUpdater from './AppStatusUpdater.js';
 import { fetchData } from '../../utils.js';
 
 class AppManager {
-    constructor(updateInterval = 5000, appData, preferencesData) {
+    constructor(updateInterval = 3000, appData, preferencesData) {
         this.updateInterval = updateInterval;
-        this.updater = new AppStatusUpdater();
         this.appData = appData;
+        this.updater = new AppStatusUpdater(appData);
         this.preferencesData = preferencesData;
         //this.status = fetchData('/api/me/services/status');
     }
@@ -17,8 +17,7 @@ class AppManager {
     async updateAppStatus() {
         try {
             await fetchData('/api/me/services/status');
-            const appData = await fetchData('/api/me/my_apps');
-            this.updater.updateStatus(appData);
+            this.updater.updateStatus(this.appData);
         } catch (error) {
             console.error('Failed to update app status:', error);
         }

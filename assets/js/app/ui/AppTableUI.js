@@ -83,7 +83,7 @@ class AppTableUI {
             const ports = this.generateColumnData(appServices, 'ports');
     
             transformed.push({
-                name: `<img src="/soft_logos/${slugify(appName)}.png" alt="${slugify(appName)} logo" style="display:inline-block; width: 30px; height: 30px;"> ${formattedName}`,
+                name: `<img src="/soft_logos/${slugify(appName)}.png" alt="${slugify(appName)} logo" style="display:inline-block; width: 30px; height: 30px; margin-right: .25rem;"> ${formattedName}`,
                 version: version,
                 status: statusBadge,
                 apiKey: apiKey,

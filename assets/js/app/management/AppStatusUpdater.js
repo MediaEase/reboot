@@ -22,19 +22,17 @@ class AppStatusUpdater {
     }
 
     updateAppTable(appStatusData) {
-        appStatusData.apps.forEach(app => {
-            app.services.forEach(service => {
-                let serviceName = service.name.split('@')[0];
-                const statusElement = document.getElementById(`${serviceName}-status`);
-                if (statusElement) {
-                    let statusBadge = service.status === 'active'
-                        ? `<span id="${serviceName}-status" class="mt-1 inline-flex items-center justify-center w-6 h-6 me-2 text-xs font-semibold text-green-800 rounded-full">●</span>`
-                        : `<span id="${serviceName}-status" class="my-1 inline-flex items-center justify-center w-6 h-6 me-2 text-xs font-semibold text-red-800 rounded-full">●</span>`;
-                    statusElement.outerHTML = statusBadge;
-                }
-            });
+        appStatusData.forEach(service => {
+            let serviceName = service.name.split('@')[0];
+            const statusElement = document.getElementById(`${serviceName}-status`);
+            if (statusElement) {
+                let statusBadge = service.status === 'active'
+                    ? `<span class="mt-1 inline-flex items-center justify-center w-6 h-6 me-2 text-xs font-semibold text-green-800 rounded-full">●</span>`
+                    : `<span class="my-1 inline-flex items-center justify-center w-6 h-6 me-2 text-xs font-semibold text-red-800 rounded-full">●</span>`;
+                statusElement.parentElement.innerHTML = statusBadge + serviceName;
+            }
         });
-    }
+    }    
 
     updateAppCards(appStatusData) {
         Object.entries(appStatusData).forEach(([appName, appDetails]) => {
@@ -62,8 +60,6 @@ class AppStatusUpdater {
     }
 
     updateContextualMenus(appStatusData) {
-        // Logique pour mettre à jour les menus contextuels
-        // Par exemple, changer l'icône de lecture en arrêt et vice versa
         // console.log(appStatusData);
     }
 }
