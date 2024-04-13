@@ -79,7 +79,7 @@ final class PreferenceController extends AbstractController
         Request $request,
         string $preferenceKey
     ): Response {
-        if (!$user instanceof \App\Entity\User) {
+        if (!$user instanceof User) {
             return $this->json(['message' => 'User not found'], Response::HTTP_NOT_FOUND);
         }
 
