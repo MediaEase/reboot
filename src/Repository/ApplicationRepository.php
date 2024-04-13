@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Application;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Application>
@@ -21,5 +21,20 @@ final class ApplicationRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $managerRegistry)
     {
         parent::__construct($managerRegistry, Application::class);
+    }
+
+    /**
+     * Get applications with their associated stores.
+     *
+     * @return Application[]
+     */
+    public function findApplicationsWithStores(): array
+    {
+        $query = $this->createQueryBuilder('a')
+            ->leftJoin('a.store', 's')
+            ->addSelect('s')
+            ->getQuery();
+
+        return $query->getResult();
     }
 }
