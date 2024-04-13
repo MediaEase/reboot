@@ -7,7 +7,6 @@ import './bootstrap.js';
  */
 
 // any CSS you import will output into a single css file (app.css in this case)
-import './bootstrap.js';
 import TomSelect from 'tom-select';
 import "tom-select/dist/css/tom-select.css";
 import './styles/app.css';
@@ -20,7 +19,7 @@ window.toLightMode = toLightMode;
 import { Tab, Modal, Popover, Ripple, Tooltip, initTE } from "tw-elements";
 
 document.addEventListener('DOMContentLoaded', () => {
-    initTE({ Modal, Popover, Ripple, Tab, Tooltip });
+    initTE({ Tab, Modal, Popover, Ripple, Tooltip });
 
     const TomSelectConfig = {
         plugins: ['remove_button'],
