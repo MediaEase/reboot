@@ -17,35 +17,29 @@ liip_imagine:
             format: 'png'
             filters:
                 thumbnail: { size: [200, 200], mode: outbound }
-            path: "/avatars/"
         background:
             quality: 95
             format: 'png'
             filters:
                 scale: { dim: [1920, 1080] }
                 blur: { sigma: 1.5 }
-            path: "/backgrounds/"
         favicon:
             quality: 70
             format: 'ico'
             filters:
                 thumbnail: { size: [32, 32], mode: outbound }
-            path: "/brand/"
         logo:
             quality: 95
             format: 'png'
             filters:
                 thumbnail: { size: [240, 240], mode: outbound }
-            path: "/brand/"
         splashscreen:
             quality: 95
             format: 'png'
             filters:
                 scale: { dim: [640, 480] }
-            path: "/splashscreen/"
         app:
             quality: 95
             format: 'png'
             filters:
                 scale: { dim: [300, 300] }
-            path: "/soft_logos/"

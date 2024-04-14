@@ -87,7 +87,7 @@ class AppStoreUI {
     renderMainContent(parentContainer) {
         const mainContent = document.createElement('div');
         mainContent.className = "flex-grow ml-2 md:px-24 pt-4 mb-8";
-        const bannerPath = `/soft_logos/app_store_banner.png`;
+        const bannerPath = `/uploads/brand/app_store_banner.png`;
         let appCards = this.storeData.map(app => this.renderAppCard(app)).join('');
         mainContent.innerHTML = `
         <img src="${bannerPath}" alt="" class="rounded-xl max-w-5xl mx-auto mb-4" data-controller="installApp" data-install-app-target="banner">
@@ -106,7 +106,7 @@ class AppStoreUI {
     renderAppCard(app) {
         const shouldApplyBlur = this.userGroup !== "full" && this.userGroup !== app.type;
         const application = app.application;
-        const logoPath = `/soft_logos/${application.logo}`;
+        const logoPath = `/uploads/soft_logos/${application.logo}`;
         const cardClasses = `shadow-md gap-x-8 lg:gap-x-8 text-lg content-background dark:content-background light:border-2 border-gray-500 border-opacity-75 rounded-xl hover:shadow-xl p-4`;
         return `
             <div class="${cardClasses}">

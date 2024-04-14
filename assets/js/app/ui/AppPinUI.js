@@ -67,7 +67,7 @@ class AppPinUI {
                 appLink.classList.add('flex', 'items-center', 'justify-center', 'w-12', 'h-12', 'mt-2', 'rounded', 'hover:bg-gray-700', 'hover:text-gray-300');
     
                 const appImage = document.createElement('img');
-                appImage.src = `/soft_logos/${appDetails.logo}`;
+                appImage.src = `/uploads/soft_logos/${appDetails.logo}`;
                 appImage.alt = `${appDetails.name} logo`;
                 appImage.classList.add('w-8', 'h-8', 'rounded-full');
     

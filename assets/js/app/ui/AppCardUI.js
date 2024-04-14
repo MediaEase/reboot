@@ -58,7 +58,7 @@ class AppCardUI {
         const optionsMenu = optionsMenuInstance.generateOptionsMenu(appDetail.name, appDetail, preferencesData);
         const appNameSanitized = slugify(appDetail.name);
         const hasChildServices = appDetail.services.length > 1;
-        const logoPath = `/soft_logos/${slugify(appDetail.name)}.png`;
+        const logoPath = `/uploads/soft_logos/${slugify(appDetail.name)}.png`;
         const appApiKey = appDetail.services[0]?.apikey || 'No API Key';
         const [serverPort, webPort] = this.generatePorts(appDetail);
     
