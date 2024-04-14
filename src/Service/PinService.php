@@ -20,8 +20,8 @@ final class PinService
     /**
      * Constructor for the PinService.
      *
-     * @param EntityManagerInterface $entityManager EntityManager to interact with the database.
-     * @param PinServiceValidator $pinServiceValidator Validator for service pinning operations.
+     * @param EntityManagerInterface $entityManager       entityManager to interact with the database
+     * @param PinServiceValidator    $pinServiceValidator validator for service pinning operations
      */
     public function __construct(
         private EntityManagerInterface $entityManager,
@@ -32,10 +32,12 @@ final class PinService
     /**
      * Handles the pinning or unpinning of a service for a user.
      *
-     * @param User $user The user for whom the pinning operation is being performed.
-     * @param int|null $serviceId The ID of the service to pin or unpin.
-     * @return string Returns 'pin' if the service was pinned, 'unpin' if the service was unpinned.
-     * @throws BadRequestHttpException If the service ID is missing or invalid operations are performed.
+     * @param User     $user      the user for whom the pinning operation is being performed
+     * @param int|null $serviceId the ID of the service to pin or unpin
+     *
+     * @return string returns 'pin' if the service was pinned, 'unpin' if the service was unpinned
+     *
+     * @throws BadRequestHttpException if the service ID is missing or invalid operations are performed
      */
     public function handlePinning(User $user, ?int $serviceId): string
     {
@@ -62,9 +64,9 @@ final class PinService
     /**
      * Removes a service from the user's pinned applications.
      *
-     * @param User $user User who owns the pinned apps.
-     * @param int $serviceId ID of the service to be unpinned.
-     * @param array $pinnedApps Array of currently pinned apps.
+     * @param User  $user       user who owns the pinned apps
+     * @param int   $serviceId  ID of the service to be unpinned
+     * @param array $pinnedApps array of currently pinned apps
      */
     private function unpinService(User $user, int $serviceId, array &$pinnedApps): void
     {
@@ -80,10 +82,11 @@ final class PinService
     /**
      * Adds a service to the user's pinned applications.
      *
-     * @param User $user User who will pin the app.
-     * @param int $serviceId ID of the service to be pinned.
-     * @param array $pinnedApps Array of currently pinned apps.
-     * @throws BadRequestHttpException If the maximum number of pinned apps is exceeded.
+     * @param User  $user       user who will pin the app
+     * @param int   $serviceId  ID of the service to be pinned
+     * @param array $pinnedApps array of currently pinned apps
+     *
+     * @throws BadRequestHttpException if the maximum number of pinned apps is exceeded
      */
     private function pinService(User $user, int $serviceId, array &$pinnedApps): void
     {
@@ -102,8 +105,9 @@ final class PinService
     /**
      * Retrieves the user's preference entity.
      *
-     * @param User $user The user whose preferences are being retrieved.
-     * @return Preference|null The user's preferences, or null if not found.
+     * @param User $user the user whose preferences are being retrieved
+     *
+     * @return Preference|null the user's preferences, or null if not found
      */
     private function getUserPreferences(User $user): ?Preference
     {
