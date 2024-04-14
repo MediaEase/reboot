@@ -50,9 +50,7 @@ symfony.lock
 package-lock.json
 pnpm-lock.yaml
 bun.lockb
-public/assets/app-*.js
-public/assets/dashboard-*.js
-/public/uploads/*/custom/*
+/public/assets/
 
 ###> liip/imagine-bundle ###
 /public/media/cache/
