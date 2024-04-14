@@ -52,3 +52,7 @@ pnpm-lock.yaml
 bun.lockb
 public/assets/app-*.js
 public/assets/dashboard-*.js
+
+###> liip/imagine-bundle ###
+/public/media/cache/
+###< liip/imagine-bundle ###

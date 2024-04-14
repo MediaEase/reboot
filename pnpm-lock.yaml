@@ -67,6 +67,9 @@ devDependencies:
   '@symfony/stimulus-bridge':
     specifier: ^3.2.2
     version: 3.2.2(@hotwired/stimulus@3.2.2)
+  '@symfony/ux-dropzone':
+    specifier: file:vendor/symfony/ux-dropzone/assets
+    version: file:vendor/symfony/ux-dropzone/assets(@hotwired/stimulus@3.2.2)
   '@symfony/ux-live-component':
     specifier: file:vendor/symfony/ux-live-component/assets
     version: file:vendor/symfony/ux-live-component/assets(@hotwired/stimulus@3.2.2)
@@ -6203,6 +6206,16 @@ packages:
     engines: {node: '>=12.20'}
     dev: true
 
+  file:vendor/symfony/ux-dropzone/assets(@hotwired/stimulus@3.2.2):
+    resolution: {directory: vendor/symfony/ux-dropzone/assets, type: directory}
+    id: file:vendor/symfony/ux-dropzone/assets
+    name: '@symfony/ux-dropzone'
+    peerDependencies:
+      '@hotwired/stimulus': ^3.0.0
+    dependencies:
+      '@hotwired/stimulus': 3.2.2
+    dev: true
+
   file:vendor/symfony/ux-live-component/assets(@hotwired/stimulus@3.2.2):
     resolution: {directory: vendor/symfony/ux-live-component/assets, type: directory}
     id: file:vendor/symfony/ux-live-component/assets
@@ -6211,7 +6224,7 @@ packages:
       '@hotwired/stimulus': ^3.0.0
     dependencies:
       '@hotwired/stimulus': 3.2.2
-      idiomorph: github.com/bigskysoftware/idiomorph/8e40c42cc573609eb6863e72fa3403574974dd7d
+      idiomorph: github.com/bigskysoftware/idiomorph/f75fba125e6e3cbfaa31dfa2af11be94455c6a38
     dev: true
 
   file:vendor/symfony/ux-turbo/assets(@hotwired/stimulus@3.2.2)(@hotwired/turbo@8.0.4):
@@ -6226,8 +6239,8 @@ packages:
       '@hotwired/turbo': 8.0.4
     dev: true
 
-  github.com/bigskysoftware/idiomorph/8e40c42cc573609eb6863e72fa3403574974dd7d:
-    resolution: {tarball: https://codeload.github.com/bigskysoftware/idiomorph/tar.gz/8e40c42cc573609eb6863e72fa3403574974dd7d}
+  github.com/bigskysoftware/idiomorph/f75fba125e6e3cbfaa31dfa2af11be94455c6a38:
+    resolution: {tarball: https://codeload.github.com/bigskysoftware/idiomorph/tar.gz/f75fba125e6e3cbfaa31dfa2af11be94455c6a38}
     name: idiomorph
     version: 0.3.0
     dev: true
