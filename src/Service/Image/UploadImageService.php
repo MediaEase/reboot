@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Service;
+namespace App\Service\Image;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Service\FilterService;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
@@ -15,7 +14,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
  * Manages the upload and processing of image files.
  * Uses LiipImagineBundle for image manipulations based on predefined filters and contexts.
  */
-final class ImageUploaderService
+final class UploadImageService
 {
     public function __construct(
         private FilterService $filterService,
