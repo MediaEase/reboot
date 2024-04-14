@@ -34,7 +34,7 @@ final class ResetDefaultImageService
             'favicon' => $this->buildPath('brand', 'default-favicon.png'),
             'appstore' => $this->buildPath('brand', 'default-appstore.png'),
             'splashscreen' => $this->buildPath($context, 'default.png'),
-            default => throw new \InvalidArgumentException('Invalid or unsupported context: ' . $context),
+            default => throw new \InvalidArgumentException('Invalid or unsupported context: '.$context),
         };
     }
 

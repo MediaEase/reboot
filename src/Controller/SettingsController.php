@@ -11,13 +11,14 @@ use App\Updater\PhpIniUpdater;
 use App\Security\SecretManager;
 use App\Form\Setting\GeneralType;
 use App\Repository\GroupRepository;
+use App\Repository\StoreRepository;
 use App\Repository\ServiceRepository;
 use App\Repository\SettingRepository;
 use Symfony\Component\Process\Process;
 use App\Repository\PreferenceRepository;
-use App\Repository\StoreRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -48,7 +49,7 @@ final class SettingsController extends AbstractController
     }
 
     #[Route('/general', name: 'general')]
-    public function generalSettings(Request $request): \Symfony\Component\HttpFoundation\Response
+    public function generalSettings(Request $request): Response
     {
         $settings = $this->settingRepository->findLast();
         $user = $this->getUser();
@@ -79,7 +80,7 @@ final class SettingsController extends AbstractController
 
     #[Route('/system/subdomains', name: 'system_subdomains')]
     #[IsGranted('ROLE_ADMIN')]
-    public function systemSubdomainsSettings(Request $request): \Symfony\Component\HttpFoundation\Response
+    public function systemSubdomainsSettings(Request $request): Response
     {
         $this->serviceRepository->findAll();
 
@@ -88,7 +89,7 @@ final class SettingsController extends AbstractController
 
     #[Route('/system/smtp', name: 'system_smtp')]
     #[IsGranted('ROLE_ADMIN')]
-    public function systemEmailsSettings(Request $request, SecretManager $secretManager): \Symfony\Component\HttpFoundation\Response
+    public function systemEmailsSettings(Request $request, SecretManager $secretManager): Response
     {
         $user = $this->getUser();
         $defaultData = [
@@ -119,21 +120,26 @@ final class SettingsController extends AbstractController
 
     #[Route('/system/help', name: 'system_help')]
     #[IsGranted('ROLE_ADMIN')]
-    public function systemHelpSettings(Request $request): \Symfony\Component\HttpFoundation\Response
+    public function systemHelpSettings(Request $request): Response
     {
         return $this->render('settings/help.html.twig');
     }
 
     #[Route('/system/php', name: 'system_php')]
     #[IsGranted('ROLE_ADMIN')]
-    public function systemPhpSetting(Request $request, PhpIniUpdater $phpIniUpdater): \Symfony\Component\HttpFoundation\Response
+    public function systemPhpSetting(Request $request, PhpIniUpdater $phpIniUpdater): Response
     {
+        $settings = $this->settingRepository->findLast();
         $user = $this->getUser();
         $iniFilePath = '/etc/php/8.3/cli/conf.d/99-mediaease.ini';
         $defaultData = $phpIniUpdater->getIniConfig($iniFilePath);
-        $form = $this->createForm(PhpType::class, $defaultData);
+        if (!is_array($defaultData)) {
+            throw new \RuntimeException('Expected an array of configuration settings');
+        }
 
+        $form = $this->createForm(PhpType::class, $defaultData);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $formData = $form->getData();
             $cliIniPath = '/etc/php/8.3/cli/conf.d/99-mediaease.ini';
@@ -145,6 +151,7 @@ final class SettingsController extends AbstractController
         return $this->render('settings/php.html.twig', [
             'form' => $form->createView(),
             'user' => $user,
+            'settings' => $settings,
         ]);
     }
 

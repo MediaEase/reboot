@@ -66,17 +66,26 @@ final class PhpIniUpdater
     public function getIniConfig(string $filePath): array
     {
         $config = [];
+        $currentSection = '';
+
         if (!file_exists($filePath)) {
             throw new \Exception(sprintf('The file "%s" does not exist.', $filePath));
         }
 
         $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
         foreach ($lines as $line) {
-            if (str_contains($line, '=') && !str_starts_with($line, ';')) {
+            if (preg_match('/^\[(.*)\]$/', $line, $matches)) {
+                $currentSection = $matches[1];
+                $config[$currentSection] = [];
+            } elseif (str_contains($line, '=') && !str_starts_with(trim($line), ';')) {
                 list($key, $value) = explode('=', $line, 2);
                 $key = trim($key);
                 $value = trim($value, " \t\n\r\0\x0B\"");
-                $config[$key] = $value;
+                if ($currentSection !== '') {
+                    $config[$currentSection][$key] = $value;
+                } else {
+                    $config[$key] = $value;
+                }
             }
         }
 
