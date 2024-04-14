@@ -16,9 +16,9 @@
 			{{ encore_entry_script_tags('login') }}
 		{% endblock %}
 	</head>
-	<body class="bg-fixed bg-gray-100 dark:bg-gray-800" id="page-content">
+	<body class="bg-fixed bg-gray-100 dark:bg-gray-800 h-[100%] overscroll-none overflow-none" id="page-content">
 		{% import '_macros/backdrop_macro.html.twig' as backdrop %}
-		<div class="bottom-0 left-0 right-0 top-0 h-full w-full bg-fixed p-6 text-center background-cover text-white/80"
+		<div class="bottom-0 left-0 right-0 top-0 w-full text-center text-white/80"
 			{{ backdrop.splashscreen(settings) }}
 			>
 			{% block body %}{% endblock %}
