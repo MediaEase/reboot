@@ -59,7 +59,7 @@ final class ImageUploaderService
      */
     private function getUploadDir(string $context): string
     {
-        return $this->parameterBag->get('kernel.project_dir').'/public/uploads/'.$context;
+        return $this->parameterBag->get('kernel.project_dir').'/public/uploads/'.$context.'/custom';
     }
 
     /**
