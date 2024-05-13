@@ -6,6 +6,7 @@ use App\Entity\Group;
 use App\Form\Setting\AppGroupType;
 use App\Form\Setting\NewGroupType;
 use App\Repository\GroupRepository;
+use App\Repository\SettingRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,6 +16,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 #[Route('/access-groups', name: 'app_settings_access_groups_')]
 class GroupController extends AbstractController
 {
+    public function __construct(private SettingRepository $settingRepository)
+    {
+    }
+
     #[Route('/', name: 'index', methods: ['GET'])]
     public function index(GroupRepository $groupRepository): Response
     {
@@ -55,6 +60,7 @@ class GroupController extends AbstractController
         return $this->render('settings/access_groups/index.html.twig', [
             'groupApplications' => $groupApplications,
             'user' => $user,
+            'settings' => $this->settingRepository->find(1),
         ]);
     }
 
@@ -77,6 +83,7 @@ class GroupController extends AbstractController
             'group' => $group,
             'form' => $form,
             'user' => $user,
+            'settings' => $this->settingRepository->find(1),
         ]);
     }
 
@@ -117,6 +124,7 @@ class GroupController extends AbstractController
             'group' => $group,
             'form' => $form,
             'user' => $user,
+            'settings' => $this->settingRepository->find(1),
         ]);
     }
 
