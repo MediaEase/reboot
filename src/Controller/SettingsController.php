@@ -75,6 +75,7 @@ final class SettingsController extends AbstractController
             'user' => $user,
             'preferences' => $preferences,
             'form' => $form->createView(),
+            'settings' => $settings,
         ]);
     }
 
@@ -115,6 +116,7 @@ final class SettingsController extends AbstractController
             'form' => $form->createView(),
             'user' => $user,
             'mailer_dsn' => $secretManager->getSecret('MAILER_DSN'),
+            'settings' => $this->settingRepository->find(1),
         ]);
     }
 
