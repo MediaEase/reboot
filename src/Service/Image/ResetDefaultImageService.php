@@ -2,12 +2,24 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the MediaEase project.
+ *
+ * (c) Thomas Chauveau <contact.tomc@yahoo.fr>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace App\Service\Image;
 
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 /**
  * Service to provide paths to default images for specific contexts.
+ *
+ * This service helps retrieve the paths to default images for various contexts
+ * such as avatars, backgrounds, brand logos, favicons, app store images, and splash screens.
  */
 final class ResetDefaultImageService
 {
