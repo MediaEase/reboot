@@ -23,5 +23,22 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
+    Liip\ImagineBundle\Service\FilterService:
+        alias: liip_imagine.service.filter
+        public: false
+        
+    Liip\ImagineBundle\Imagine\Cache\CacheManager:
+        alias: liip_imagine.cache.manager
+        public: false
+
+    Liip\ImagineBundle\Imagine\Data\DataManager:
+        alias: liip_imagine.data.manager
+        public: false
+
+    Liip\ImagineBundle\Imagine\Filter\Loader\ScaleFilterLoader:
+        tags: ['liip_imagine.filter.loader']
+
+    Liip\ImagineBundle\Imagine\Filter\Loader\ThumbnailFilterLoader:
+        tags: ['liip_imagine.filter.loader']
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
