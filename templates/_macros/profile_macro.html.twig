@@ -3,14 +3,34 @@
     <img src="{{ avatarSrc }}" alt="{{ user.username }} avatar" class="absolute inset-0 h-full w-full object-cover"/>
 {% endmacro %}
 
-{% macro avatar_link(user) %}
+{% macro avatar_link(user, size = 8, rounded = 'full') %}
     {% set avatarSrc = gravatar_exists(user.email) ? gravatar(user.email) : user.avatar %}
-    <img src="{{ avatarSrc }}" alt="{{ user.username }} avatar" class="w-8 h-8 rounded-full"/>
+    <img src="{{ avatarSrc }}" alt="{{ user.username }} avatar" class="w-{{ size }} h-{{ size }} rounded-{{ rounded }}"/>
 {% endmacro %}
 
 {% macro backdrop(user) %}
-    {% set backdropImage = user.backdrop ?? 'default/default-backdrop.jpg' %}
-    <img src="{{ asset( backdropImage) }}" alt="{{ user.username }} backdrop" class="absolute inset-0 -z-10 h-full w-full object-cover object-right md:object-center"/>
+    {% set backdropImage = user.getPreferences.backdrop %}
+    {% if 'default/' not in backdropImage %}
+        {% set backdropImage = 'uploads/background/custom/' ~ backdropImage|replace({'-blur': ''}) %}
+    {% endif %}
+    <img src="{{ asset(backdropImage) }}" alt="{{ user.username }} backdrop" class="absolute inset-0 -z-10 h-full w-full object-cover object-right md:object-center"/>
+{% endmacro %}
+
+{% macro backdrop_link(user, size = 8, rounded = 'full') %}
+    {% set backdropImage = user.getPreferences.backdrop %}
+    {% if 'default/' not in backdropImage %}
+        {% set backdropImage = 'uploads/background/custom/' ~ backdropImage|replace({'-blur': ''}) %}
+    {% endif %}
+    <img src="{{ asset(backdropImage) }}" alt="{{ user.username }} backdrop" class="w-{{ size }} h-{{ size }} rounded-{{ rounded }}"/>
+{% endmacro %}
+
+{% macro badge(user) %}
+    {% if user.isVerified %}
+        <span class="ml-2 mb-4 h-3 w-3 bg-green-500 rounded-full flex items-center justify-center text-xs font-medium text-white"></span>
+    {% else %}
+        <span class="ml-2 mb-4 h-3 w-3 bg-red-500 rounded-full flex items-center justify-center text-xs font-medium text-white"></span>
+    {% endif %}
+    
 {% endmacro %}
 
 {% macro banner(user) %}
