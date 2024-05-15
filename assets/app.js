@@ -11,6 +11,7 @@ import TomSelect from 'tom-select';
 import "tom-select/dist/css/tom-select.css";
 import './styles/app.css';
 import './js/clipboard.js';
+import './js/routing/links.js';
 import { toDarkMode, toLightMode } from './js/menus/theme_switcher.js';
 
 window.toDarkMode = toDarkMode;
