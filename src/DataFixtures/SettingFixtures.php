@@ -17,12 +17,14 @@ final class SettingFixtures extends Fixture implements FixtureGroupInterface
         $setting->setSiteName('My Cloud');
         $setting->setRootUrl('https://mycloud.example.com');
         $setting->setSiteDescription('My Cloud');
-        $setting->setBackdrop('default-backdrop.png');
-        $setting->setLogo('default-favicon.png');
+        $setting->setBrand('default-favicon.png');
         $setting->setDefaultQuota('10G');
         $setting->setNetInterface('eth0');
         $setting->setRegistrationEnabled(true);
         $setting->setWelcomeEmail(true);
+        $setting->setFavicon('default-favicon.png');
+        $setting->setAppstore('default-appstore.png');
+        $setting->setSplashscreen('default.png');
 
         $objectManager->persist($setting);
 

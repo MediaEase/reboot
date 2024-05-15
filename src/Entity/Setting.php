@@ -6,6 +6,7 @@ namespace App\Entity;
 
 use App\Repository\SettingRepository;
 use Doctrine\ORM\Mapping as ORM;
+use OpenApi\Attributes as OA;
 
 #[ORM\Entity(repositoryClass: SettingRepository::class)]
 class Setting
@@ -21,14 +22,8 @@ class Setting
     #[ORM\Column(length: 70)]
     private ?string $rootUrl = null;
 
-    #[ORM\Column(length: 60)]
+    #[ORM\Column(length: 255)]
     private ?string $siteDescription = null;
-
-    #[ORM\Column(length: 80)]
-    private ?string $backdrop = null;
-
-    #[ORM\Column(length: 80)]
-    private ?string $logo = null;
 
     #[ORM\Column(length: 6)]
     private ?string $defaultQuota = null;
@@ -41,6 +36,22 @@ class Setting
 
     #[ORM\Column]
     private ?bool $welcomeEmail = null;
+
+    #[ORM\Column(length: 60)]
+    #[OA\Property(description: 'The brand logo preference.', maxLength: 60)]
+    private ?string $brand = null;
+
+    #[ORM\Column(length: 60)]
+    #[OA\Property(description: 'The favicon preference.', maxLength: 60)]
+    private ?string $favicon = null;
+
+    #[ORM\Column(length: 60)]
+    #[OA\Property(description: 'The appstore banner preference.', maxLength: 60)]
+    private ?string $appstore = null;
+
+    #[ORM\Column(length: 60)]
+    #[OA\Property(description: 'The splashscreen preference.', maxLength: 60)]
+    private ?string $splashscreen = null;
 
     public function getId(): ?int
     {
@@ -79,30 +90,6 @@ class Setting
     public function setSiteDescription(string $siteDescription): static
     {
         $this->siteDescription = $siteDescription;
-
-        return $this;
-    }
-
-    public function getBackdrop(): ?string
-    {
-        return $this->backdrop;
-    }
-
-    public function setBackdrop(string $backdrop): static
-    {
-        $this->backdrop = $backdrop;
-
-        return $this;
-    }
-
-    public function getLogo(): ?string
-    {
-        return $this->logo;
-    }
-
-    public function setLogo(string $logo): static
-    {
-        $this->logo = $logo;
 
         return $this;
     }
@@ -151,6 +138,54 @@ class Setting
     public function setWelcomeEmail(bool $welcomeEmail): static
     {
         $this->welcomeEmail = $welcomeEmail;
+
+        return $this;
+    }
+
+    public function getBrand(): ?string
+    {
+        return $this->brand;
+    }
+
+    public function setBrand(string $brand): static
+    {
+        $this->brand = $brand;
+
+        return $this;
+    }
+
+    public function getFavicon(): ?string
+    {
+        return $this->favicon;
+    }
+
+    public function setFavicon(string $favicon): static
+    {
+        $this->favicon = $favicon;
+
+        return $this;
+    }
+
+    public function getAppstore(): ?string
+    {
+        return $this->appstore;
+    }
+
+    public function setAppstore(string $appstore): static
+    {
+        $this->appstore = $appstore;
+
+        return $this;
+    }
+
+    public function getSplashscreen(): ?string
+    {
+        return $this->splashscreen;
+    }
+
+    public function setSplashscreen(string $splashscreen): static
+    {
+        $this->splashscreen = $splashscreen;
 
         return $this;
     }

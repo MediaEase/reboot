@@ -70,6 +70,11 @@ class Preference
     #[OA\Property(description: 'Indicator if full app listing is enabled.', type: 'boolean')]
     private ?bool $isFullAppListingEnabled = true;
 
+    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => true])]
+    #[Groups([User::GROUP_GET_USER, User::GROUP_GET_USERS])]
+    #[OA\Property(description: 'Indicator if Gravatar is enabled.', type: 'boolean')]
+    private ?bool $isGravatarEnabled = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -195,6 +200,18 @@ class Preference
     public function setIsFullAppListingEnabled(bool $isFullAppListingEnabled): static
     {
         $this->isFullAppListingEnabled = $isFullAppListingEnabled;
+
+        return $this;
+    }
+
+    public function isGravatarEnabled(): ?bool
+    {
+        return $this->isGravatarEnabled;
+    }
+
+    public function setGravatarEnabled(bool $isGravatarEnabled): static
+    {
+        $this->isGravatarEnabled = $isGravatarEnabled;
 
         return $this;
     }
