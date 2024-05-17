@@ -67,6 +67,7 @@ final class PreferenceFixtures extends Fixture implements DependentFixtureInterf
         $preference->setBackdrop('user-backdrop.jpg');
         $preference->setAvatar('user-avatar.jpg');
         $preference->setIsFullAppListingEnabled(true);
+        $preference->setIsGravatarEnabled(true);
 
         return $preference;
     }

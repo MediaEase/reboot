@@ -1,15 +1,25 @@
-{% macro init(user) %}
-    {% set backdropPath = asset('default/default-backdrop.jpg') %}
-    {% if user.preferences and user.preferences.backdrop %}
-        {% set backdropPath = user.preferences.backdrop starts with 'http' ? user.preferences.backdrop : asset('uploads/' ~ user.preferences.backdrop) %}
+{% macro getImagePath(image, defaultPath, uploadDir) %}
+    {% if image starts with 'http' %}
+        {{ image }}
+    {% elseif image %}
+        {{ asset(uploadDir ~ '/' ~ image) }}
+    {% else %}
+        {{ asset(defaultPath) }}
     {% endif %}
+{% endmacro %}
+
+{% macro init(user) %}
+    {% set baseDir = 'uploads/backdrop' %}
+    {% set defaultBackdropPath = baseDir ~ '/default-backdrop.jpg' %}
+    {% set uploadDir = baseDir ~ '/custom' %}
+    {% set backdropPath = _self.getImagePath(user.preferences ? user.preferences.backdrop : null, defaultBackdropPath, uploadDir) %}
     style="background-image: url('{{ backdropPath }}');"
 {% endmacro %}
 
 {% macro splashscreen(settings) %}
-    {% set backdropPath = asset('default/default-backdrop.jpg') %}
-    {% if settings and settings.backdrop %}
-        {% set backdropPath = settings.backdrop starts with 'http' ? settings.backdrop : asset('uploads/' ~ settings.backdrop) %}
-    {% endif %}
-    style="background-image: url('{{ backdropPath }}');"
+    {% set baseDir = 'uploads/splashscreen' %}
+    {% set defaultSplashscreenPath = baseDir ~ '/default-splashscreen.jpg' %}
+    {% set uploadDir = baseDir ~ '/custom' %}
+    {% set splashscreenPath = _self.getImagePath(settings ? settings.splashscreen : null, defaultSplashscreenPath, uploadDir) %}
+    style="background-image: url('{{ splashscreenPath }}');"
 {% endmacro %}

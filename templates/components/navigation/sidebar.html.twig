@@ -3,7 +3,7 @@
 <nav id="sidebar" class="hidden xl:block sidebar fixed left-0 bg-gray-900 top-0 z-[1035] lg:h-screen h-[100vh] w-[90px] overflow-hidden" style="width: 90px; height: 100vh; position: fixed; transition: all 0.3s linear 0s; transform: translateX(0%);">
 	<div class="flex flex-col items-center h-screen w-[90px] overflow-hidden text-gray-400 rounded">
 		<a class="flex items-center justify-center mt-3 mb-1" href="{{ path('app_home') }}">
-			{{ brand.logo(settings.logo, 'sidebar', 'w-14 h-14') }}
+			{{ brand.logo(settings.brand, 'sidebar', 'w-14 h-14') }}
 		</a>
 		<div class="flex flex-col items-center mt-3 border-t border-gray-700">
 			<a class="flex items-center justify-center w-10 h-10 mt-2 rounded hover:bg-gray-700 hover:text-gray-300" href="{{ path('app_home') }}">
@@ -26,7 +26,7 @@
 			id="pinned-apps" 
 			data-controller="pins">
 		</div>
-		<a class="flex items-center justify-center w-10 h-10 mt-auto rounded-full bg-gray-900 hover:bg-gray-700 hover:text-gray-300" href="#">
+		<a class="flex items-center justify-center w-10 h-10 mt-auto rounded-full bg-gray-900 hover:bg-gray-700 hover:text-gray-300" href="{{ path('app_users_profile') }}">
 			{% import '_macros/profile_macro.html.twig' as profile %}
 			{{ profile.avatar_link(user) }}
 		</a>
@@ -35,7 +35,7 @@
 <div class="xl:hidden block">
 	<nav class="fixed top-0 w-full flex items-center justify-between h-[90px] bg-gray-900 z-50 border-gray-700 dark:border-gray-200 dark:border-b-1 border-b-1">
 		<div>
-			{{ brand.logo(settings.logo, 'sidebar', 'w-16 h-16 ml-[3rem]') }}
+			{{ brand.logo(settings.brand, 'sidebar', 'w-16 h-16 ml-[3rem]') }}
 		</div>
 		<div class="relative inline-block text-left">
 			<button id="dropdown-button" class="z-10 inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-200 focus:ring-blue-500">

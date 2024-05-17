@@ -209,7 +209,7 @@ class Preference
         return $this->isGravatarEnabled;
     }
 
-    public function setGravatarEnabled(bool $isGravatarEnabled): static
+    public function setIsGravatarEnabled(bool $isGravatarEnabled): static
     {
         $this->isGravatarEnabled = $isGravatarEnabled;
 

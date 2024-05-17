@@ -7,7 +7,7 @@
 			{% block title %}Dashboard  - {{ app.request.server.get('SITE_NAME') }}
 			{% endblock %}
 		</title>
-		{{ brand.favicon(settings.logo) }}
+		{{ brand.favicon(settings.favicon) }}
 		{% block stylesheets %}
 			{{ encore_entry_link_tags('dashboard') }}
 		{% endblock %}

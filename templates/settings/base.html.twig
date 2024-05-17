@@ -7,7 +7,7 @@
 			{% block title %}
 			{% endblock %}
 		</title>
-		{{ brand.favicon(settings.logo) }}
+		{{ brand.favicon(settings.favicon) }}
 		{% block stylesheets %}
 			{{ encore_entry_link_tags('app') }}
 		{% endblock %}
@@ -20,7 +20,7 @@
 		{% include "components/navigation/sidebar.html.twig" %}
 		<div class="bottom-0 left-0 right-0 top-0 h-full w-full bg-fixed p-6 text-center background-cover text-white/80"
 			{% if user.preferences and user.preferences.backdrop is not null %}
-			style="background-image: url('{{ user.preferences.backdrop }}');"
+				style="background-image: url('{{ user.preferences.backdrop }}');"
 			{% endif %}
 			>
 			{% include "components/navigation/settings_sidebar.html.twig" %}
