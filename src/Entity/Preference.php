@@ -75,6 +75,11 @@ class Preference
     #[OA\Property(description: 'Indicator if Gravatar is enabled.', type: 'boolean')]
     private ?bool $isGravatarEnabled = null;
 
+    #[ORM\Column(type: Types::STRING, length: 90)]
+    #[Groups([User::GROUP_GET_USER, User::GROUP_GET_USERS])]
+    #[OA\Property(description: 'The primary mount path.', maxLength: 90)]
+    private ?string $primaryMountPath = '/';
+
     public function getId(): ?int
     {
         return $this->id;
@@ -212,6 +217,18 @@ class Preference
     public function setIsGravatarEnabled(bool $isGravatarEnabled): static
     {
         $this->isGravatarEnabled = $isGravatarEnabled;
+
+        return $this;
+    }
+
+    public function getPrimaryMountPath(): ?string
+    {
+        return $this->primaryMountPath;
+    }
+
+    public function setPrimaryMountPath(string $primaryMountPath): static
+    {
+        $this->primaryMountPath = $primaryMountPath;
 
         return $this;
     }
