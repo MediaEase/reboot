@@ -2,6 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+[type="checkbox"]:checked {
+    background-image: none;
+}
+
+[type="checkbox"]:focus, [type="radio"]:focus {
+    outline: 0px solid transparent;
+    outline-offset: 0px;
+    --tw-ring-inset: var(--tw-empty, );
+    --tw-ring-offset-width: 0px;
+    --tw-ring-offset-color: transparent;
+    --tw-ring-color: transparent;
+    --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+    --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+    box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+}
+
 #header__sun,
 #header__moon,
 #header__indeterminate {
