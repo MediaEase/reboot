@@ -52,6 +52,7 @@ install-project:
     just sf-rotate-keys
     {{PHP_CONSOLE}} doctrine:database:create
     {{PHP_CONSOLE}} doctrine:schema:update --force --complete
+    {{PHP_CONSOLE}} ux:icons:lock --force
     just sf-clear-cache --env=dev
     just qa-composer-outdated
 
