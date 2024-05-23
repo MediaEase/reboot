@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use OpenApi\Attributes as OA;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Security\Core\User\UserInterface;
-use OpenApi\Attributes as OA;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -81,7 +82,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[OA\Property(description: 'The email of the user.', maxLength: 180)]
     private ?string $email = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'boolean', nullable: true)]
     #[Groups([self::GROUP_GET_USER, self::GROUP_GET_USERS])]
     #[OA\Property(description: 'The verification status of the user.', type: 'boolean')]
     private ?bool $isVerified = null;
@@ -92,9 +93,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups([self::GROUP_GET_USER_LIMITED, self::GROUP_GET_USER])]
     private ?Preference $preferences = null;
 
-    #[ORM\Column(length: 32, nullable: true)]
+    #[ORM\Column(type: Types::STRING, length: 32, nullable: true)]
     #[Groups([self::GROUP_GET_USER_LIMITED, self::GROUP_GET_USER])]
     private ?string $apiKey = null;
+
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, length: 255, nullable: true)]
+    #[Groups([self::GROUP_GET_USER_LIMITED, self::GROUP_GET_USER])]
+    #[OA\Property(description: 'The date and time the user registered.', format: 'date-time')]
+    private ?\DateTimeImmutable $registeredAt = null;
+
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, length: 255, nullable: true)]
+    #[Groups([self::GROUP_GET_USER_LIMITED, self::GROUP_GET_USER])]
+    #[OA\Property(description: 'The date and time the user activated.', format: 'date-time')]
+    private ?\DateTimeImmutable $activatedAt = null;
 
     public function __construct()
     {
@@ -301,6 +312,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setApiKey(string $apiKey): static
     {
         $this->apiKey = $apiKey;
+
+        return $this;
+    }
+
+    public function getRegisteredAt(): ?\DateTimeImmutable
+    {
+        return $this->registeredAt;
+    }
+
+    public function setRegisteredAt(\DateTimeImmutable $registeredAt): static
+    {
+        $this->registeredAt = $registeredAt;
+
+        return $this;
+    }
+
+    public function getActivatedAt(): ?\DateTimeImmutable
+    {
+        return $this->activatedAt;
+    }
+
+    public function setActivatedAt(\DateTimeImmutable $activatedAt): static
+    {
+        $this->activatedAt = $activatedAt;
 
         return $this;
     }
