@@ -14,7 +14,7 @@ use OpenApi\Attributes as OA;
 #[ORM\Entity(repositoryClass: GroupRepository::class)]
 #[ORM\Table(name: '`group`')]
 #[OA\Schema(description: 'Group entity representing a user group in the system.')]
-final class Group implements \Stringable
+class Group implements \Stringable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
