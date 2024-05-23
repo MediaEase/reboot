@@ -71,7 +71,6 @@ final class SettingsController extends AbstractController
         }
 
         return $this->render('settings/general.html.twig', [
-            'settings' => $settings,
             'user' => $user,
             'preferences' => $preferences,
             'form' => $form->createView(),
