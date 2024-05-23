@@ -24,11 +24,11 @@
 		<div class="flex items-center">
 			<button id="menu-btn" type="button" class="text-slate-500 hover:text-slate-600 dark:text-slate-400 dark:hover:text-slate-300 mr-4">
 				<span class="sr-only">Navigation</span>
-				{{ heroicon('bars-3', 'w-10 h-10 mx-3 overflow-visible text-slate-400 ') }}
+				{{ ux_icon('heroicons:bars-3', { class: 'w-10 h-10 mx-3 overflow-visible text-slate-400' }) }}
 			</button>
 			<ol class="flex leading-6 whitespace-nowrap min-w-0">
 				<li class="flex items-center text-sky-500 dark:text-sky-400">Settings
-					{{ heroicon('chevron-right', 'w-10 h-10 mx-3 overflow-visible text-slate-400 ') }}
+					{{ ux_icon('flowbite:chevron-right-outline', { class: 'w-10 h-10 mx-3 overflow-visible text-slate-400' }) }}
 				</li>
 				<li class="font-semibold text-slate-900 mt-2 truncate dark:text-slate-200">General</li>
 			</ol>
@@ -40,7 +40,7 @@
 	<div class="flex justify-end pr-4">
 		<button id="close-btn" class="text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-300" onclick="document.getElementById('sidebar').style.transform = 'translateX(-100%)';">
 			<span class="sr-only">Close menu</span>
-			{{ heroicon('x-mark', 'w-12 h-12 mr-4') }}
+			{{ ux_icon('flowbite:x-outline', { class: 'w-12 h-12 mr-4' }) }}
 		</button>
 	</div>
 	<nav id="nav" class="lg:text-sm text-3xl text-left lg:leading-6 relative pt-[5rem]">

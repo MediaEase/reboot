@@ -23,7 +23,7 @@
     {% endif %}
     <div class="flex justify-between pt-3 mt-4 mb-2 xl:mx-2 xl:p-3">
         <a href="{{ path('app_settings_access_groups_index') }}" class="flex items-center text-red-400 underline decoration-red-400 hover:text-red-600 hover:decoration-red-600">
-            {{ heroicon('arrow-left-circle', 'h-5 w-5 mr-2 fill-red-400 hover:fill-red-600 decoration-red-400 hover:decoration-red-600') }}Back to list
+            {{ ux_icon('fluent:arrow-circle-left-20-filled', {class: 'h-5 w-5 mr-2 fill-red-400 hover:fill-red-600 decoration-red-400 hover:decoration-red-600'}) }}Back to list
         </a>
         {{ form_macros.save_button(form) }}
     </div>

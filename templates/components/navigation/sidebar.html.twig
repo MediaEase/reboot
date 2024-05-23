@@ -7,13 +7,13 @@
 		</a>
 		<div class="flex flex-col items-center mt-3 border-t border-gray-700">
 			<a class="flex items-center justify-center w-10 h-10 mt-2 rounded hover:bg-gray-700 hover:text-gray-300" href="{{ path('app_home') }}">
-				{{ heroicon('home', "w-8 h-8 " ~ (is_active_route('app_home') ? 'fill-sky-400 dark:fill-sky-500' : '')) }}
+				{{ ux_icon('flowbite:home-outline', {class: "w-8 h-8 " ~ (is_active_route('app_home') ? 'fill-sky-400 dark:fill-sky-500' : '')}) }}
 			</a>
 			{# <a class="flex items-center justify-center w-10 h-10 mt-2 rounded hover:bg-gray-700 hover:text-gray-300" href="{{ path('app_settings_general') }}">
 				{{ heroicon('chart-bar-square', "w-8 h-8 " ~ (is_active_route('app_settings_general') ? 'fill-sky-400 dark:fill-sky-500' : '')) }}
 			</a> #}
 			<a class="flex items-center justify-center w-10 h-10 mt-2 rounded hover:bg-gray-700 hover:text-gray-300" href="{{ path('app_settings_general') }}">
-				{{ heroicon('wrench', "w-8 h-8 " ~ (is_active_route('app_settings_general') ? 'fill-sky-400 dark:fill-sky-500' : '')) }}
+				{{ ux_icon('heroicons:wrench', {class: "w-8 h-8 " ~ (is_active_route('app_settings_general') ? 'fill-sky-400 dark:fill-sky-500' : '')}) }}
 			</a>
 		</div>
 		<div class="flex flex-col items-center mt-2 border-t border-gray-700">
@@ -39,7 +39,7 @@
 		</div>
 		<div class="relative inline-block text-left">
 			<button id="dropdown-button" class="z-10 inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-200 focus:ring-blue-500">
-				{{ heroicon('ellipsis-vertical', 'w-10 h-10 fill-gray-300 mr-[2rem]') }}
+				{{ ux_icon('heroicons:ellipsis-vertical', {class: 'w-10 h-10 fill-gray-300 mr-[2rem]'}) }}
 			</button>
 			<div id="dropdown-menu" class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden">
 				<div class="py-2 p-2" role="menu" aria-orientation="vertical" aria-labelledby="dropdown-button">

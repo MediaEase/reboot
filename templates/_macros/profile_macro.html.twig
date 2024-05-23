@@ -1,10 +1,10 @@
 {% macro avatar(user) %}
-    {% set avatarSrc = gravatar_exists(user.email) ? gravatar(user.email) : user.avatar %}
+    {% set avatarSrc = gravatar_exists(user.email) ? gravatar(user.email) : user.getPreference().avatar %}
     <img src="{{ avatarSrc }}" alt="{{ user.username }} avatar" class="absolute inset-0 h-full w-full object-cover"/>
 {% endmacro %}
 
 {% macro avatar_link(user, size = 8, rounded = 'full') %}
-    {% set avatarSrc = gravatar_exists(user.email) ? gravatar(user.email) : user.avatar %}
+    {% set avatarSrc = gravatar_exists(user.email) ? gravatar(user.email) : user.getPreference().avatar %}
     <img src="{{ avatarSrc }}" alt="{{ user.username }} avatar" class="w-{{ size }} h-{{ size }} rounded-{{ rounded }}"/>
 {% endmacro %}
 
@@ -37,14 +37,6 @@
     {% import '_macros/badge_macro.html.twig' as badge_macro %}
     <div class="xl:pl-[25rem] relative isolate overflow-hidden bg-gray-900 py-24 sm:py-32 max-h-[65vh] lg:max-h-[70vh] rounded-xl">
         {{ _self.backdrop(user) }}
-        <div class="absolute left-1/2 transform -translate-x-1/2 top-[.35rem] z-20 text-3xl text-white font-semibold flex items-center justify-center">
-            <p>{{ user.username }}</p>
-            {% if user.isVerified %}
-                <span class="ml-2 mb-4 h-3 w-3 bg-green-500 rounded-full flex items-center justify-center text-xs font-medium text-white"></span>
-            {% else %}
-                <span class="ml-2 mb-4 h-3 w-3 bg-red-500 rounded-full flex items-center justify-center text-xs font-medium text-white"></span>
-            {% endif %}
-        </div>
         {{ _self.transform_backdrop() }}
         <div class="absolute left-1/2 top-1/2 lg:top-1/3 z-50 -translate-x-1/2 -translate-y-1/2 w-48 h-48 lg:w-32 lg:h-32 rounded-full overflow-hidden">
             {{ _self.avatar(user) }}
