@@ -14,7 +14,7 @@ use OpenApi\Attributes as OA;
 #[ORM\Entity(repositoryClass: GroupRepository::class)]
 #[ORM\Table(name: '`group`')]
 #[OA\Schema(description: 'Group entity representing a user group in the system.')]
-class Group
+final class Group implements \Stringable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -124,5 +124,10 @@ class Group
         }
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name ?? '';
     }
 }

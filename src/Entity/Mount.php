@@ -12,7 +12,7 @@ use OpenApi\Attributes as OA;
 #[ORM\Entity(repositoryClass: MountRepository::class)]
 #[ORM\Table(name: '`mount`')]
 #[OA\Schema(description: 'Mount entity representing a file system mount.')]
-class Mount
+final class Mount implements \Stringable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -75,5 +75,10 @@ class Mount
         $this->user = $user;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->path ?? '';
     }
 }
