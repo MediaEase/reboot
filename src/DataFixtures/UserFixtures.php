@@ -44,7 +44,7 @@ final class UserFixtures extends Fixture implements DependentFixtureInterface, F
     {
         $user = new User();
         $group = $this->getReference('group-media');
-        $isVerified = (bool)random_int(0, 1);
+        $isVerified = (bool) random_int(0, 1);
         if ($isVerified) {
             $user->setActivatedAt(new \DateTimeImmutable());
         }
