@@ -42,3 +42,6 @@ services:
         tags: ['liip_imagine.filter.loader']
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\Form\Extension\IconButtonExtension:
+        tags:
+            - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\ButtonType }
