@@ -1,5 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of the MediaEase project.
+ *
+ * (c) Thomas Chauveau <contact.tomc@yahoo.fr>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace App\Repository;
 
 use App\Entity\ResetPasswordRequest;
@@ -13,7 +24,7 @@ use SymfonyCasts\Bundle\ResetPassword\Persistence\ResetPasswordRequestRepository
 /**
  * @extends ServiceEntityRepository<ResetPasswordRequest>
  */
-class ResetPasswordRequestRepository extends ServiceEntityRepository implements ResetPasswordRequestRepositoryInterface
+final class ResetPasswordRequestRepository extends ServiceEntityRepository implements ResetPasswordRequestRepositoryInterface
 {
     use ResetPasswordRequestRepositoryTrait;
 

@@ -1,5 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of the MediaEase project.
+ *
+ * (c) Thomas Chauveau <contact.tomc@yahoo.fr>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace App\Command;
 
 use App\Entity\User;
@@ -61,7 +72,7 @@ class CreateFirstUserCommand extends Command
         $user->setUsername($username);
         $user->setEmail($email);
         $user->setRoles(['ROLE_ADMIN']);
-        $user->setAppGroup($this->entityManager->getRepository(Group::class)->findOneBy(['name' => 'full']));
+        $user->setGroup($this->entityManager->getRepository(Group::class)->findOneBy(['name' => 'full']));
         $user->setPassword($this->userPasswordHasher->hashPassword($user, $password));
         $user->setIsVerified($isVerified);
         $user->setApiKey(bin2hex(random_bytes(16)));
