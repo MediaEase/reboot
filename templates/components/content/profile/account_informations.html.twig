@@ -1,0 +1,38 @@
+<div class="p-4 bg-gray-200/55 dark:bg-gray-900/85 rounded-lg shadow-md">
+    <h3 class="text-xl font-semibold mb-4">Account Informations</h3>
+    <div class="bg-gray-200 dark:bg-gray-800 p-4 rounded-lg shadow-md space-y-3">
+        <div class="flex items-center">
+            {{ ux_icon('flowbite:calendar-month-outline', { class: 'w-5 h-5 text-gray-700 dark:text-slate-200 mr-2' }) }}
+            <span class="font-semibold text-gray-700 dark:text-slate-200">Registered At:</span>
+            <span class="ml-2 text-gray-500 dark:text-slate-400">{{ user.registeredAt|date('Y-m-d H:i:s') }}</span>
+        </div>
+        <div class="flex items-center">
+            {{ ux_icon('flowbite:check-circle-outline', { class: 'w-5 h-5 text-gray-700 dark:text-slate-200 mr-2' }) }}
+            <span class="font-semibold text-gray-700 dark:text-slate-200">Activated At:</span>
+            <span class="ml-2 text-gray-500 dark:text-slate-400">{{ user.activatedAt }}</span>
+        </div>
+        <div class="flex items-center">
+            {{ ux_icon('flowbite:terminal-outline', { class: 'w-5 h-5 text-gray-700 dark:text-slate-200 mr-2' }) }}
+            <span class="font-semibold text-gray-700 dark:text-slate-200">Shell:</span>
+            <span class="ml-2 text-gray-500 dark:text-slate-400">{{ user.preferences.shell }}</span>
+        </div>
+        <div class="flex items-center">
+            {{ ux_icon('flowbite:users-group-outline', { class: 'w-5 h-5 text-gray-700 dark:text-slate-200 mr-2' }) }}
+            <span class="font-semibold text-gray-700 dark:text-slate-200">Group:</span>
+            <span class="ml-2 text-gray-500 dark:text-slate-400">{{ user.getGroup() }}</span>
+        </div>
+        <div class="flex items-center">
+            {{ ux_icon('material-symbols:key-outline', { class: 'w-5 h-5 text-gray-700 dark:text-slate-200 mr-2' }) }}
+            <span class="font-semibold text-gray-700 dark:text-slate-200">Api Key:</span>
+            <div class="flex justify-between border-gray-300">
+                <div class="flex-none ml-2">
+                    <code id="apikey" class="text-xs xs:text-base inline-flex text-left items-center space-x-4 bg-gray-900/85 text-white rounded-lg py-1 px-1" data-clipboard-text="${data}">
+                        <span class="text-yellow-500 text-xs text-clip">
+                            {{ user.apiKey }}
+                        </span>
+                    </code>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

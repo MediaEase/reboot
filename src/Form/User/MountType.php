@@ -13,33 +13,30 @@ declare(strict_types=1);
 
 namespace App\Form\User;
 
-use App\Entity\Preference;
+use App\Entity\Mount;
+use App\Form\Type\ToggleSwitchType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\UX\Dropzone\Form\DropzoneType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 
-final class UserImageType extends AbstractType
+final class MountType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $formBuilder, array $options): void
     {
         $formBuilder
-            ->add('backdrop', DropzoneType::class, [
-                'mapped' => false,
-                'label' => 'label.profile.backdrop',
-                'required' => false,
+            ->add('path', TextType::class, [
+                'label' => 'Path',
                 'attr' => [
-                    'placeholder' => 'Drag and drop a file or click to browse',
+                    'placeholder' => 'Enter the path of the mount',
                 ],
             ])
-            ->add('avatar', DropzoneType::class, [
+            ->add('rclone', ToggleSwitchType::class, [
                 'mapped' => false,
-                'label' => 'label.profile.avatar',
-                'required' => false,
-                'attr' => [
-                    'placeholder' => 'Drag and drop a file or click to browse',
-                ],
+            ])
+            ->add('primary', ToggleSwitchType::class, [
+                'mapped' => false,
             ])
             ->add('save', ButtonType::class, [
                 'label' => 'Save',
@@ -53,7 +50,7 @@ final class UserImageType extends AbstractType
     public function configureOptions(OptionsResolver $optionsResolver): void
     {
         $optionsResolver->setDefaults([
-            'data_class' => Preference::class,
+            'data_class' => Mount::class,
         ]);
     }
 }

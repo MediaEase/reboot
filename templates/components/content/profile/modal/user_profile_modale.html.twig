@@ -1,0 +1,30 @@
+{% import '_macros/form_macros.html.twig' as form_macros %}
+<div class="pointer-events-auto relative flex w-full flex-col rounded-xl border-none content-background dark:content-background bg-clip-padding text-current shadow-lg transition-colors duration-200 outline-none">
+    <div class="flex flex-shrink-0 items-center justify-between rounded-t-xl border-b border-gray-500 border-opacity-75">
+        <h5 class="text-xl font-light leading-normal text-center w-full font-mono text-neutral-700 dark:text-neutral-200" id="addMountModalLabel">
+            Add Mount Path
+        </h5>
+        <button
+            type="button"
+            class="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
+            data-te-modal-dismiss
+            aria-label="Close">
+            {{ ux_icon('flowbite:x-outline', { class: 'w-8 h-8 fill-red-800 font-bold dark:fill-white pr-4' }) }}
+        </button>
+    </div>
+    <div class="relative bg-gray-200/55 dark:bg-gray-900/85 rounded-b-xl p-4">
+        {{ form_start(addPathForm) }}
+            {{ form_label(addPathForm.path, 'Path', {'label_attr': {'class': 'block text-sm font-bold mb-2 text-left'}}) }}
+            {{ form_widget(addPathForm.path, {'attr': {'class': 'shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline bg-gray-100 dark:bg-gray-800'}}) }}
+            {{ form_macros.error_with_icon(addPathForm, 'path') }}
+            <div class="flex justify-between pt-2 pb-4 mb-3">
+                {{ form_label(addPathForm.rclone, 'Is Rclone Used ?', {'label_attr': {'class': 'block text-sm font-bold mb-2 text-left cursor-normal'}}) }}
+                {{ form_widget(addPathForm.rclone) }}
+            </div>
+            <div class="flex justify-center pt-3 mt-4 mb-4 xl:m-0 xl:p-0">
+                {{ form_macros.save_button(addPathForm) }}
+            </div>
+            {{ form_row(addPathForm._token) }}
+        {{ form_end(addPathForm, {'render_rest': false}) }}
+    </div>
+</div>

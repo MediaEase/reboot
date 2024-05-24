@@ -14,38 +14,28 @@ declare(strict_types=1);
 namespace App\Form\User;
 
 use App\Entity\Preference;
+use App\Form\Type\ToggleSwitchType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\UX\Dropzone\Form\DropzoneType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 
-final class UserImageType extends AbstractType
+final class UserPreferenceType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $formBuilder, array $options): void
     {
         $formBuilder
-            ->add('backdrop', DropzoneType::class, [
-                'mapped' => false,
-                'label' => 'label.profile.backdrop',
-                'required' => false,
-                'attr' => [
-                    'placeholder' => 'Drag and drop a file or click to browse',
-                ],
+            ->add('isGravatarEnabled', ToggleSwitchType::class, [
+                'mapped' => true,
             ])
-            ->add('avatar', DropzoneType::class, [
-                'mapped' => false,
-                'label' => 'label.profile.avatar',
-                'required' => false,
-                'attr' => [
-                    'placeholder' => 'Drag and drop a file or click to browse',
-                ],
+            ->add('isFullAppListingEnabled', ToggleSwitchType::class, [
+                'mapped' => true,
             ])
             ->add('save', ButtonType::class, [
                 'label' => 'Save',
                 'icon_before' => 'flowbite:floppy-disk-outline',
                 'button_class' => 'iconed-button bg-green-500 hover:bg-green-700 text-white font-bold pl-3 rounded h-[2.5rem] pr-[1.25rem]',
-                'icon_class' => 'w-6 h-6 fill-white button-icon',
+                'icon_class' => 'block w-6 h-6 button-icon',
             ])
         ;
     }
