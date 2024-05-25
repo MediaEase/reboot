@@ -15,9 +15,10 @@ namespace App\Service\Image;
 
 use App\Entity\Setting;
 use App\Entity\Preference;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use App\Interface\ResetDefaultImageInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 /**
  * Service to provide paths to default images for specific contexts.
@@ -26,7 +27,7 @@ use Symfony\Component\Filesystem\Filesystem;
  * such as avatars, backgrounds, brand logos, favicons, app store images, and splash screens.
  * It also handles resetting images to their default state if they are not default images.
  */
-final class ResetDefaultImageService
+final class ResetDefaultImageService implements ResetDefaultImageInterface
 {
     public function __construct(
         private ParameterBagInterface $parameterBag,

@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace App\Service\Image;
 
-use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\Process;
-use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Process\Process;
+use App\Interface\HandleImageInterface;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 /**
  * HandleImageService is responsible for managing the upload and processing of various image types.
@@ -25,7 +26,7 @@ use Psr\Log\NullLogger;
  * and optionally applies image processing such as blurring. It updates the preferences
  * entity with the processed file information.
  */
-final class HandleImageService
+final class HandleImageService implements HandleImageInterface
 {
     public function __construct(
         private UploadImageService $uploadImageService,

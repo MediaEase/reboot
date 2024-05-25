@@ -14,14 +14,15 @@ declare(strict_types=1);
 namespace App\Service;
 
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Filesystem\Filesystem;
+use App\Interface\PathAccessInterface;
 use Symfony\Component\Process\Process;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
 /**
  * PathAccessService checks if a user can access a specific path.
  */
-final class PathAccessService
+final class PathAccessService implements PathAccessInterface
 {
     public function __construct(private LoggerInterface $logger)
     {

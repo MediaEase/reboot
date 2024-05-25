@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Entity\Preference;
 use App\Entity\User;
+use App\Entity\Preference;
+use App\Interface\PinInterface;
 use App\Validator\PinServiceValidator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -22,7 +23,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 /**
  * Service class to manage pinning and unpinning services for users.
  */
-final class PinService
+final class PinService implements PinInterface
 {
     private const MAX_PINNED_APPS = 5;
 

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Entity\Mount;
+use App\Interface\FormHandlerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Service\Image\HandleImageService;
 use Symfony\Component\Form\FormInterface;
@@ -23,7 +24,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * FormHandlerService handles form submissions.
  */
-final class FormHandlerService
+final class FormHandlerService implements FormHandlerInterface
 {
     public function __construct(
         private EntityManagerInterface $entityManager,

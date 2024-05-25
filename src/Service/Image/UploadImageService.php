@@ -13,15 +13,16 @@ declare(strict_types=1);
 
 namespace App\Service\Image;
 
-use Liip\ImagineBundle\Exception\Imagine\Filter\NonExistingFilterException;
-use Liip\ImagineBundle\Imagine\Cache\CacheManager;
-use Liip\ImagineBundle\Imagine\Data\DataManager;
-use Liip\ImagineBundle\Imagine\Filter\FilterManager;
-use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Psr\Log\LoggerInterface;
+use App\Interface\UploadImageInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\File\File;
+use Liip\ImagineBundle\Imagine\Data\DataManager;
+use Liip\ImagineBundle\Imagine\Cache\CacheManager;
+use Liip\ImagineBundle\Imagine\Filter\FilterManager;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Liip\ImagineBundle\Exception\Imagine\Filter\NonExistingFilterException;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 /**
@@ -30,7 +31,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
  * This service manages the uploading of image files, applies various image processing
  * filters, and provides URLs for the processed images.
  */
-final class UploadImageService
+final class UploadImageService implements UploadImageInterface
 {
     public function __construct(
         private DataManager $dataManager,
