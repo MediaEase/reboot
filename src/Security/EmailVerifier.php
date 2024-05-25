@@ -59,7 +59,7 @@ final class EmailVerifier
     {
         $url = $request->getUri();
         $userId = $user->getUserIdentifier();
-        $this->verifyEmailHelper->validateEmailConfirmation($url, $userId, $user->email);
+        $this->verifyEmailHelper->validateEmailConfirmationFromRequest($request, $userId, $user->email);
 
         $user->isVerified = true;
 
