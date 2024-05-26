@@ -25,5 +25,5 @@ interface FormHandlerInterface
      *
      * @return Response
      */
-    public function handleFormSubmission(string $type, ?UserInterface $user, object $preferences, FormInterface $form): JsonResponse;
+    public function handle(string $type, ?UserInterface $user, object $preferences, FormInterface $form): JsonResponse;
 }

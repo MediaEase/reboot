@@ -36,13 +36,13 @@ final class FormHandlerService implements FormHandlerInterface
     /**
      * Handles form submission based on the type.
      */
-    public function handleFormSubmission(string $type, ?UserInterface $user, object $preferences, FormInterface $form): JsonResponse
+    public function handle(string $type, ?UserInterface $user, object $preferences, FormInterface $form): JsonResponse
     {
         return match ($type) {
-            'userImages' => $this->handleUserImagesFormSubmission($form, $preferences),
-            'userPreferences' => $this->handleUserPreferencesFormSubmission($preferences),
-            'changeUserPass' => $this->handleChangeUserPassFormSubmission($user),
-            'addPath' => $this->handleAddPathFormSubmission($user, $form->getData()),
+            'userImages' => $this->submitUserImagesForm($form, $preferences),
+            'userPreferences' => $this->submitUserPreferencesForm($preferences),
+            'changeUserPass' => $this->submitUserPassForm($user),
+            'addPath' => $this->submitUserMountForm($user, $form->getData()),
             default => new JsonResponse(['status' => 'error', 'message' => 'Unknown form type']),
         };
     }
@@ -50,7 +50,7 @@ final class FormHandlerService implements FormHandlerInterface
     /**
      * Handles user images form submission.
      */
-    private function handleUserImagesFormSubmission(FormInterface $form, object $preferences): JsonResponse
+    private function submitUserImagesForm(FormInterface $form, object $preferences): JsonResponse
     {
         $this->handleImageService->handleFileUpload($form, $preferences, 'backdrop', 'background', true);
         $this->handleImageService->handleFileUpload($form, $preferences, 'avatar', 'avatar');
@@ -64,7 +64,7 @@ final class FormHandlerService implements FormHandlerInterface
     /**
      * Handles user preferences form submission.
      */
-    private function handleUserPreferencesFormSubmission(object $preferences): JsonResponse
+    private function submitUserPreferencesForm(object $preferences): JsonResponse
     {
         $this->entityManager->persist($preferences);
         $this->entityManager->flush();
@@ -75,7 +75,7 @@ final class FormHandlerService implements FormHandlerInterface
     /**
      * Handles change user password form submission.
      */
-    private function handleChangeUserPassFormSubmission(object $user): JsonResponse
+    private function submitUserPassForm(object $user): JsonResponse
     {
         $currentPassword = $_POST['currentPassword'];
         $newPassword = $_POST['plainPassword']['first'];
@@ -102,7 +102,7 @@ final class FormHandlerService implements FormHandlerInterface
     /**
      * Handles add path form submission.
      */
-    private function handleAddPathFormSubmission(?UserInterface $user, Mount $mount): JsonResponse
+    private function submitUserMountForm(?UserInterface $user, Mount $mount): JsonResponse
     {
         $mount->setPath(rtrim($mount->getPath(), '/'));
         $existingMount = $this->entityManager->getRepository(Mount::class)->findOneBy([
