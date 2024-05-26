@@ -26,25 +26,33 @@ class Setting
     private ?int $id = null;
 
     #[ORM\Column(length: 70)]
+    #[OA\Property(description: 'The site name preference.', maxLength: 70)]
     private ?string $siteName = null;
 
     #[ORM\Column(length: 70)]
+    #[OA\Property(description: 'The root URL preference.', maxLength: 70)]
     private ?string $rootUrl = null;
 
     #[ORM\Column(length: 255)]
+    #[OA\Property(description: 'The site description preference.', maxLength: 255)]
     private ?string $siteDescription = null;
 
     #[ORM\Column(length: 6)]
+    // ex: 10GB ; 100GB ; 1TB
+    #[OA\Property(description: 'The default quota preference.', maxLength: 6, pattern: '^\d+(GB|TB)$', example: '10GB', default: '10GB')]
     private ?string $defaultQuota = null;
 
     #[ORM\Column(length: 20)]
+    #[OA\Property(description: 'The network interface preference.', maxLength: 20)]
     private ?string $netInterface = null;
 
     #[ORM\Column]
+    #[OA\Property(description: 'The registration preference.', default: false)]
     private ?bool $registrationEnabled = null;
 
     #[ORM\Column]
-    private ?bool $welcomeEmail = null;
+    #[OA\Property(description: 'The welcome email preference.', default: true)]
+    private ?bool $welcomeEmailEnabled = null;
 
     #[ORM\Column(length: 60)]
     #[OA\Property(description: 'The brand logo preference.', maxLength: 60)]
@@ -61,6 +69,10 @@ class Setting
     #[ORM\Column(length: 60)]
     #[OA\Property(description: 'The splashscreen preference.', maxLength: 60)]
     private ?string $splashscreen = null;
+
+    #[ORM\Column]
+    #[OA\Property(description: 'The email verification preference.', default: true)]
+    private ?bool $emailVerificationEnabled = null;
 
     public function getId(): ?int
     {
@@ -139,14 +151,14 @@ class Setting
         return $this;
     }
 
-    public function isWelcomeEmail(): ?bool
+    public function iswelcomeEmailEnabled(): ?bool
     {
-        return $this->welcomeEmail;
+        return $this->welcomeEmailEnabled;
     }
 
-    public function setWelcomeEmail(bool $welcomeEmail): static
+    public function setwelcomeEmailEnabled(bool $welcomeEmailEnabled): static
     {
-        $this->welcomeEmail = $welcomeEmail;
+        $this->welcomeEmailEnabled = $welcomeEmailEnabled;
 
         return $this;
     }
@@ -195,6 +207,18 @@ class Setting
     public function setSplashscreen(string $splashscreen): static
     {
         $this->splashscreen = $splashscreen;
+
+        return $this;
+    }
+
+    public function isEmailVerificationEnabled(): ?bool
+    {
+        return $this->emailVerificationEnabled;
+    }
+
+    public function setEmailVerificationEnabled(bool $emailVerificationEnabled): static
+    {
+        $this->emailVerificationEnabled = $emailVerificationEnabled;
 
         return $this;
     }

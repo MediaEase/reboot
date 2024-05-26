@@ -7,6 +7,7 @@ parameters:
     app.mail_protocol: '%env(MAIL_PROTOCOL)%'
     app.mail_parameters: '%env(MAIL_PARAMETERS)%'
     app.smtp_timeout: '%env(SMTP_TIMEOUT)%'
+    project_dir: '%kernel.project_dir%'
 
 services:
     # default configuration for services in *this* file
@@ -40,8 +41,11 @@ services:
 
     Liip\ImagineBundle\Imagine\Filter\Loader\ThumbnailFilterLoader:
         tags: ['liip_imagine.filter.loader']
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
     App\Form\Extension\IconButtonExtension:
         tags:
             - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\ButtonType }
+    App\Service\PendingActivationService:
+        arguments:
+            $projectDir: '%project_dir%'
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones

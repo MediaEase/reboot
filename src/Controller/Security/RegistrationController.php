@@ -16,6 +16,7 @@ namespace App\Controller\Security;
 use App\Entity\User;
 use App\Form\RegistrationType;
 use App\Handler\RegistrationHandler;
+use App\Repository\SettingRepository;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,13 +28,24 @@ use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 final class RegistrationController extends AbstractController
 {
-    public function __construct(private EmailVerifier $emailVerifier, private RegistrationHandler $registrationHandler)
-    {
+    public function __construct(
+        private EmailVerifier $emailVerifier,
+        private RegistrationHandler $registrationHandler,
+        private SettingRepository $settingRepository
+    ) {
     }
 
     #[Route('/register', name: 'app_register')]
     public function register(Request $request): Response
     {
+        if ($this->getUser() instanceof \Symfony\Component\Security\Core\User\UserInterface) {
+            return $this->redirectToRoute('app_home');
+        }
+
+        if ($this->settingRepository->findLast()->isRegistrationEnabled() === false) {
+            return $this->redirectToRoute('app_login');
+        }
+
         $form = $this->createForm(RegistrationType::class, new User());
         $form->handleRequest($request);
 
