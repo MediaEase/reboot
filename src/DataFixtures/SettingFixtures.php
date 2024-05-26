@@ -30,10 +30,11 @@ final class SettingFixtures extends Fixture implements FixtureGroupInterface
         $setting->setDefaultQuota('10G');
         $setting->setNetInterface('eth0');
         $setting->setRegistrationEnabled(true);
-        $setting->setWelcomeEmail(true);
+        $setting->setwelcomeEmailEnabled(true);
         $setting->setFavicon('default-favicon.png');
         $setting->setAppstore('default-appstore.png');
         $setting->setSplashscreen('default.png');
+        $setting->isEmailVerificationEnabled();
 
         $objectManager->persist($setting);
 
