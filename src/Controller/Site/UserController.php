@@ -66,7 +66,7 @@ class UserController extends AbstractController
                 continue;
             }
 
-            $response = $this->formHandlerService->handleFormSubmission($form['type'], $user, $preferences, $form['form']);
+            $response = $this->formHandlerService->handle($form['type'], $user, $preferences, $form['form']);
             $responseData = json_decode($response->getContent(), true);
             $this->addFlash($responseData['status'], $responseData['message']);
 
