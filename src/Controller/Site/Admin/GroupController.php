@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Controller\Site;
+namespace App\Controller\Site\Admin;
 
 use App\Entity\Group;
 use App\Form\Setting\AppGroupType;
