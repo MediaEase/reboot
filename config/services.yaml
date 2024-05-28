@@ -8,6 +8,8 @@ parameters:
     app.mail_parameters: '%env(MAIL_PARAMETERS)%'
     app.smtp_timeout: '%env(SMTP_TIMEOUT)%'
     project_dir: '%kernel.project_dir%'
+    app.provider: '%env(PROVIDER)%'
+    app.mediaease_init: '%env(MEDIAEASE_INIT)%'
 
 services:
     # default configuration for services in *this* file
