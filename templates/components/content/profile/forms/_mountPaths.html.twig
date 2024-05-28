@@ -2,12 +2,15 @@
     <h3 class="text-xl font-semibold mb-4">Available mounts</h3>
     {% for mount in user.getMounts() %}
         <div class="flex items-center justify-between rounded-md hover:shadow-md transition-shadow">
-            <span class="text-gray-700 dark:text-slate-200">{{ mount }}</span>
+            <span class="text-gray-700 dark:text-slate-200">{{ mount.path }}</span>
             <div class="w-2/8 ml-3 md:mb-0 pt-3 xl:mt-2 xl:p-0 xl:pl-3">
-                <button type="button" class="flex items-center text-red-500 hover:text-red-700 px-2 rounded focus:outline-none focus:shadow-outline ml-auto">
-                    {{ ux_icon('flowbite:trash-bin-outline', {class: 'w-5 h-5 icon mr-1'}) }}
-                    Delete
-                </button>
+                <form method="post" action="{{ path('app_mount_delete', {'id': mount.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ mount.id) }}">
+                    <button type="submit" class="flex items-center text-red-500 hover:text-red-700 px-2 rounded focus:outline-none focus:shadow-outline ml-auto">
+                        {{ ux_icon('flowbite:trash-bin-outline', {class: 'w-5 h-5 icon mr-1'}) }}
+                        Delete
+                    </button>
+                </form>
             </div>
         </div>
     {% endfor %}
