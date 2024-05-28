@@ -87,6 +87,6 @@ class MountController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_mount_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_users_profile', [], Response::HTTP_SEE_OTHER);
     }
 }
