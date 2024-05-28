@@ -9,7 +9,7 @@
         <div class="flex items-center">
             {{ ux_icon('flowbite:check-circle-outline', { class: 'w-5 h-5 text-gray-700 dark:text-slate-200 mr-2' }) }}
             <span class="font-semibold text-gray-700 dark:text-slate-200">Activated At:</span>
-            <span class="ml-2 text-gray-500 dark:text-slate-400">{{ user.activatedAt }}</span>
+            <span class="ml-2 text-gray-500 dark:text-slate-400">{{ user.activatedAt|date('Y-m-d H:i:s') }}</span>
         </div>
         <div class="flex items-center">
             {{ ux_icon('flowbite:terminal-outline', { class: 'w-5 h-5 text-gray-700 dark:text-slate-200 mr-2' }) }}
