@@ -1,5 +1,5 @@
 {% macro infobox(context, message1, message2, external) %}
-    {% set icon = context == 'info' ? 'bi:exclamation-triangle-fill' : 'bi:exclamation-octagon-fill' %}
+    {% set icon = context == 'info' ? 'bi:exclamation-circle-fill' : 'bi:exclamation-octagon-fill' %}
     <div class="mt-2 border-2 border-{{ context }} dark:border-{{ context }} rounded-lg bg-success-100 px-6 py-5 text-base text-success-700 bg-gray-200/75 dark:bg-gray-900/85 shadow-md" role="alert">
         <div class="flex justify-center">
             {{ ux_icon(icon, { class: 'w-8 h-8 mb-2 fill-' ~ context ~ ' dark:fill-' ~ context ~ ' text-' ~ context}) }}
