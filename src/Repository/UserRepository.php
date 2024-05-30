@@ -68,6 +68,8 @@ final class UserRepository extends ServiceEntityRepository implements PasswordUp
             ->addSelect('s')
             ->leftJoin('u.preferences', 'p')
             ->addSelect('p')
+            ->leftJoin('s.transcode', 't')
+            ->addSelect('t')
             ->where('u.id = :userId')
             ->setParameter('userId', $user->getId())
             ->getQuery();
