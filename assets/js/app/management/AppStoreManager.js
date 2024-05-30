@@ -75,22 +75,7 @@ class AppStoreManager {
             return acc;
         }, {});
     }
-
-    /**
-     * Toggles the popover associated with a button.
-     * @param {HTMLElement} button - The button element triggering the popover.
-     */
-    togglePopover(button) {
-        // Get the popover id from the button's data attribute
-        const popoverId = button.getAttribute('data-popover-id');
-        const popover = document.getElementById(popoverId);
     
-        if (popover) {
-            popover.classList.toggle('hidden');
-        } else {
-            console.error('Popover not found for id:', popoverId);
-        }
-    }
 }
 
 export default AppStoreManager;
