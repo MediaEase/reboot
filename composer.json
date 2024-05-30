@@ -53,7 +53,7 @@
         "symfony/ux-turbo": "^2.17",
         "symfony/ux-twig-component": "^2.17",
         "symfony/validator": "7.0.*",
-        "symfony/var-exporter": "7.0.4",
+        "symfony/var-exporter": "7.0.*",
         "symfony/web-link": "7.0.*",
         "symfony/webpack-encore-bundle": "^2.1",
         "symfony/yaml": "7.0.*",
