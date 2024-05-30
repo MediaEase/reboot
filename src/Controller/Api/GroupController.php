@@ -13,9 +13,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\ApplicationRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/api/groups', name: 'api_groups_')]
+#[IsGranted('ROLE_USER')]
 final class GroupController extends AbstractController
 {
     public function __construct(
@@ -46,7 +48,7 @@ final class GroupController extends AbstractController
     #[Route('/{id}', name: 'show', methods: ['GET'])]
     public function show(Group $group): Response
     {
-        return $this->json($group, Response::HTTP_OK, [], ['groups' => 'basic', 'details', 'confidential']);
+        return $this->json($group, Response::HTTP_OK, [], ['groups' => [Store::GROUP_GET_STORES]]);
     }
 
     #[Route('/{id}', name: 'delete', methods: ['DELETE'])]
