@@ -216,6 +216,6 @@ final class TranscodingService
             'false' => 'true',
         ];
 
-        return array_map(static fn($value) => $inversionMap[$value] ?? $value, $keys);
+        return array_map(static fn ($value) => $inversionMap[$value] ?? $value, $keys);
     }
 }

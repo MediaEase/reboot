@@ -89,6 +89,11 @@ class Service
     #[OA\Property(description: 'The child services of this service.', type: 'array', items: new OA\Items(ref: '#/components/schemas/Service.item'))]
     private Collection $childServices;
 
+    #[ORM\OneToOne(mappedBy: 'service', targetEntity: Transcode::class, cascade: ['persist', 'remove'])]
+    #[Groups([User::GROUP_GET_USER, User::GROUP_GET_USERS, User::GROUP_GET_USER_LIMITED])]
+    #[OA\Property(description: 'The transcode associated with the service.', ref: '#/components/schemas/Transcode.item')]
+    private ?Transcode $transcode = null;
+
     public function __construct()
     {
         $this->childServices = new ArrayCollection();
@@ -239,10 +244,29 @@ class Service
 
     public function removeChildService(self $childService): static
     {
-        // set the owning side to null (unless already changed)
         if ($this->childServices->removeElement($childService) && $childService->getParentService() === $this) {
             $childService->setParentService(null);
         }
+
+        return $this;
+    }
+
+    public function getTranscode(): ?Transcode
+    {
+        return $this->transcode;
+    }
+
+    public function setTranscode(?Transcode $transcode): self
+    {
+        if (!$transcode instanceof Transcode && $this->transcode instanceof Transcode) {
+            $this->transcode->setService(null);
+        }
+
+        if ($transcode instanceof Transcode && $transcode->getService() !== $this) {
+            $transcode->setService($this);
+        }
+
+        $this->transcode = $transcode;
 
         return $this;
     }
