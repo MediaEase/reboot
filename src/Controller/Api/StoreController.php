@@ -54,33 +54,35 @@ final class StoreController extends AbstractController
     #[Route('/install', name: 'install', methods: ['POST'])]
     public function install(Request $request): Response
     {
+        $data = json_decode($request->getContent(), true);
+        $appId = $data['appId'] ?? null;
+        $action = $data['action'] ?? null;
+        if ($action === 'install') {
+            $action = 'add';
+        }
+        $user = $this->getUser();
+
+        if (!$appId || !$action) {
+            return $this->json(['error' => 'Invalid request data'], Response::HTTP_BAD_REQUEST);
+        }
+
+
         $scriptPath = '/usr/local/bin/zen';
-        $process = new Process(['sudo', $scriptPath]);
+        $process = new Process(['sudo', $scriptPath, 'software', $action, $appId]);
         $process->setTimeout(1500);
         $process->setIdleTimeout(1500);
 
         try {
             $process->mustRun();
 
-            if (TurboBundle::STREAM_FORMAT === $request->getPreferredFormat()) {
-                $request->setRequestFormat(TurboBundle::STREAM_FORMAT);
+            $output = explode(PHP_EOL, $process->getOutput());
 
-                return $this->renderBlock('store/install.html.twig', 'success_stream', [
-                    'message' => 'Script exécuté avec succès',
-                ]);
-            }
+            return $this->json(['output' => $output], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            $this->storeLogger->error('Script execution failed', ['exception' => $e]);
 
-            return $this->redirectToRoute('store_success');
-        } catch (\Exception) {
-            if (TurboBundle::STREAM_FORMAT === $request->getPreferredFormat()) {
-                $request->setRequestFormat(TurboBundle::STREAM_FORMAT);
-
-                return $this->renderBlock('store/install.html.twig', 'error_stream', [
-                    'message' => 'Échec de l\'exécution du script',
-                ]);
-            }
-
-            return $this->redirectToRoute('store_error');
+            return $this->json(['error' => 'Script execution failed'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }
+
