@@ -65,8 +65,8 @@ class AppStoreManager {
      * Resets the filter.
      * @returns {Array} - An array of randomly shuffled apps.
      */
-    resetFilter() {
-        const shuffledApps = this.storeData.sort(() => 0.5 - Math.random());
+    resetFilter(apps) {
+        const shuffledApps = apps.sort(() => 0.5 - Math.random());
         return shuffledApps.slice(0, 6);
     }
 
@@ -75,7 +75,8 @@ class AppStoreManager {
      * @returns {Array} - An array of apps for the home category.
      */
     getHomeCategory() {
-        return this.resetFilter();
+        const apps = this.isFullAppListing ? this.storeData : this.filterAppsByUserGroup(this.storeData);
+        return this.resetFilter(apps);
     }
 
     /**
