@@ -21,15 +21,14 @@ final class ErrorMessageDTO
     /**
      * Constructor.
      *
-     * @param string $locale The locale of the message.
-     * @param string $localeOrigin The origin of the locale.
-     * @param string $text The text of the message.
+     * @param string $locale       the locale of the message
+     * @param string $localeOrigin the origin of the locale
+     * @param string $text         the text of the message
      */
     public function __construct(
-        public string $locale, 
-        public string $localeOrigin, 
+        public string $locale,
+        public string $localeOrigin,
         public string $text
-    )
-    {
+    ) {
     }
 }

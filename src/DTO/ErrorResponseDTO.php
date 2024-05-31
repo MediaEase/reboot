@@ -39,8 +39,6 @@ final class ErrorResponseDTO implements ApiResponseInterface, ErrorResponseInter
 
     /**
      * Gets the error message.
-     *
-     * @return string
      */
     public function getError(): string
     {
@@ -49,9 +47,6 @@ final class ErrorResponseDTO implements ApiResponseInterface, ErrorResponseInter
 
     /**
      * Sets the error message.
-     *
-     * @param string $error
-     * @return self
      */
     public function setError(string $error): self
     {
@@ -62,8 +57,6 @@ final class ErrorResponseDTO implements ApiResponseInterface, ErrorResponseInter
 
     /**
      * Gets the HTTP status code.
-     *
-     * @return int
      */
     public function getCode(): int
     {
@@ -72,9 +65,6 @@ final class ErrorResponseDTO implements ApiResponseInterface, ErrorResponseInter
 
     /**
      * Sets the HTTP status code.
-     *
-     * @param int $code
-     * @return self
      */
     public function setCode(int $code): self
     {
@@ -85,8 +75,6 @@ final class ErrorResponseDTO implements ApiResponseInterface, ErrorResponseInter
 
     /**
      * Gets additional data.
-     *
-     * @return ?array
      */
     public function getData(): ?array
     {
@@ -95,9 +83,6 @@ final class ErrorResponseDTO implements ApiResponseInterface, ErrorResponseInter
 
     /**
      * Sets additional data.
-     *
-     * @param ?array $data
-     * @return self
      */
     public function setData(?array $data): self
     {
@@ -120,7 +105,6 @@ final class ErrorResponseDTO implements ApiResponseInterface, ErrorResponseInter
      * Sets the causes of the error.
      *
      * @param ErrorMessageDTO[] $causes
-     * @return self
      */
     public function setCauses(array $causes): self
     {
@@ -131,8 +115,6 @@ final class ErrorResponseDTO implements ApiResponseInterface, ErrorResponseInter
 
     /**
      * Gets the detailed code of the error.
-     *
-     * @return string
      */
     public function getDetailCode(): string
     {
@@ -141,9 +123,6 @@ final class ErrorResponseDTO implements ApiResponseInterface, ErrorResponseInter
 
     /**
      * Sets the detailed code of the error.
-     *
-     * @param string $detailCode
-     * @return self
      */
     public function setDetailCode(string $detailCode): self
     {
@@ -166,7 +145,6 @@ final class ErrorResponseDTO implements ApiResponseInterface, ErrorResponseInter
      * Sets the error messages.
      *
      * @param ErrorMessageDTO[] $messages
-     * @return self
      */
     public function setMessages(array $messages): self
     {
@@ -177,8 +155,6 @@ final class ErrorResponseDTO implements ApiResponseInterface, ErrorResponseInter
 
     /**
      * Gets the tracking ID of the error.
-     *
-     * @return string
      */
     public function getTrackingId(): string
     {
@@ -187,9 +163,6 @@ final class ErrorResponseDTO implements ApiResponseInterface, ErrorResponseInter
 
     /**
      * Sets the tracking ID of the error.
-     *
-     * @param string $trackingId
-     * @return self
      */
     public function setTrackingId(string $trackingId): self
     {

@@ -25,11 +25,12 @@ final class ErrorResponseService
     /**
      * Creates an error response.
      *
-     * @param ErrorMessageDTO[] $causes The causes of the error.
-     * @param string $detailCode The detailed code of the error.
-     * @param ErrorMessageDTO[] $messages The error messages.
-     * @param int $httpStatusCode The HTTP status code.
-     * @return JsonResponse The JSON response.
+     * @param ErrorMessageDTO[] $causes         the causes of the error
+     * @param string            $detailCode     the detailed code of the error
+     * @param ErrorMessageDTO[] $messages       the error messages
+     * @param int               $httpStatusCode the HTTP status code
+     *
+     * @return JsonResponse the JSON response
      */
     public function createErrorResponse(
         array $causes,
@@ -52,10 +53,11 @@ final class ErrorResponseService
     /**
      * Creates an error message DTO.
      *
-     * @param string $locale The locale of the message.
-     * @param string $localeOrigin The origin of the locale.
-     * @param string $text The text of the message.
-     * @return ErrorMessageDTO The error message DTO.
+     * @param string $locale       the locale of the message
+     * @param string $localeOrigin the origin of the locale
+     * @param string $text         the text of the message
+     *
+     * @return ErrorMessageDTO the error message DTO
      */
     private function createErrorMessageDto(string $locale, string $localeOrigin, string $text): ErrorMessageDTO
     {
@@ -65,10 +67,11 @@ final class ErrorResponseService
     /**
      * Handles an error and creates a JSON response.
      *
-     * @param string $message The error message.
-     * @param string $detailCode The detailed code of the error.
-     * @param int $httpStatusCode The HTTP status code.
-     * @return JsonResponse The JSON response.
+     * @param string $message        the error message
+     * @param string $detailCode     the detailed code of the error
+     * @param int    $httpStatusCode the HTTP status code
+     *
+     * @return JsonResponse the JSON response
      */
     public function handleError(string $message, string $detailCode, int $httpStatusCode): JsonResponse
     {

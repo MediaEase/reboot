@@ -27,8 +27,8 @@ final class ExceptionListener
     /**
      * Constructor.
      *
-     * @param ErrorResponseService $errorResponseService The service for creating error responses.
-     * @param LoggerInterface $logger The logger.
+     * @param ErrorResponseService $errorResponseService the service for creating error responses
+     * @param LoggerInterface      $logger               the logger
      */
     public function __construct(private ErrorResponseService $errorResponseService, private LoggerInterface $logger)
     {
@@ -37,7 +37,7 @@ final class ExceptionListener
     /**
      * Handles kernel exceptions and converts them to JSON responses.
      *
-     * @param ExceptionEvent $exceptionEvent The exception event.
+     * @param ExceptionEvent $exceptionEvent the exception event
      */
     public function onKernelException(ExceptionEvent $exceptionEvent): void
     {
