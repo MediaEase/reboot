@@ -24,8 +24,9 @@ class AppStoreUI {
      * Creates an instance of AppStoreUI.
      * @param {Object} appStoreManager - The app store manager.
      * @param {HTMLElement} container - The DOM container where the UI will be rendered.
+     * @param {Object} appStoreBanner - The app store banner data.
      */
-    constructor(appStoreManager, container) {
+    constructor(appStoreManager, container, appStoreBanner) {
         this.appStoreManager = appStoreManager;
         this.container = container;
         this.storeData = appStoreManager.storeData
@@ -33,6 +34,7 @@ class AppStoreUI {
         this.userGroup = appStoreManager.userGroup;
         this.isFullAppListing = appStoreManager.isFullAppListing;
         this.filterAppsByUserGroup = appStoreManager.filterAppsByUserGroup;
+        this.appStoreBanner = appStoreBanner;
     }
 
     /**
@@ -45,10 +47,7 @@ class AppStoreUI {
         modalTitle.innerHTML = `
         <div class="flex justify-center items-center">
             <div class="py-1 rounded-md w-4/12 space-x-6 flex items-left">
-                <input type="search" id="appSearch" class="w-full border-none rounded-lg bg-base-100 text-sm focus:outline-none" placeholder="Search an app...">
-                <svg class="w-8 h-8 fill-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z" clip-rule="evenodd"></path>
-                </svg>
+                <input type="search" id="appSearch" class="w-full border-none rounded-lg bg-base-100 text-sm focus:outline-none text-gray-700 dark:text-gray-800" placeholder="Search an app...">
             </div>
         </div>
         `;
@@ -77,8 +76,9 @@ class AppStoreUI {
 
         const nav = document.createElement('nav');
         nav.className = "w-48 flex-shrink-0 pb-4 border-r border-gray-500 border-opacity-75 rounded-bl-xl";
-        nav.innerHTML = `<div class="px-2 pt-3">
-            <h2 class="text-md font-medium">Categories</h2>
+        nav.innerHTML = `
+        <div class="px-2 pt-3">
+            <h2 class="text-gray-700 dark:text-gray-200 text-2xl pb-4 mb-4 font-bold capitalize">Categories</h2>
             <ul class="mt-4" id="navItems">${navItems}</ul>
         </div>`;
 
@@ -91,18 +91,18 @@ class AppStoreUI {
      */
     renderMainContent(parentContainer) {
         const mainContent = document.createElement('div');
-        mainContent.className = "flex-grow ml-2 md:px-24 pt-4 mb-8 modal-content";
-        const bannerPath = `/uploads/brand/app_store_banner.png`;
+        mainContent.className = "flex-grow ml-2 md:px-24 pt-4 modal-content";
+        const bannerPath = `/uploads/brand/${this.appStoreBanner}`;
         let appCards = this.storeData.map(app => this.renderAppCard(app)).join('');
         mainContent.innerHTML = `
-            <div class="console-output max-w-5xl mx-auto hidden content-background text-white p-2 pt-4 rounded-xl relative mb-4">
+            <div class="console-output max-w-5xl mx-auto hidden content-background text-white p-2 pt-4 rounded-xl relative mb-4 max-h-[370px]">
                 <button type="button"
-                    class="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none absolute top-2 right-2"
+                    class="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none absolute top-2 right-2 fill-red-800 dark:fill-white text-red-800 bg-red-800"
                     id="closeConsoleButton" aria-label="Close">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" class="w-8 h-8 fill-red-800 font-bold dark:fill-white pr-4"><path fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L17.94 6M18 18L6.06 6"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" class="w-8 h-8 fill-red-800 font-bold dark:fill-white pr-4 text-red-800 bg-red-800"><path fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L17.94 6M18 18L6.06 6"/></svg>
                 </button>
             </div>
-            <img src="${bannerPath}" alt="" class="rounded-xl max-w-5xl mx-auto mb-4 banner-path" data-controller="installApp" data-install-app-target="banner">
+            <img src="${bannerPath}" alt="" class="rounded-xl max-w-5xl mx-auto mb-4 banner-path max-h-[370px]" data-controller="installApp" data-install-app-target="banner">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-6">
                     ${appCards}
                 </div>
@@ -165,7 +165,7 @@ class AppStoreUI {
                     ${popoverArrowSvg}
                 </svg>
             </div>
-            <ul tabindex="0" class="dropdown-content z-[1000] menu p-2 shadow w-52 text-xs bg-base-100 bg-opacity-95 blur-none">
+            <ul tabindex="0" class="dropdown-content z-[1000] menu m-2 shadow w-52 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 rounded-lg">
                 ${listItems}
             </ul>
         </div>
@@ -302,13 +302,14 @@ class AppStoreUI {
             <button type="button"
                 class="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none absolute top-1 right-1"
                 id="closeConsoleButton" aria-label="Close">
-                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" class="w-6 h-6 fill-red-800 font-bold dark:fill-white pr-2">
-                    <path fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L17.94 6M18 18L6.06 6"></path>
+                <svg width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"
+                    class="w-5 h-5 rounded-full bg-gray-300 dark:bg-gray-700 fill-gray-800 text-gray-800 dark:text-gray-200 dark:fill-gray-200 font-bold mt-1 mr-2 hover:bg-gray-400 dark:hover:bg-gray-400 hover:fill-gray-900 dark:hover:fill-gray-200">
+                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L17.94 6M18 18L6.06 6"></path>
                 </svg>
             </button>
-            <div class="text-left">
+            <div class="text-left overflow-y-auto overflow-x-hidden">
                 <div class="bg-gray-300 dark:bg-gray-700 px-4 py-1 rounded-t-md inline-block">
-                    <span class="font-semibold">zen</span>
+                    <span class="font-semibold text-neutral-700 dark:text-neutral-200 font-mono">zen</span>
                 </div>
             </div>
             <div class="bg-gray-100 dark:bg-gray-800 p-1 rounded-sm border border-gray-300 dark:border-gray-700 text-left py-2 shadow-inner text-sm text-neutral-700 dark:text-neutral-200 font-mono">

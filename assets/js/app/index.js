@@ -33,6 +33,8 @@ function chooseProcessDataFunction(type) {
         const storeData = await fetchData('/api/store');
         const userData = await fetchData('/api/me');
         const widgetsData = await fetchData('/api/widgets');
+        const globalSettings = await fetchData('/api/settings');
+        const appStoreBanner = globalSettings.appstore;
         const appsData = userData.services.sort((a, b) => a.application.name.localeCompare(b.application.name));
         const userGroup = userData.group.name;
         const isFullAppListing = userData.isFullAppListing;
@@ -40,13 +42,13 @@ function chooseProcessDataFunction(type) {
         const isVerbosityEnabled = userData.isVerbosityEnabled;
 
         // Initialize the application
-        initApplication(storeData, appsData, userGroup, preferencesData, widgetsData, isFullAppListing, isVerbosityEnabled);
+        initApplication(storeData, appsData, userGroup, preferencesData, widgetsData, isFullAppListing, isVerbosityEnabled, appStoreBanner);
     } catch (error) {
         console.error('Error initializing application:', error);
     }
 })();
 
-function initApplication(storeData, appsData, userGroup, preferencesData, widgetsData, isFullAppListing, isVerbosityEnabled) {
+function initApplication(storeData, appsData, userGroup, preferencesData, widgetsData, isFullAppListing, isVerbosityEnabled, appStoreBanner) {
     const dashboard = document.querySelector('[data-widget-panel]');
     const page = document.body.getAttribute('data-page');
     const timeInterval = 5000;
@@ -62,7 +64,7 @@ function initApplication(storeData, appsData, userGroup, preferencesData, widget
         widgetManager.initialize();
         const container = document.querySelector('#appStoreModal #appStoreContainer');
         const appStoreManager = new AppStoreManager(storeData, appsData, userGroup, isFullAppListing, isVerbosityEnabled);
-        const appStoreUI = new AppStoreUI(appStoreManager, container);
+        const appStoreUI = new AppStoreUI(appStoreManager, container, appStoreBanner);
         appStoreUI.initialize();
     
         const appManager = new AppManager(5000, appsData, preferencesData);

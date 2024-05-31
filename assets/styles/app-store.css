@@ -16,3 +16,7 @@
     max-height: 85vh;
     overflow-y: auto;
 }
+
+.max-h-\[370px\] {
+    max-height: 370px;
+}
