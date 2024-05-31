@@ -89,6 +89,11 @@ class Preference
     #[OA\Property(description: 'The primary mount path.', maxLength: 90)]
     private ?string $primaryMountPath = '/';
 
+    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => false])]
+    #[Groups([User::GROUP_GET_USER, User::GROUP_GET_USERS])]
+    #[OA\Property(description: 'Indicator if verbosity is enabled.', type: 'boolean')]
+    private ?bool $isVerbosityEnabled = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -238,6 +243,18 @@ class Preference
     public function setPrimaryMountPath(string $primaryMountPath): static
     {
         $this->primaryMountPath = $primaryMountPath;
+
+        return $this;
+    }
+
+    public function isVerbosityEnabled(): ?bool
+    {
+        return $this->isVerbosityEnabled;
+    }
+
+    public function setVerbosityEnabled(bool $isVerbosityEnabled): static
+    {
+        $this->isVerbosityEnabled = $isVerbosityEnabled;
 
         return $this;
     }

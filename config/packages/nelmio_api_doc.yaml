@@ -291,6 +291,15 @@ nelmio_api_doc:
               type: string
             user:
               $ref: '#/components/schemas/User.item'
+            primaryMountPath:
+              example: /mnt/data
+              type: string
+            isVerbosityEnabled:
+              example: true
+              type: boolean
+            isGravatarEnabled:
+              example: true
+              type: boolean
           type: object
         Preference.list:
           properties:
