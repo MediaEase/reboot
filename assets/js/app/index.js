@@ -63,8 +63,8 @@ function initApplication(storeData, appsData, userGroup, preferencesData, widget
         const widgetManager = new WidgetManager(transformedWidgets, preferencesData);
         widgetManager.initialize();
         const container = document.querySelector('#appStoreModal #appStoreContainer');
-        const appStoreManager = new AppStoreManager(storeData, appsData, userGroup, isFullAppListing, isVerbosityEnabled);
-        const appStoreUI = new AppStoreUI(appStoreManager, container, appStoreBanner);
+        const appStoreManager = new AppStoreManager(storeData, appsData, userGroup, isFullAppListing);
+        const appStoreUI = new AppStoreUI(appStoreManager, container, appStoreBanner, isVerbosityEnabled);
         appStoreUI.initialize();
     
         const appManager = new AppManager(5000, appsData, preferencesData);

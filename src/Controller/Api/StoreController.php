@@ -8,11 +8,11 @@ use App\Entity\User;
 use App\Entity\Store;
 use App\Entity\Application;
 use Psr\Log\LoggerInterface;
-use Symfony\UX\Turbo\TurboBundle;
 use App\Repository\StoreRepository;
 use Symfony\Component\Process\Process;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\ApplicationRepository;
+use App\Repository\PreferenceRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,7 +28,8 @@ final class StoreController extends AbstractController
         private EntityManagerInterface $entityManager,
         private StoreRepository $storeRepository,
         private ApplicationRepository $applicationRepository,
-        private LoggerInterface $storeLogger
+        private LoggerInterface $storeLogger,
+        private PreferenceRepository $preferenceRepository
     ) {
     }
 
@@ -60,15 +61,17 @@ final class StoreController extends AbstractController
         if ($action === 'install') {
             $action = 'add';
         }
-        $user = $this->getUser();
+        $this->getUser();
 
         if (!$appId || !$action) {
             return $this->json(['error' => 'Invalid request data'], Response::HTTP_BAD_REQUEST);
         }
 
+        $preferences = $this->preferenceRepository->findOneBy(['user' => $this->getUser()]);
+        $verbosity = $preferences->isVerbosityEnabled() ? '-v' : '';
 
         $scriptPath = '/usr/local/bin/zen';
-        $process = new Process(['sudo', $scriptPath, 'software', $action, $appId]);
+        $process = new Process(['sudo', $scriptPath, 'software', $action, $appId, $verbosity]);
         $process->setTimeout(1500);
         $process->setIdleTimeout(1500);
 
@@ -78,11 +81,10 @@ final class StoreController extends AbstractController
             $output = explode(PHP_EOL, $process->getOutput());
 
             return $this->json(['output' => $output], Response::HTTP_OK);
-        } catch (\Exception $e) {
-            $this->storeLogger->error('Script execution failed', ['exception' => $e]);
+        } catch (\Exception $exception) {
+            $this->storeLogger->error('Script execution failed', ['exception' => $exception]);
 
             return $this->json(['error' => 'Script execution failed'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }
-

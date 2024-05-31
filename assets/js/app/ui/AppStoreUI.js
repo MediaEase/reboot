@@ -25,8 +25,9 @@ class AppStoreUI {
      * @param {Object} appStoreManager - The app store manager.
      * @param {HTMLElement} container - The DOM container where the UI will be rendered.
      * @param {Object} appStoreBanner - The app store banner data.
+     * @param {Object} verbosity - The verbosity level for the app store.
      */
-    constructor(appStoreManager, container, appStoreBanner) {
+    constructor(appStoreManager, container, appStoreBanner, verbosity) {
         this.appStoreManager = appStoreManager;
         this.container = container;
         this.storeData = appStoreManager.storeData
@@ -35,6 +36,7 @@ class AppStoreUI {
         this.isFullAppListing = appStoreManager.isFullAppListing;
         this.filterAppsByUserGroup = appStoreManager.filterAppsByUserGroup;
         this.appStoreBanner = appStoreBanner;
+        this.verbosity = verbosity;
     }
 
     /**
@@ -294,33 +296,35 @@ class AppStoreUI {
      * @returns {void}
      */
     executeBashScript(appId, action) {
-        const consoleContainer = this.container.querySelector('.console-output');
-        const banner = this.container.querySelector('.banner-path');
-        consoleContainer.classList.remove('hidden');
-        banner.classList.add('hidden');
-        consoleContainer.innerHTML = `
-            <button type="button"
-                class="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none absolute top-1 right-1"
-                id="closeConsoleButton" aria-label="Close">
-                <svg width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"
-                    class="w-5 h-5 rounded-full bg-gray-300 dark:bg-gray-700 fill-gray-800 text-gray-800 dark:text-gray-200 dark:fill-gray-200 font-bold mt-1 mr-2 hover:bg-gray-400 dark:hover:bg-gray-400 hover:fill-gray-900 dark:hover:fill-gray-200">
-                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L17.94 6M18 18L6.06 6"></path>
-                </svg>
-            </button>
-            <div class="text-left overflow-y-auto overflow-x-hidden">
-                <div class="bg-gray-300 dark:bg-gray-700 px-4 py-1 rounded-t-md inline-block">
-                    <span class="font-semibold text-neutral-700 dark:text-neutral-200 font-mono">zen</span>
+        if (this.verbosity) {
+            const consoleContainer = this.container.querySelector('.console-output');
+            const banner = this.container.querySelector('.banner-path');
+            consoleContainer.classList.remove('hidden');
+            banner.classList.add('hidden');
+            consoleContainer.innerHTML = `
+                <button type="button"
+                    class="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none absolute top-1 right-1"
+                    id="closeConsoleButton" aria-label="Close">
+                    <svg width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"
+                        class="w-5 h-5 rounded-full bg-gray-300 dark:bg-gray-700 fill-gray-800 text-gray-800 dark:text-gray-200 dark:fill-gray-200 font-bold mt-1 mr-2 hover:bg-gray-400 dark:hover:bg-gray-400 hover:fill-gray-900 dark:hover:fill-gray-200">
+                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L17.94 6M18 18L6.06 6"></path>
+                    </svg>
+                </button>
+                <div class="text-left overflow-y-auto overflow-x-hidden">
+                    <div class="bg-gray-300 dark:bg-gray-700 px-4 py-1 rounded-t-md inline-block">
+                        <span class="font-semibold text-neutral-700 dark:text-neutral-200 font-mono">zen</span>
+                    </div>
                 </div>
-            </div>
-            <div class="bg-gray-100 dark:bg-gray-800 p-1 rounded-sm border border-gray-300 dark:border-gray-700 text-left py-2 shadow-inner text-sm text-neutral-700 dark:text-neutral-200 font-mono">
-                <p>Executing the script...</p>
-            </div>
-        `;  
+                <div class="bg-gray-100 dark:bg-gray-800 p-1 rounded-sm border border-gray-300 dark:border-gray-700 text-left py-2 shadow-inner text-sm text-neutral-700 dark:text-neutral-200 font-mono">
+                    <p>Executing the script...</p>
+                </div>
+            `;  
+        }  
         
         fetchData('/api/store/install', 'POST', { appId, action })
             .then(data => {
                 const consoleOutput = consoleContainer.querySelector('.bg-gray-100');
-                consoleOutput.innerHTML = ''; // Clear initial content
+                consoleOutput.innerHTML = '';
                 if (data && data.output) {
                     data.output.forEach(line => {
                         const message = document.createElement('p');
@@ -336,7 +340,7 @@ class AppStoreUI {
             })
             .catch(error => {
                 const consoleOutput = consoleContainer.querySelector('.bg-gray-100');
-                consoleOutput.innerHTML = ''; // Clear initial content
+                consoleOutput.innerHTML = '';
                 const message = document.createElement('p');
                 message.textContent = `Error: ${error.message}`;
                 consoleOutput.appendChild(message);
