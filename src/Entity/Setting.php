@@ -16,10 +16,13 @@ namespace App\Entity;
 use App\Repository\SettingRepository;
 use Doctrine\ORM\Mapping as ORM;
 use OpenApi\Attributes as OA;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: SettingRepository::class)]
 class Setting
 {
+    public const GROUP_GET_SETTINGS = 'get:settings';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -56,18 +59,22 @@ class Setting
 
     #[ORM\Column(length: 60)]
     #[OA\Property(description: 'The brand logo preference.', maxLength: 60)]
+    #[Groups([self::GROUP_GET_SETTINGS])]
     private ?string $brand = null;
 
     #[ORM\Column(length: 60)]
     #[OA\Property(description: 'The favicon preference.', maxLength: 60)]
+    #[Groups([self::GROUP_GET_SETTINGS])]
     private ?string $favicon = null;
 
     #[ORM\Column(length: 60)]
     #[OA\Property(description: 'The appstore banner preference.', maxLength: 60)]
+    #[Groups([self::GROUP_GET_SETTINGS])]
     private ?string $appstore = null;
 
     #[ORM\Column(length: 60)]
     #[OA\Property(description: 'The splashscreen preference.', maxLength: 60)]
+    #[Groups([self::GROUP_GET_SETTINGS])]
     private ?string $splashscreen = null;
 
     #[ORM\Column]

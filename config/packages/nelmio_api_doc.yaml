@@ -43,6 +43,8 @@ nelmio_api_doc:
       name: Profile
     - description: Service management and operations
       name: Services
+    - description: Settings operations
+      name: Settings
     - description: Store functionalities and data
       name: Store
     - description: Transcoding operations and management
@@ -1359,6 +1361,31 @@ nelmio_api_doc:
           summary: Get network metrics
           tags:
           - Metrics
+      /api/settings:
+        get:
+          operationId: api_settings
+          responses:
+            '200':
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: '#/components/schemas/Setting.item'
+              description: OK
+            '400':
+              $ref: '#/components/responses/400'
+            '401':
+              $ref: '#/components/responses/401'
+            '403':
+              $ref: '#/components/responses/403'
+            '404':
+              $ref: '#/components/responses/404'
+            '405':
+              $ref: '#/components/responses/405'
+            '500':
+              $ref: '#/components/responses/500'
+          summary: Get all settings
+          tags:
+          - Settings
       /api/transcodes:
         get:
           operationId: api_transcodes_list
