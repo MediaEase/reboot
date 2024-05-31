@@ -147,7 +147,7 @@ class AppStoreUI {
      * @returns {string} HTML representing the action button.
      */
     renderActionButton(app) {
-        const isAppInstalled = this.apps.some(installedApp => installedApp.application.id === app.id);
+        const isAppInstalled = this.apps.some(installedApp => installedApp.application.altname === app.application.altname);
         const isButtonDisabled = this.userGroup !== "full" && this.userGroup !== app.type;
         const disabledClass = isButtonDisabled ? 'blur-[1px] cursor-not-allowed' : '';
         const actionButtonClasses = isAppInstalled ? 'bg-red-500 hover:bg-red-600 pl-4' : 'px-4 bg-green-500 hover:bg-green-600 rounded-r-lg';
@@ -170,7 +170,6 @@ class AppStoreUI {
             </ul>
         </div>
         `;
-    
         const action = isAppInstalled ? 'uninstall' : 'install';
         const actionButton = `
         <div class="relative inline-flex items-center">
@@ -183,13 +182,12 @@ class AppStoreUI {
                     ${svgPath}
                 </svg>
                 <span class="ml-4 mr-2 flex items-start flex-col leading-none">
-                    <span class="text-xs text-teal-100">${isAppInstalled ? 'Uninstall' : 'Install'}</span>
+                    <span class="text-xs text-teal-100">${isAppInstalled ? 'Remove' : 'Install'}</span>
                     <span class="title-font text-sm text-gray-100 font-bold">${app.application.name}</span>
                 </span>
             </a>
             ${isAppInstalled ? popoverButton : ''}
         </div>`;
-    
         return actionButton;
     }
     

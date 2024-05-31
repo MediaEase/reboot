@@ -33,7 +33,7 @@ function chooseProcessDataFunction(type) {
         const storeData = await fetchData('/api/store');
         const userData = await fetchData('/api/me');
         const widgetsData = await fetchData('/api/widgets');
-        const appsData = userData.services.sort((a, b) => a.application.name.localeCompare(b.application.name));;
+        const appsData = userData.services.sort((a, b) => a.application.name.localeCompare(b.application.name));
         const userGroup = userData.group.name;
         const isFullAppListing = userData.isFullAppListing;
         const preferencesData = userData.preferences;
