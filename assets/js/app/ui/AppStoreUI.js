@@ -42,7 +42,7 @@ class AppStoreUI {
         const modalTitle = document.querySelector('#appStoreModalLabel');
         modalTitle.innerHTML = `
         <div class="flex justify-center items-center">
-            <div class="py-1 rounded-md w-4/12 space-x-6 flex items-lef">
+            <div class="py-1 rounded-md w-4/12 space-x-6 flex items-left">
                 <input type="search" id="appSearch" class="w-full border-none rounded-lg bg-base-100 text-sm focus:outline-none" placeholder="Search an app...">
                 <svg class="w-8 h-8 fill-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                     <path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z" clip-rule="evenodd"></path>
@@ -89,11 +89,11 @@ class AppStoreUI {
      */
     renderMainContent(parentContainer) {
         const mainContent = document.createElement('div');
-        mainContent.className = "flex-grow ml-2 md:px-24 pt-4 mb-8";
+        mainContent.className = "flex-grow ml-2 md:px-24 pt-4 mb-8 modal-content";
         const bannerPath = `/uploads/brand/app_store_banner.png`;
         let appCards = this.storeData.map(app => this.renderAppCard(app)).join('');
         mainContent.innerHTML = `
-            <div class="console-output hidden bg-black text-white p-4 rounded-xl relative mb-4">
+            <div class="console-output max-w-5xl mx-auto hidden content-background text-white p-2 pt-4 rounded-xl relative mb-4">
                 <button type="button"
                     class="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none absolute top-2 right-2"
                     id="closeConsoleButton" aria-label="Close">
@@ -225,7 +225,7 @@ class AppStoreUI {
         });
         // Handling clicks on the close button of the console view
         this.container.addEventListener('click', (event) => {
-            if (event.target.matches('#closeConsoleButton')) {
+            if (event.target.closest('#closeConsoleButton')) {
                 event.preventDefault();
                 this.hideConsole();
             }
@@ -298,31 +298,45 @@ class AppStoreUI {
         banner.classList.add('hidden');
         consoleContainer.innerHTML = `
             <button type="button"
-                class="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none absolute top-2 right-2"
+                class="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none absolute top-1 right-1"
                 id="closeConsoleButton" aria-label="Close">
-                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" class="w-8 h-8 fill-red-800 font-bold dark:fill-white pr-4"><path fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L17.94 6M18 18L6.06 6"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" class="w-6 h-6 fill-red-800 font-bold dark:fill-white pr-2">
+                    <path fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L17.94 6M18 18L6.06 6"></path>
+                </svg>
             </button>
-        `;
+            <div class="text-left">
+                <div class="bg-gray-300 dark:bg-gray-700 px-4 py-1 rounded-t-md inline-block">
+                    <span class="font-semibold">zen</span>
+                </div>
+            </div>
+            <div class="bg-gray-100 dark:bg-gray-800 p-1 rounded-sm border border-gray-300 dark:border-gray-700 text-left py-2 shadow-inner text-sm text-neutral-700 dark:text-neutral-200 font-mono">
+                <p>Executing the script...</p>
+            </div>
+        `;  
         
         fetchData('/api/store/install', 'POST', { appId, action })
             .then(data => {
+                const consoleOutput = consoleContainer.querySelector('.bg-gray-100');
+                consoleOutput.innerHTML = ''; // Clear initial content
                 if (data && data.output) {
                     data.output.forEach(line => {
                         const message = document.createElement('p');
                         message.textContent = line;
-                        consoleContainer.appendChild(message);
+                        consoleOutput.appendChild(message);
                         consoleContainer.scrollTop = consoleContainer.scrollHeight;
                     });
                 } else {
                     const message = document.createElement('p');
                     message.textContent = 'Error executing the script.';
-                    consoleContainer.appendChild(message);
+                    consoleOutput.appendChild(message);
                 }
             })
             .catch(error => {
+                const consoleOutput = consoleContainer.querySelector('.bg-gray-100');
+                consoleOutput.innerHTML = ''; // Clear initial content
                 const message = document.createElement('p');
                 message.textContent = `Error: ${error.message}`;
-                consoleContainer.appendChild(message);
+                consoleOutput.appendChild(message);
             });
     }
 
@@ -337,7 +351,6 @@ class AppStoreUI {
         consoleContainer.classList.add('hidden');
         banner.classList.remove('hidden');
     }
-    
 }
 
 export default AppStoreUI;

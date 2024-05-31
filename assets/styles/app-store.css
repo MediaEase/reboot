@@ -11,3 +11,8 @@
 .submenu-trigger:hover .submenu {
     display: block;
 }
+
+#appStoreModal .modal-content {
+    max-height: 85vh;
+    overflow-y: auto;
+}

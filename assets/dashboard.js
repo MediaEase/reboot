@@ -8,8 +8,6 @@ import './bootstrap.js';
 
 // any CSS you import will output into a single css file (app.css in this case)
 // styles
-import { Tab, Modal, Popover, Ripple, initTE } from "tw-elements";
-initTE({ Tab, Modal, Popover, Ripple });
 import './styles/app.css';
 import './styles/app-cards.css';
 import './styles/progress-circle.css';
