@@ -323,27 +323,33 @@ class AppStoreUI {
         
         fetchData('/api/store/install', 'POST', { appId, action })
             .then(data => {
-                const consoleOutput = consoleContainer.querySelector('.bg-gray-100');
-                consoleOutput.innerHTML = '';
-                if (data && data.output) {
-                    data.output.forEach(line => {
+                if (this.verbosity) {
+                    const consoleContainer = this.container.querySelector('.console-output');
+                    const consoleOutput = consoleContainer.querySelector('.bg-gray-100');
+                    consoleOutput.innerHTML = '';
+                    if (data && data.output) {
+                        data.output.forEach(line => {
+                            const message = document.createElement('p');
+                            message.textContent = line;
+                            consoleOutput.appendChild(message);
+                            consoleContainer.scrollTop = consoleContainer.scrollHeight;
+                        });
+                    } else {
                         const message = document.createElement('p');
-                        message.textContent = line;
+                        message.textContent = 'Error executing the script.';
                         consoleOutput.appendChild(message);
-                        consoleContainer.scrollTop = consoleContainer.scrollHeight;
-                    });
-                } else {
-                    const message = document.createElement('p');
-                    message.textContent = 'Error executing the script.';
-                    consoleOutput.appendChild(message);
+                    }
                 }
             })
             .catch(error => {
-                const consoleOutput = consoleContainer.querySelector('.bg-gray-100');
-                consoleOutput.innerHTML = '';
-                const message = document.createElement('p');
-                message.textContent = `Error: ${error.message}`;
-                consoleOutput.appendChild(message);
+                if (this.verbosity) {
+                    const consoleContainer = this.container.querySelector('.console-output');
+                    const consoleOutput = consoleContainer.querySelector('.bg-gray-100');
+                    consoleOutput.innerHTML = '';
+                    const message = document.createElement('p');
+                    message.textContent = `Error: ${error.message}`;
+                    consoleOutput.appendChild(message);
+                }
             });
     }
 
