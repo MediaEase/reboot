@@ -35,16 +35,18 @@ function chooseProcessDataFunction(type) {
         const widgetsData = await fetchData('/api/widgets');
         const appsData = userData.services.sort((a, b) => a.application.name.localeCompare(b.application.name));;
         const userGroup = userData.group.name;
+        const isFullAppListing = userData.isFullAppListing;
         const preferencesData = userData.preferences;
+        const isVerbosityEnabled = userData.isVerbosityEnabled;
 
         // Initialize the application
-        initApplication(storeData, appsData, userGroup, preferencesData, widgetsData);
+        initApplication(storeData, appsData, userGroup, preferencesData, widgetsData, isFullAppListing, isVerbosityEnabled);
     } catch (error) {
         console.error('Error initializing application:', error);
     }
 })();
 
-function initApplication(storeData, appsData, userGroup, preferencesData, widgetsData) {
+function initApplication(storeData, appsData, userGroup, preferencesData, widgetsData, isFullAppListing, isVerbosityEnabled) {
     const dashboard = document.querySelector('[data-widget-panel]');
     const page = document.body.getAttribute('data-page');
     const timeInterval = 5000;
@@ -59,7 +61,7 @@ function initApplication(storeData, appsData, userGroup, preferencesData, widget
         const widgetManager = new WidgetManager(transformedWidgets, preferencesData);
         widgetManager.initialize();
         const container = document.querySelector('#appStoreModal #appStoreContainer');
-        const appStoreManager = new AppStoreManager(storeData, appsData, userGroup);
+        const appStoreManager = new AppStoreManager(storeData, appsData, userGroup, isFullAppListing, isVerbosityEnabled);
         const appStoreUI = new AppStoreUI(appStoreManager, container);
         appStoreUI.initialize();
     

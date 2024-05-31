@@ -7,6 +7,7 @@
  * @property {Array} storeData - The store data from the API.
  * 
  * @method {Array} filterAppsByType - Filters the apps by type.
+ * @method {Array} filterAppsByUserGroup - Filters the apps based on user group and full app listing status.
  * @method {Array} handleSearch - Handles the search functionality.
  * @method {Array} resetFilter - Resets the filter.
  * @method {Array} getHomeCategory - Gets the home category.
@@ -20,10 +21,11 @@ class AppStoreManager {
      * @param {Array} appsData - The apps data from the API.
      * @param {Array} userGroup - The user group data from the API.
      */
-    constructor(storeData, appsData, userGroup) {
+    constructor(storeData, appsData, userGroup, isFullAppListing) {
         this.apps = appsData;
         this.storeData = storeData.filter(app => app.name !== 'AppStore');
         this.userGroup = userGroup;
+        this.isFullAppListing = isFullAppListing;
     }
 
     /**
@@ -33,6 +35,18 @@ class AppStoreManager {
      */
     filterAppsByType(type) {
         return this.storeData.filter(app => app.type === type);
+    }
+
+    /**
+     * Filters the apps based on user group and full app listing status.
+     * @param {Array} apps - The apps to filter.
+     * @returns {Array} Filtered apps.
+     */
+    filterAppsByUserGroup(apps) {
+        if (this.isFullAppListing) {
+            return apps;
+        }
+        return apps.filter(app => app.type === this.userGroup || this.userGroup === "full");
     }
 
     /**

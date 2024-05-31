@@ -31,6 +31,8 @@ class AppStoreUI {
         this.storeData = appStoreManager.storeData
         this.apps = appStoreManager.apps;
         this.userGroup = appStoreManager.userGroup;
+        this.isFullAppListing = appStoreManager.isFullAppListing;
+        this.filterAppsByUserGroup = appStoreManager.filterAppsByUserGroup;
     }
 
     /**
@@ -197,6 +199,7 @@ class AppStoreUI {
      * @param {Array} filteredApps - The apps to display.
      */
     updateMainContent(filteredApps) {
+        filteredApps = this.filterAppsByUserGroup(filteredApps);
         const mainContent = this.container.querySelector('.grid');
         let appCards = filteredApps.map(app => this.renderAppCard(app)).join('');
         mainContent.innerHTML = appCards;
