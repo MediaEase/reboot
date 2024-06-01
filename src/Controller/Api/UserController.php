@@ -43,4 +43,12 @@ final class UserController extends AbstractController
 
         return $this->json(['message' => 'User deleted'], Response::HTTP_OK);
     }
+
+    #[Route('', name: 'list', methods: ['GET'])]
+    public function list(): Response
+    {
+        $users = $this->userRepository->findAll();
+
+        return $this->json($users, Response::HTTP_OK, [], ['groups' => 'confidential']);
+    }
 }

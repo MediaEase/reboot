@@ -61,6 +61,7 @@ final class StoreController extends AbstractController
         if ($action === 'install') {
             $action = 'add';
         }
+
         $this->getUser();
 
         if (!$appId || !$action) {
