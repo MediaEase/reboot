@@ -34,7 +34,6 @@
 {% endmacro %}
 
 {% macro banner(user) %}
-    {% import '_macros/badge_macro.html.twig' as badge_macro %}
     <div class="xl:pl-[25rem] relative isolate overflow-hidden bg-gray-900 py-24 sm:py-32 max-h-[65vh] lg:max-h-[70vh] rounded-xl">
         {{ _self.backdrop(user) }}
         {{ _self.transform_backdrop() }}
