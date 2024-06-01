@@ -39,7 +39,7 @@ class UsersController extends AbstractController
         $users = $this->entityManager->getRepository(User::class)->findAll();
         $settings = $this->entityManager->getRepository(Setting::class)->findLast();
 
-        return $this->render('users/list.html.twig', [
+        return $this->render('pages/users/list/users.html.twig', [
             'users' => $users,
             'settings' => $settings,
             'user' => $user,

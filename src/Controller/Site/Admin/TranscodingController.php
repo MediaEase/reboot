@@ -55,7 +55,7 @@ class TranscodingController extends AbstractController
             return strcmp($a->getName(), $b->getName());
         });
 
-        return $this->render('settings/transcoding.html.twig', [
+        return $this->render('pages/settings/transcoding.html.twig', [
             'apps' => $services,
             'settings' => $this->settingRepository->findLast(),
             'user' => $this->getUser(),

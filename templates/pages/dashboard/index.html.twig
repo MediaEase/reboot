@@ -1,0 +1,82 @@
+{% extends 'pages/base.html.twig' %}
+
+{% block title %}Dashboard - {{ app.request.server.get('SITE_NAME') }}
+{% endblock %}
+
+{% block body %}
+	<div class="container my-2 mx-auto md:px-2">
+		<div class="grid lg:grid-cols-6 lg:gap-x-8">
+			{% import '_macros/widget_card.html.twig' as card_content %}
+			{% for widget in user.preferences.selectedWidgets %}
+				{% set unique_name = widget %}
+				{% set type = unique_name|slice(0, -2) %}
+				{% set name = type|capitalize %}
+				{% set display = unique_name|last %}
+				{{ card_content.widget_card(unique_name, type, name, display) }}
+			{% endfor %}
+		</div>
+		<h2 class="mb-6 mt-3 text-4xl font-bold text-left text-white flex justify-between items-center">
+			<div class="flex items-center">
+				Applications
+				<span id="btnViewCards" class="ml-4 mt-2">
+					<a href="#" class="flex items-left">
+						{{ ux_icon('heroicons:squares-2x2', {class: 'w-6 h-6 fill-white'}) }}
+					</a>
+				</span>
+				<span id="btnViewTable" class="ml-4 mt-2">
+					<a href="#" class="flex items-left">
+						{{ ux_icon('ph:list-bullets-light', {class: 'w-6 h-6 fill-white' }) }}
+					</a>
+				</span>
+			</div>
+			<button
+				type="button"
+				id="appStoreButton"
+				class="inline-flex items-center rounded px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white transition duration-150 ease-in-out"
+				data-te-toggle="modal"
+				data-te-target="#appStoreModal"
+				data-te-ripple-init
+				data-te-ripple-color="light">
+				{{ ux_icon('flowbite:circle-plus-solid', {class: 'w-8 h-8 fill-white'}) }}
+			</button>
+		</h2>
+
+		<div data-te-modal-init class="border-gray-500 border fixed left-0 top-0 z-[1055] hidden h-dvh w-full overflow-y-auto overflow-x-hidden outline-none bg-gray-200/55 dark:bg-gray-900/85" id="appStoreModal" tabindex="-1" aria-labelledby="appStoreModalLabel" aria-modal="true" role="dialog">
+			<div data-te-modal-dialog-ref class="pointer-events-none relative flex min-h-[calc(100%-0.5rem)] w-5/6 translate-y-[-50px] items-center opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:min-h-[calc(100%-3rem)] min-[576px]:max-w-[1840px]">
+				<div class="pointer-events-auto relative flex w-full flex-col rounded-xl border-gray-500 border content-background dark:content-background bg-clip-padding text-current shadow-lg transition-colors duration-200 outline-none">
+					<div class="flex flex-shrink-0 items-center justify-between rounded-t-xl border-b border-gray-500 border-opacity-75">
+						<h5 class="text-xl font-light leading-normal text-center w-full font-mono text-neutral-700 dark:text-neutral-200" id="appStoreModalLabel">
+						</h5>
+						<button
+							type="button"
+							class="box-content rounded-none border-none hover:no-underline focus:opacity-100 focus:shadow-none focus:outline-none"
+							data-te-modal-dismiss
+							aria-label="Close">
+							{{ ux_icon('flowbite:x-outline', { class: 'w-5 h-5 rounded-full bg-red-800 fill-base-100 font-bold mr-2 hover:bg-red-600 hover:fill-white' }) }}
+						</button>
+					</div>
+					<div id="appStoreContainer" class="relative bg-base-100 dark:bg-base-100 rounded-b-xl"></div>
+				</div>
+			</div>
+		</div>
+		
+		<section class="mb-32 text-center">
+			<div id="grid" class="grid lg:grid-cols-4 lg:gap-x-6" style="{{ user.preferences.display == 'grid' ? 'display: grid;' : 'display: none;' }}"></div>
+
+			<div id="list" class="container mx-auto card card-blur px-2 py-6" style="{{ user.preferences.display == 'list' ? 'display: grid;' : 'display: none;' }}">
+				<div class="mx-[0.25rem] px-4 sm:px-2 overflow-x-auto">
+					<div class="relative mb-4 flex w-full flex-wrap items-stretch">
+						<input id="app-finder" type="search" class="relative m-0 block w-[1px] min-w-0 flex-auto rounded-l border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-200 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-blue focus:text-neutral-200 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-blue" placeholder="Search an app" aria-label="Search" aria-describedby="button-addon1"/>
+						<button class="relative z-[2] flex items-center rounded-r bg-transparent px-6 py-2.5 text-xs font-medium uppercase leading-tight text-white transition duration-150 ease-in-out hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg" type="button" id="app-finder-button" data-te-ripple-init data-te-ripple-color="light">
+							<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 20 20" fill="currentColor" class="h-5 w-5">
+								<path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd"/>
+							</svg>
+						</button>
+					</div>
+				</div>
+				<div id="my-app-list" class="mx-3"></div>
+			</div>
+		</section>
+	</div>
+	<script src="https://unpkg.com/@material-tailwind/html@latest/scripts/dialog.js"></script>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% import '_macros/profile.html.twig' as profile %}
+{% import '_macros/form/form.html.twig' as form_macros %}
+<h3 class="text-xl font-semibold mb-4">User Identity</h3>
+{{ form_start(userImagesForm) }}
+<div class="flex flex-wrap -mx-3 xl:pt-4">
+    {% for message in app.flashes('dropzone_success') %}
+        <div class="alert alert-success" data-turbo-cache="false">{{ message }}</div>
+    {% endfor %}
+    <div class="w-full flex items-center px-3 pt-2 xl:p-0">
+        <div class="w-2/8 ml-3 xl:mb-6 md:mb-0 pt-3 xl:mt-2 xl:p-0 xl:pl-3">
+            {{ profile.backdrop_link(user, 16, 'md') }}
+        </div>
+        <div class="w-3/4 xl:ml-3 xl:pl-3">
+            {{ form_label(userImagesForm.backdrop) }}
+            {{ form_widget(userImagesForm.backdrop) }}
+        </div>
+    </div>
+    <button type="button" class="flex text-red-500 hover:text-red-700 px-4 rounded focus:outline-none focus:shadow-outline mt-2 xl:mb-6 md:mb-0"
+        data-reset-image-type-param="preference"
+        data-reset-image-context-param="background"
+    >{{ ux_icon('heroicons:arrow-path', {class: 'w-7 h-7 pr-2 pb-1 fill-red-500 font-bold'}) }} Reset Backdrop</button>
+    <div class="w-full flex items-center px-3 pt-2 xl:p-0">
+        <div class="w-2/8 ml-3 xl:mb-6 md:mb-0 pt-3 xl:mt-2 xl:p-0 xl:pl-3">
+            {{ profile.avatar_link(user, 16, 'md') }}
+        </div>
+        <div class="w-3/4 xl:ml-3 xl:pl-3">
+            {{ form_label(userImagesForm.avatar) }}
+            {{ form_widget(userImagesForm.avatar) }}
+        </div>
+    </div>
+    <button type="button" class="flex text-red-500 hover:text-red-700 px-4 rounded focus:outline-none focus:shadow-outline mt-2 xl:mb-2 md:mb-0"
+        data-reset-image-type-param="preference"
+        data-reset-image-context-param="avatar"
+    >{{ ux_icon('heroicons:arrow-path', {class: 'w-7 h-7 pr-2 pb-1 fill-red-500 font-bold'}) }} Reset Avatar</button>
+</div>
+<div class="w-full">
+    <div class="w-11/12 xl:pr-3">
+        <div class="flex justify-start flex-row-reverse items-center mb-4 xl:m-0 xl:p-0 py-3">
+            {{ form_macros.save_button(userImagesForm) }}
+        </div>
+    </div>
+</div>
+{{ form_row(userImagesForm._token) }}
+{{ form_end(userImagesForm, {'render_rest': false}) }}

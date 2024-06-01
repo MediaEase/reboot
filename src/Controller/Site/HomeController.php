@@ -36,7 +36,7 @@ final class HomeController extends AbstractController
         $profile = $this->userRepository->findMyProfile($user);
         $settings = $this->settingRepository->find(1);
 
-        return $this->render('dashboard/index.html.twig', [
+        return $this->render('pages/dashboard/index.html.twig', [
             'user' => $profile,
             'settings' => $settings,
         ]);

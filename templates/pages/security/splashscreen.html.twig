@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		{% import '_macros/branding.html.twig' as brand %}
+		<title>
+			{% block title %}Login - {{ app.request.server.get('SITE_NAME') }}
+			{% endblock %}
+		</title>
+		{{ brand.favicon(settings.favicon) }}
+		{% block stylesheets %}
+			{{ encore_entry_link_tags('login') }}
+		{% endblock %}
+
+		{% block javascripts %}
+			{{ encore_entry_script_tags('login') }}
+		{% endblock %}
+	</head>
+	<body class="bg-fixed bg-gray-100 dark:bg-gray-800 h-[100%] overscroll-none overflow-none" id="page-content">
+		{% import '_macros/backdrop.html.twig' as backdrop %}
+		<div class="bottom-0 left-0 right-0 top-0 w-full text-center text-white/80"
+			{{ backdrop.splashscreen(settings) }}
+			>
+			{% block body %}{% endblock %}
+		</div>
+		<script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/tw-elements.umd.min.js"></script>
+	</body>
+</html>

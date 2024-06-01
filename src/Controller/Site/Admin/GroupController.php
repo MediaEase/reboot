@@ -68,7 +68,7 @@ class GroupController extends AbstractController
             });
         }
 
-        return $this->render('settings/access_groups/index.html.twig', [
+        return $this->render('pages/settings/access_groups/index.html.twig', [
             'groupApplications' => $groupApplications,
             'user' => $user,
             'settings' => $this->settingRepository->find(1),
@@ -90,7 +90,7 @@ class GroupController extends AbstractController
             return $this->redirectToRoute('app_group_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('settings/access_groups/new.html.twig', [
+        return $this->render('pages/settings/access_groups/new.html.twig', [
             'group' => $group,
             'form' => $form,
             'user' => $user,
@@ -103,7 +103,7 @@ class GroupController extends AbstractController
     {
         $user = $this->getUser();
 
-        return $this->render('settings/access_groups/show.html.twig', [
+        return $this->render('pages/settings/access_groups/show.html.twig', [
             'group' => $group,
             'user' => $user,
         ]);
@@ -131,7 +131,7 @@ class GroupController extends AbstractController
             return $this->redirectToRoute('app_group_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('settings/access_groups/edit.html.twig', [
+        return $this->render('pages/settings/access_groups/edit.html.twig', [
             'group' => $group,
             'form' => $form,
             'user' => $user,

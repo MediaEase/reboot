@@ -41,7 +41,7 @@ final class SecurityController extends AbstractController
         $entityRepository = $this->entityManager->getRepository(Setting::class);
         $settings = $entityRepository->find(1);
 
-        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error, 'settings' => $settings]);
+        return $this->render('pages/security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error, 'settings' => $settings]);
     }
 
     #[Route(path: '/logout', name: 'app_logout')]

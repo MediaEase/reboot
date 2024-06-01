@@ -79,7 +79,7 @@ final class SettingsController extends AbstractController
             $this->entityManager->flush();
         }
 
-        return $this->render('settings/general.html.twig', [
+        return $this->render('pages/settings/general.html.twig', [
             'user' => $user,
             'preferences' => $preferences,
             'form' => $form->createView(),
@@ -93,7 +93,7 @@ final class SettingsController extends AbstractController
     {
         $this->serviceRepository->findAll();
 
-        return $this->render('settings/subdomains.html.twig');
+        return $this->render('pages/settings/subdomains.html.twig');
     }
 
     #[Route('/system/smtp', name: 'system_smtp')]
@@ -120,7 +120,7 @@ final class SettingsController extends AbstractController
             $this->reloadPhpServices();
         }
 
-        return $this->render('settings/smtp.html.twig', [
+        return $this->render('pages/settings/smtp.html.twig', [
             'form' => $form->createView(),
             'user' => $user,
             'mailer_dsn' => $secretManager->getSecret('MAILER_DSN'),
@@ -132,7 +132,7 @@ final class SettingsController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     public function systemHelpSettings(Request $request): Response
     {
-        return $this->render('settings/help.html.twig');
+        return $this->render('pages/settings/help.html.twig');
     }
 
     #[Route('/system/php', name: 'system_php')]
@@ -158,7 +158,7 @@ final class SettingsController extends AbstractController
             $this->reloadPhpServices();
         }
 
-        return $this->render('settings/php.html.twig', [
+        return $this->render('pages/settings/php.html.twig', [
             'form' => $form->createView(),
             'user' => $user,
             'settings' => $settings,

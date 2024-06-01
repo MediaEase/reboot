@@ -1,0 +1,64 @@
+{% extends 'pages/settings/base.html.twig' %}
+
+{% block title %}General Settings - {{ app.request.server.get('SITE_NAME') }}
+{% endblock %}
+
+{% block body %}
+	{% import '_macros/settings.html.twig' as settings_macro %}
+	{% import '_macros/breadcrumb.html.twig' as breadcrumb %}
+	{% import '_macros/form/form.html.twig' as form_macros %}
+	<div class="max-w-8xl md:mx-auto md:px-auto lg:px-6">
+		<div class="xl:pt-[2.3615rem] pt-[15rem]">
+			<div class="xl:pl-[25rem]">
+				<div class="w-full mx-auto pt-10 xl:max-w-none xl:ml-4 rounded-xl mb-4">
+					{{ breadcrumb.add('General Settings', 'https://mediaease.github.io/docs/')  }}
+					{{ settings_macro.infobox(
+                        'info', 
+                        'The below settings helps to define how your system is represented and monitored by your MediaEase instance.', 
+                        'While these settings do not directly impact the core functionality of your system, it\'s good to ensure they accurately represent your setup. For further details, you may refer to the <a href="link-to-documentation" class="text-sky-500 dark:text-sky-400 hover:underline">General Settings documentation</a>.',
+						'external'
+                    ) }}
+					<div id="content-wrapper" class="relative px-4 prose prose-slate mt-8 dark:prose-dark pb-3 mb-4">
+						{{ form_start(form) }}
+						<div class="flex flex-wrap -mx-3 xl:py-2">
+							<div class="w-full xl:w-1/2 px-3 xl:mb-6 md:mb-0 pt-2 xl:p-0">
+								{{ form_macros.iconed_label(form, 'siteName', 'general') }}
+								{{ form_widget(form.siteName, {'attr': {'class': 'form-widget'}}) }}
+								{{ form_macros.iconed_error(form, 'siteName') }}
+							</div>
+							<div class="w-full xl:w-1/2 px-3 xl:mb-6 md:mb-0 pt-2 xl:p-0">
+								{{ form_macros.iconed_label(form, 'siteDescription', 'general') }}
+								{{ form_widget(form.siteDescription, {'attr': {'class': 'form-widget'}}) }}
+								{{ form_macros.iconed_error(form, 'siteDescription') }}
+							</div>
+						</div>
+						<div class="flex flex-wrap -mx-3 xl:py-2">
+							<div class="w-full xl:w-1/2 px-3 xl:mb-6 md:mb-0 pt-2 xl:p-0">
+								{{ form_macros.iconed_label(form, 'rootUrl', 'general') }}
+								{{ form_widget(form.rootUrl, {'attr': {'class': 'form-widget'}}) }}
+								{{ form_macros.iconed_error(form, 'rootUrl') }}
+							</div>
+							<div class="w-full xl:w-1/2 px-3 xl:mb-6 md:mb-0 pt-2 xl:p-0">
+								{{ form_macros.iconed_label(form, 'netInterface', 'general') }}
+								{{ form_widget(form.netInterface, {'attr': {'class': 'form-widget'}}) }}
+								{{ form_macros.iconed_error(form, 'netInterface') }}
+							</div>
+						</div>
+						{# <div class="flex flex-wrap -mx-3 xl:mb-6 ">
+							<div class="w-full xl:w-1/2 px-3 xl:mb-6 md:mb-0 pt-2 xl:p-0">
+								{{ form_macros.iconed_label(form, 'mountPoint') }}
+								{{ form_widget(form.mountPoint, {'attr': {'class': 'form-widget'}}) }}
+								{{ form_macros.iconed_error(form, 'mountPoint') }}
+							</div>
+						</div> #}
+						<div class="flex justify-end pt-3 mt-4 mb-2 xl:m-0 xl:p-0">
+							{{ form_macros.save_button(form) }}
+						</div>
+						{{ form_row(form._token) }}
+						{{ form_end(form, {'render_rest': false}) }}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
