@@ -20,12 +20,9 @@
 <div class="flex justify-center items-end mt-4 xl:m-0 xl:p-0">
     <button
         type="button"
-        class="inline-flex items-center rounded px-6 py-2 text-xs font-medium uppercase leading-normal text-white transition duration-150 ease-in-out bg-sky-500 hover:bg-sky-700"
-        data-te-toggle="modal"
-        data-te-target="#addMountModal"
-        data-te-ripple-init
-        data-te-ripple-color="light">
-        {{ ux_icon('heroicons:plus', {class: 'icon w-6 h-6 fill-white button-icon'}) }}
-        Add new path
+        class="box-content rounded-none border-none hover:no-underline focus:opacity-100 focus:shadow-none focus:outline-none"
+        data-te-modal-dismiss
+        aria-label="Close">
+        {{ ux_icon('flowbite:x-outline', { class: 'w-5 h-5 rounded-full bg-red-800 fill-base-100 font-bold mr-2 hover:bg-red-600 hover:fill-white' }) }}
     </button>
 </div>
