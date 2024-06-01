@@ -1,16 +1,29 @@
 {% macro badge(content, context) %}
     {% if context == 'user_role' %}
-        {% set content = content|replace({'ROLE_': ''})|lower %}
-        {% set backgroundColor = 'bg-sky-700' %}
-    {% elseif context == 'user_group' %}
-        {% set content = content|lower ~ ' group' %}
-        {% set backgroundColor = 'bg-rose-700' %}
-    {% endif %}
-    <div class="relative inline-block select-none whitespace-nowrap rounded-full {{ backgroundColor }} px-3.5 sm:py-1.5 align-baseline text-2xl md:text-sm font-medium md:font-light md:font-mono uppercase text-white">
-        <div class="mt-px">
-            <p class="block capitalize text-white antialiased md:mb-0 md:mt-0 xs:mb-1.5 xs:mt-1">
-                {{ content }}
-            </p>
+        {% set roles = content|replace({'ROLE_': ''})|split(',') %}
+        <div class="inline-flex space-x-2">
+            {% for role in roles %}
+                {% set role = role|trim|lower %}
+                {% set role = role|capitalize %}
+                {% set backgroundColor = 'bg-sky-700' %}
+                <div class="relative inline-block select-none whitespace-nowrap rounded-full {{ backgroundColor }} px-3.5 text-sm align-baseline font-mono text-white">
+                    <div class="mt-px">
+                        <p class="block text-white antialiased md:mb-0">
+                            {{ role }}
+                        </p>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
-    </div>
+    {% elseif context == 'user_group' %}
+        {% set content = content|lower %}
+        {% set backgroundColor = 'bg-rose-700' %}
+        <div class="relative inline-block select-none whitespace-nowrap rounded-full {{ backgroundColor }} px-3.5 text-xs align-baseline font-mono uppercase text-white">
+            <div class="mt-px">
+                <p class="block capitalize text-white md:mb-0 md:mt-0 xs:mb-1.5 xs:mt-1">
+                    {{ content }}
+                </p>
+            </div>
+        </div>
+    {% endif %}
 {% endmacro %}
