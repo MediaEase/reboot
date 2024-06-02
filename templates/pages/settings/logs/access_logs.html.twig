@@ -1,0 +1,59 @@
+{% extends 'pages/settings/base.html.twig' %}
+
+{% block title %}Access Logs - {{ app.request.server.get('SITE_NAME') }}
+{% endblock %}
+
+{% block body %}
+	{% import '_macros/settings.html.twig' as settings_macro %}
+	{% import '_macros/breadcrumb.html.twig' as breadcrumb %}
+	<div class="max-w-8xl md:mx-auto md:px-auto lg:px-6">
+		<div class="xl:pt-[2.3615rem] pt-[15rem]">
+			<div class="xl:pl-[25rem]">
+				<div class="w-full mx-auto pt-10 xl:max-w-none xl:ml-4 rounded-xl mb-4">
+					{{ breadcrumb.add('Access Logs Overview', 'https://mediaease.github.io/docs/')  }}
+					{{ settings_macro.infobox(
+                        'info', 
+                        'This page provides a detailed overview of all access logs recorded in the system. You can monitor and review the types of access, timestamps, content of logs, and originating IP addresses.',
+                        'Regularly reviewing these logs can help in identifying any unusual or suspicious activities. For more information, refer to the <a href="link-to-documentation" class="text-sky-500 dark:text-sky-400 hover:underline">Access Logs documentation</a>.',
+                        'external'
+                    ) }}
+					<div id="content-wrapper" class="relative px-4 prose prose-slate mt-8 dark:prose-dark pb-3 mb-4">
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full bg-white dark:bg-gray-800">
+                                <thead>
+                                    <tr>
+                                        <th class="py-2 px-4 border-b-2 border-gray-300 dark:border-gray-600 bg-gray-200 dark:bg-gray-700 text-left leading-4 text-gray-600 dark:text-gray-300 tracking-wider">ID</th>
+                                        <th class="py-2 px-4 border-b-2 border-gray-300 dark:border-gray-600 bg-gray-200 dark:bg-gray-700 text-left leading-4 text-gray-600 dark:text-gray-300 tracking-wider">Type</th>
+                                        <th class="py-2 px-4 border-b-2 border-gray-300 dark:border-gray-600 bg-gray-200 dark:bg-gray-700 text-left leading-4 text-gray-600 dark:text-gray-300 tracking-wider">Content</th>
+                                        <th class="py-2 px-4 border-b-2 border-gray-300 dark:border-gray-600 bg-gray-200 dark:bg-gray-700 text-left leading-4 text-gray-600 dark:text-gray-300 tracking-wider">IP Address</th>
+                                        <th class="py-2 px-4 border-b-2 border-gray-300 dark:border-gray-600 bg-gray-200 dark:bg-gray-700 text-left leading-4 text-gray-600 dark:text-gray-300 tracking-wider">Timestamp</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% set logs = [
+                                        {'id': 1, 'timestamp': '2023-01-01 12:00:00', 'type': 'INFO', 'content': 'Log entry 1', 'ip_address': '192.168.0.1'},
+                                        {'id': 2, 'timestamp': '2023-01-02 13:00:00', 'type': 'ERROR', 'content': 'Log entry 2', 'ip_address': '192.168.0.2'},
+                                        {'id': 3, 'timestamp': '2023-01-03 14:00:00', 'type': 'WARNING', 'content': 'Log entry 3', 'ip_address': '192.168.0.3'},
+                                    ] %}
+                                    {% for log in logs %}
+                                        <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
+                                            <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-600">{{ log.id }}</td>
+                                            <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-600">{{ log.type }}</td>
+                                            <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-600">{{ log.content }}</td>
+                                            <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-600">{{ log.ip_address }}</td>
+                                            <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-600">{{ log.timestamp|date('Y-m-d H:i:s') }}</td>
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-600" colspan="5">No logs found.</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
