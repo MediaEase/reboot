@@ -161,7 +161,6 @@ qa-lint-yaml:
 # Runs PHPMetrics on the project. Generates reports.
 qa-metrics:
     {{COMPOSER}} run-script metrics-src
-    {{COMPOSER}} run-script metrics-test
 
 # Runs Rector on the project and fixes the issues.
 qa-rector:

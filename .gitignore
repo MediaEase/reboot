@@ -41,6 +41,7 @@ docs/reports/
 yarn.lock
 composer.lock
 symfony.lock
+pnpm-lock.yaml
 
 
 ###> squizlabs/php_codesniffer ###
