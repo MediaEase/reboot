@@ -60,3 +60,4 @@ bun.lockb
 /public/uploads/*/custom/*.jpeg
 /public/uploads/*/custom/*.webp
 assets/icons/*
+reports/*
