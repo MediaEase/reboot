@@ -18,7 +18,7 @@
 						'For detailed information, refer to the <a href="your-documentation-link" class="text-sky-500 dark:text-sky-400 hover:underline">SMTP configuration documentation</a>.',
 						'external'
 					) }}
-					<div id="content-wrapper" class="relative px-4 pt-6 prose prose-slate mt-8 dark:prose-dark pb-3 mb-4">
+					<div id="content-wrapper" class="relative px-4 prose prose-slate mt-8 dark:prose-dark pb-3 mb-4 bg-gray-200/55 dark:bg-gray-900/85 rounded-lg">
 						{{ form_start(form) }}
 						<div class="flex flex-wrap -mx-3 xl:py-2">
 							<div class="w-full px-3 md:mb-0 pt-2 xl:p-0">
@@ -65,6 +65,7 @@
                                 {{ form_macros.iconed_label(form, 'smtp_timeout', 'mail') }}
                                 {{ form_widget(form.smtp_timeout, {'attr': {'class': 'form-widget'}}) }}
 								{{ form_macros.iconed_error(form, 'smtp_timeout') }}
+							<hr class="my-4 border-t-1 border-gray-300 dark:border-slate-300" />
                             <div class="flex justify-end pt-3 mt-4 mb-2 xl:m-0">
                                 {{ form_macros.save_button(form) }}
                             </div>

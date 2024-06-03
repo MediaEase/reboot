@@ -59,7 +59,7 @@ final class PhpType extends AbstractType
         $formBuilder->add('save', ButtonType::class, [
             'label' => 'Save',
             'icon_before' => 'flowbite:floppy-disk-outline',
-            'button_class' => 'bg-gradient-to-r from-green-400 to-green-600 text-white font-bold py-2 px-4 rounded',
+            'button_class' => 'iconed-button bg-green-500 hover:bg-green-700 text-white font-bold pl-3 rounded h-[2.5rem] pr-[1.25rem]',
             'icon_class' => 'w-8 h-8 fill-white button-icon',
         ]);
     }
