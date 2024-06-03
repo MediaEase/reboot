@@ -23,7 +23,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[Route('/settings', name: 'app_settings_extras_')]
+#[Route('/settings', name: 'app_settings_extras_', defaults: ['_feature' => 'transcoding'], methods: ['GET'])]
 #[IsGranted('ROLE_ADMIN')]
 class TranscodingController extends AbstractController
 {
