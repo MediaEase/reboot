@@ -18,14 +18,16 @@
     {% endfor %}
 </div>
 <div class="flex justify-center items-end mt-4 xl:m-0 xl:p-0">
-    <button
-        type="button"
-        class="inline-flex items-center rounded px-6 py-2 text-xs font-medium uppercase leading-normal text-white transition duration-150 ease-in-out bg-sky-500 hover:bg-sky-700"
-        data-te-toggle="modal"
-        data-te-target="#addMountModal"
-        data-te-ripple-init
-        data-te-ripple-color="light">
-        {{ ux_icon('heroicons:plus', {class: 'icon w-6 h-6 fill-white button-icon'}) }}
-        Add new path
-    </button>
+    {% if feature_manager().isActive('add_mount_path') %}
+        <button
+            type="button"
+            class="inline-flex items-center rounded px-6 py-2 text-xs font-medium uppercase leading-normal text-white transition duration-150 ease-in-out bg-sky-500 hover:bg-sky-700"
+            data-te-toggle="modal"
+            data-te-target="#addMountModal"
+            data-te-ripple-init
+            data-te-ripple-color="light">
+            {{ ux_icon('heroicons:plus', {class: 'icon w-6 h-6 fill-white button-icon'}) }}
+            Add new path
+        </button>
+    {% endif %}
 </div>

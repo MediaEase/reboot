@@ -66,10 +66,12 @@
                                 {% include "pages/users/profile/forms/_userSettingsForm.html.twig" %}
                             </div>
                         </div>
-                        <hr class="my-4 border-t-1 border-gray-300 dark:border-slate-300" />
-                        <div class="flex justify-end">
-                            <a href="{{ path('app_users_profile_export') }}" class="flex text-blue-500 hover:text-blue-700 underline">{{ ux_icon('heroicons:archive-box-arrow-down', {class: 'w-7 h-7 pr-2 pb-1 fill-blue-500 font-bold dark:fill-blue-700'}) }} Export Data</a>
-                        </div>
+                        {% if feature_manager().isActive('export_data') %}
+                            <hr class="my-4 border-t-1 border-gray-300 dark:border-slate-300" />
+                            <div class="flex justify-end">
+                                <a href="{{ path('app_users_profile_export') }}" class="flex text-blue-500 hover:text-blue-700 underline">{{ ux_icon('heroicons:archive-box-arrow-down', {class: 'w-7 h-7 pr-2 pb-1 fill-blue-500 font-bold dark:fill-blue-700'}) }} Export Data</a>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>

@@ -1,5 +1,8 @@
-# See full configuration at https://github.com/bestit/flagception-bundle
 flagception:
     features:
-        demo_123:
-            default: true
+        transcoding:
+            default: false
+        add_mount_path:
+            default: false
+        export_data:
+            default: false
