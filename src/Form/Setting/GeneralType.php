@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace App\Form\Setting;
 
 use App\Entity\Setting;
+use App\Form\Type\ToggleSwitchType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\UX\Dropzone\Form\DropzoneType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
@@ -51,11 +53,58 @@ final class GeneralType extends AbstractType
                 ],
                 'help' => 'The root URL of the site',
             ])
+            ->add('backdrop', DropzoneType::class, [
+                'mapped' => false,
+                'label' => 'Default Backdrop',
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'Drag and drop a file or click to browse',
+                ],
+            ])
+            ->add('splashscreen', DropzoneType::class, [
+                'mapped' => false,
+                'label' => 'Splashscreen',
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'Drag and drop a file or click to browse',
+                ],
+            ])
+            ->add('brand', DropzoneType::class, [
+                'mapped' => false,
+                'label' => 'Brand',
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'Drag and drop a file or click to browse',
+                ],
+            ])
+            ->add('appstore', DropzoneType::class, [
+                'mapped' => false,
+                'label' => 'Appstore',
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'Drag and drop a file or click to browse',
+                ],
+            ])
             ->add('netInterface', ChoiceType::class, [
                 'label' => 'Network interface',
                 'choices' => array_flip($options['interfaces']),
                 'data' => $setting ? $setting->getNetInterface() : 'eth0',
                 'help' => 'The network interface to use in the network widget',
+            ])
+            ->add('isRegistrationEnabled', ToggleSwitchType::class, [
+                'label' => 'Enable Registration',
+                'data' => $setting ? $setting->isRegistrationEnabled() : true,
+                'help' => 'Allow users to register',
+            ])
+            ->add('isWelcomeEmailEnabled', ToggleSwitchType::class, [
+                'label' => 'Enable Welcome Email',
+                'data' => $setting ? $setting->isWelcomeEmailEnabled() : true,
+                'help' => 'Send a welcome email to new users',
+            ])
+            ->add('isEmailVerificationEnabled', ToggleSwitchType::class, [
+                'label' => 'Enable Email Verification',
+                'data' => $setting ? $setting->isEmailVerificationEnabled() : true,
+                'help' => 'Require email verification for new users',
             ])
             ->add('save', ButtonType::class, [
                 'label' => 'Save',

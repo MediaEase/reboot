@@ -158,12 +158,12 @@ class Setting
         return $this;
     }
 
-    public function iswelcomeEmailEnabled(): ?bool
+    public function isWelcomeEmailEnabled(): ?bool
     {
         return $this->welcomeEmailEnabled;
     }
 
-    public function setwelcomeEmailEnabled(bool $welcomeEmailEnabled): static
+    public function setWelcomeEmailEnabled(bool $welcomeEmailEnabled): static
     {
         $this->welcomeEmailEnabled = $welcomeEmailEnabled;
 

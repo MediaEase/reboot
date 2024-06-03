@@ -1,0 +1,22 @@
+{% macro dropzone_field(form, field, label, placeholder, imageSrc, imageAlt) %}
+    <div class="w-full xl:w-1/2 px-3 xl:mb-6 md:mb-0 pt-2 xl:p-0">
+        <label class="block form-label-text text-xs text-gray-700 dark:text-gray-200 mb-2" for="{{ form[field].vars.id }}">
+            {{ label }}
+        </label>
+        <div class="flex items-center">
+            {% if imageSrc %}
+                <div class="w-2/8 xl:mb-6 md:mb-0 pt-3 xl:mt-2 xl:p-0 xl:pl-3">
+                    <img src="{{ imageSrc }}" alt="{{ imageAlt }}" class="w-16 h-16 rounded-md"/>
+                </div>
+            {% endif %}
+            <div class="dropzone-container bg-gray-100 dark:bg-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg p-6 text-center transition duration-200 hover:border-blue-500 focus:border-blue-500 {{ imageSrc ? 'ml-4' : '' }}">
+                {{ form_widget(form[field], {'attr': {'class': 'dropzone-placeholder text-gray-500 dark:text-gray-400', 'placeholder': placeholder}}) }}
+            </div>
+        </div>
+        {% if form[field].vars.errors|length > 0 %}
+            <div class="text-red-500 text-xs italic mt-2">
+                {{ form_errors(form[field]) }}
+            </div>
+        {% endif %}
+    </div>
+{% endmacro %}

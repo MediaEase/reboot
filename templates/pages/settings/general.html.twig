@@ -1,11 +1,11 @@
 {% extends 'pages/settings/base.html.twig' %}
 
-{% block title %}General Settings - {{ app.request.server.get('SITE_NAME') }}
-{% endblock %}
+{% block title %}General Settings - {{ app.request.server.get('SITE_NAME') }}{% endblock %}
 
 {% block body %}
 	{% import '_macros/settings.html.twig' as settings_macro %}
 	{% import '_macros/breadcrumb.html.twig' as breadcrumb %}
+	{% import '_macros/form/dropzone.html.twig' as dropzone %}
 	{% import '_macros/form/form.html.twig' as form_macros %}
 	<div class="max-w-8xl md:mx-auto md:px-auto lg:px-6">
 		<div class="xl:pt-[2.3615rem] pt-[15rem]">
@@ -18,7 +18,10 @@
                         'While these settings do not directly impact the core functionality of your system, it\'s good to ensure they accurately represent your setup. For further details, you may refer to the <a href="link-to-documentation" class="text-sky-500 dark:text-sky-400 hover:underline">General Settings documentation</a>.',
 						'external'
                     ) }}
-					<div id="content-wrapper" class="relative px-4 prose prose-slate mt-8 dark:prose-dark pb-3 mb-4">
+					<div id="content-wrapper" class="relative px-4 mt-8 dark:prose-dark pb-3 mb-4 bg-gray-200/55 dark:bg-gray-900/85 rounded-lg">
+						<div class="py-2">
+							<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Brand Identity</h2>
+						</div>
 						{{ form_start(form) }}
 						<div class="flex flex-wrap -mx-3 xl:py-2">
 							<div class="w-full xl:w-1/2 px-3 xl:mb-6 md:mb-0 pt-2 xl:p-0">
@@ -33,6 +36,17 @@
 							</div>
 						</div>
 						<div class="flex flex-wrap -mx-3 xl:py-2">
+							{{ dropzone.dropzone_field(form, 'backdrop', 'Default Backdrop', 'Drag and drop a file or click to browse', settings.getBackdrop() ?? '', 'Backdrop Image') }}
+							{{ dropzone.dropzone_field(form, 'splashscreen', 'Splashscreen', 'Drag and drop a file or click to browse', settings.getSplashscreen() ?? '', 'Splashscreen Image') }}
+						</div>
+						<div class="flex flex-wrap -mx-3 xl:py-2">
+							{{ dropzone.dropzone_field(form, 'brand', 'Logo', 'Drag and drop a file or click to browse', settings.getBrand() ?? '', 'Brand Logo') }}
+							{{ dropzone.dropzone_field(form, 'appstore', 'Appstore Banner', 'Drag and drop a file or click to browse', settings.getAppStore() ?? '', 'Apstore Banner') }}
+						</div>
+						<div class="py-2">
+							<h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Other Settings</h2>
+						</div>
+						<div class="flex flex-wrap -mx-3 xl:py-2">
 							<div class="w-full xl:w-1/2 px-3 xl:mb-6 md:mb-0 pt-2 xl:p-0">
 								{{ form_macros.iconed_label(form, 'rootUrl', 'general') }}
 								{{ form_widget(form.rootUrl, {'attr': {'class': 'form-widget'}}) }}
@@ -44,13 +58,22 @@
 								{{ form_macros.iconed_error(form, 'netInterface') }}
 							</div>
 						</div>
-						{# <div class="flex flex-wrap -mx-3 xl:mb-6 ">
-							<div class="w-full xl:w-1/2 px-3 xl:mb-6 md:mb-0 pt-2 xl:p-0">
-								{{ form_macros.iconed_label(form, 'mountPoint') }}
-								{{ form_widget(form.mountPoint, {'attr': {'class': 'form-widget'}}) }}
-								{{ form_macros.iconed_error(form, 'mountPoint') }}
+						<div class="flex flex-wrap -mx-3">
+							<div class="w-full xl:w-1/3 px-3 md:mb-0 pt-2 xl:px-3.5">
+        						{{ form_widget(form.isRegistrationEnabled) }}
 							</div>
-						</div> #}
+						</div>
+						<div class="flex flex-wrap -mx-3">
+							<div class="w-full xl:w-1/3 px-3 md:mb-0 xl:px-3.5">
+								{{ form_widget(form.isWelcomeEmailEnabled) }}
+							</div>
+						</div>
+						<div class="flex flex-wrap -mx-3">
+							<div class="w-full xl:w-1/3 px-3 md:mb-0 xl:px-3.5">
+								{{ form_widget(form.isEmailVerificationEnabled) }}
+							</div>
+						</div>
+						<hr class="my-4 border-t-1 border-gray-300 dark:border-slate-300" />
 						<div class="flex justify-end pt-3 mt-4 mb-2 xl:m-0 xl:p-0">
 							{{ form_macros.save_button(form) }}
 						</div>
