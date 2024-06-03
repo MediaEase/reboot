@@ -28,4 +28,5 @@ return [
     Liip\ImagineBundle\LiipImagineBundle::class => ['all' => true],
     SymfonyCasts\Bundle\ResetPassword\SymfonyCastsResetPasswordBundle::class => ['all' => true],
     Symfony\UX\Icons\UXIconsBundle::class => ['all' => true],
+    Flagception\Bundle\FlagceptionBundle\FlagceptionBundle::class => ['all' => true],
 ];
