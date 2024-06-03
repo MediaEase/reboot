@@ -1386,6 +1386,31 @@ nelmio_api_doc:
           summary: Get all settings
           tags:
           - Settings
+      /api/services:
+        get:
+          operationId: api_services_list
+          responses:
+            '200':
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: '#/components/schemas/Service.list'
+              description: OK
+            '400':
+              $ref: '#/components/responses/400'
+            '401':
+              $ref: '#/components/responses/401'
+            '403':
+              $ref: '#/components/responses/403'
+            '404':
+              $ref: '#/components/responses/404'
+            '405':
+              $ref: '#/components/responses/405'
+            '500':
+              $ref: '#/components/responses/500'
+          summary: Get all services
+          tags:
+          - Services
       /api/transcodes:
         get:
           operationId: api_transcodes_list

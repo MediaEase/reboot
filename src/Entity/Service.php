@@ -26,6 +26,8 @@ use OpenApi\Attributes as OA;
 #[OA\Schema(description: 'Service entity representing a service in the system.')]
 class Service
 {
+    public const GROUP_GET_SERVICES = 'get_services';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -34,7 +36,7 @@ class Service
     private ?int $id = null;
 
     #[ORM\Column(length: 60)]
-    #[Groups([User::GROUP_GET_USER, User::GROUP_GET_USERS, User::GROUP_GET_USER_LIMITED, User::GROUP_GET_USER])]
+    #[Groups([User::GROUP_GET_USER, User::GROUP_GET_USERS, User::GROUP_GET_USER_LIMITED, User::GROUP_GET_USER, self::GROUP_GET_SERVICES])]
     #[OA\Property(description: 'The name of the service.', maxLength: 60)]
     private ?string $name = null;
 

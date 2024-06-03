@@ -26,7 +26,6 @@ function chooseProcessDataFunction(type) {
     }
 }
 
-// This is your IIFE
 (async () => {
     try {
         // Fetch data from the API
@@ -50,8 +49,6 @@ function chooseProcessDataFunction(type) {
 
 function initApplication(storeData, appsData, userGroup, preferencesData, widgetsData, isFullAppListing, isVerbosityEnabled, appStoreBanner) {
     const dashboard = document.querySelector('[data-widget-panel]');
-    const page = document.body.getAttribute('data-page');
-    const timeInterval = 5000;
     if (dashboard) {
         const transformedWidgets = widgetsData.widgets.map(widget => ({
             type: widget.type,
