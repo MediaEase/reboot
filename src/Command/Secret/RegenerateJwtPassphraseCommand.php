@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Command;
+namespace App\Command\Secret;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -22,10 +22,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use sixlive\DotenvEditor\DotenvEditor;
 
 #[AsCommand(
-    name: 'secrets:regenerate-mercure-jwt-secret',
-    description: 'Regenerate a random value and update MERCURE_JWT_SECRET',
+    name: 'secrets:regenerate-jwt-passphrase',
+    description: 'Regenerate a random value and update JWT_PASSPHRASE',
 )]
-class RegenerateMercureJwtSecretCommand extends Command
+class RegenerateJwtPassphraseCommand extends Command
 {
     protected function configure(): void
     {
@@ -45,9 +45,9 @@ class RegenerateMercureJwtSecretCommand extends Command
 
             $dotenvEditor = new DotenvEditor();
             $dotenvEditor->load($filepath);
-            $dotenvEditor->set('MERCURE_JWT_SECRET', $secret);
+            $dotenvEditor->set('JWT_PASSPHRASE', $secret);
             $dotenvEditor->save();
-            $symfonyStyle->success('New MERCURE_JWT_SECRET was generated: '.$secret);
+            $symfonyStyle->success('New JWT_PASSPHRASE was generated: '.$secret);
 
             return Command::SUCCESS;
         }
