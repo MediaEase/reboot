@@ -38,7 +38,7 @@ final class TailLogCommand extends Command
      *
      * This method is automatically called by Symfony before executing the command.
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Tail log file')

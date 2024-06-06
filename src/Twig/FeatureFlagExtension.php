@@ -19,7 +19,7 @@ final class FeatureFlagExtension extends AbstractExtension
 {
     public function __construct(
         private FeatureManagerInterface $featureManager,
-    ){
+    ) {
     }
 
     public function getFunctions(): array
