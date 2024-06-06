@@ -11,7 +11,7 @@ import './js/clipboard.js';
 import './js/routing/links.js';
 import { toDarkMode, toLightMode } from './js/menus/theme_switcher.js';
 import { fetchData } from './js/utils.js';
-import AccessLogsTableUI from './js/logs/tables/AccessLogsTableUI.js';
+import AccessLogsTableUI from './js/logs/AccessLogsTableUI.js';
 
 window.toDarkMode = toDarkMode;
 window.toLightMode = toLightMode;

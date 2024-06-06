@@ -1,23 +1,132 @@
 {% extends 'pages/settings/base.html.twig' %}
 
-{% block title %}Application Logs - {{ app.request.server.get('SITE_NAME') }}
+{% block title %}Application Logs - {{ app.request.server.get('SITE_NAME') }}{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('journal') }}
 {% endblock %}
 
 {% block body %}
-	{% import '_macros/settings.html.twig' as settings_macro %}
-	{% import '_macros/breadcrumb.html.twig' as breadcrumb %}
-	<div class="max-w-8xl md:mx-auto md:px-auto lg:px-6">
-		<div class="xl:pt-[2.3615rem] pt-[15rem]">
-			<div class="xl:pl-[25rem]">
-				<div class="w-full mx-auto pt-10 xl:max-w-none xl:ml-4 rounded-xl mb-4">
-					{{ breadcrumb.add('Logs', 'https://mediaease.github.io/docs/')  }}
-					{{ settings_macro.infobox(
+    {% import '_macros/settings.html.twig' as settings_macro %}
+    {% import '_macros/breadcrumb.html.twig' as breadcrumb %}
+	{% import '_macros/form/form.html.twig' as form_macros %}
+    <div class="max-w-8xl md:mx-auto md:px-auto lg:px-6">
+        <div class="xl:pt-[2.3615rem] pt-[15rem]">
+            <div class="xl:pl-[25rem]">
+                <div class="w-full mx-auto pt-10 xl:max-w-none xl:ml-4 rounded-xl mb-4">
+                    {{ breadcrumb.add('Logs', 'https://mediaease.github.io/docs/') }}
+                    {{ settings_macro.infobox(
                         'info', 
                         'The below settings helps to define how your system is represented and monitored by your MediaEase instance.', 
                         'While these settings do not directly impact the core functionality of your system, it\'s good to ensure they accurately represent your setup. For further details, you may refer to the <a href="link-to-documentation" class="text-sky-500 dark:text-sky-400 hover:underline">General Settings documentation</a>.',
-						'external'
+                        'external'
                     ) }}
-					<div id="content-wrapper" class="relative px-4 mt-8 dark:prose-dark pb-3 mb-4 bg-gray-200/55 dark:bg-gray-900/85 rounded-lg">
+                    <div id="content-wrapper" class="relative mt-8 dark:prose-dark pb-3 mb-4 bg-gray-200/55 dark:bg-gray-900/85 rounded-lg">
+                        <div class="container">                            
+                            <!-- Tabs navigation -->
+							<div class="border-b border-b-1 border-b-gray-800 dark:border-b-slate-300">
+                            <ul class="mx-4 flex list-none flex-row flex-wrap pl-0" role="tablist" data-te-nav-ref>
+                                <li role="presentation">
+                                    <a href="#view-content" class="block mb-0.5 border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-700 hover:isolate hover:border-transparent hover:bg-neutral-100 focus:isolate focus:border-transparent data-[te-nav-active]:border-primary data-[te-nav-active]:text-primary dark:text-neutral-200  dark:hover:bg-transparent dark:data-[te-nav-active]:border-primary-400 dark:data-[te-nav-active]:text-primary-400" data-te-toggle="pill" data-te-target="#view-content" data-te-nav-active role="tab" aria-controls="view-content" aria-selected="true">View</a>
+                                </li>
+                                <li role="presentation">
+                                    <a href="#options-content" class="block mb-0.5 border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-700 hover:isolate hover:border-transparent hover:bg-neutral-100 focus:isolate focus:border-transparent data-[te-nav-active]:border-primary data-[te-nav-active]:text-primary dark:text-neutral-200 dark:hover:bg-transparent dark:data-[te-nav-active]:border-primary-400 dark:data-[te-nav-active]:text-primary-400" data-te-toggle="pill" data-te-target="#options-content" role="tab" aria-controls="options-content" aria-selected="false">Options</a>
+                                </li>
+                            </ul>
+							</div>
+
+                            <!-- Tabs content -->
+                            <div class="mb-6 px-4">
+                                <!-- View tab content -->
+                                <div class="tab-content data-[te-tab-active]:block" id="view-content" role="tabpanel" aria-labelledby="view-tab" data-te-tab-active>
+									<div class="my-4 flex items-center space-x-4">
+										<div class="flex flex-grow items-center space-x-2 w-1/2">
+											<div class="relative my-4 flex w-full flex-wrap items-stretch">
+												<input
+												type="search"
+												id="log-file-path"
+												class="relative m-0 -mr-0.5 block min-w-0 flex-auto border-none rounded-md shadow-sm bg-gray-100 dark:bg-gray-800 bg-clip-padding text-neutral-700 focus:border focus:border-indigo-500 focus:ring-indigo-500 px-3 py-[0.25rem] text-base font-normal leading-[1.6] outline-none transition duration-200 ease-in-out focus:z-[3] focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary"
+												placeholder="Search"
+												aria-label="Search"
+												aria-describedby="fetch-logs-button" />
+
+												<!--Search button-->
+												<button
+													class="relative z-[2] flex items-center rounded-r bg-primary px-6 py-2.5 text-xs font-medium uppercase leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-primary-700 hover:shadow-lg focus:bg-primary-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-primary-800 active:shadow-lg"
+													type="button"
+													id="fetch-logs-button"
+													data-te-ripple-init
+													data-te-ripple-color="light">
+													<svg
+														xmlns="http://www.w3.org/2000/svg"
+														viewBox="0 0 20 20"
+														fill="currentColor"
+														class="h-5 w-5">
+														<path
+															fill-rule="evenodd"
+															d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
+															clip-rule="evenodd" />
+													</svg>
+												</button>
+											</div>
+										</div>
+										<div class="flex space-x-2 w-1/2 justify-end">
+											<button
+												type="button"
+												class="bg-green-500 hover:bg-green-700 text-white font-bold px-3 py-2 rounded flex items-center"
+												id="download-button"> 
+												{{ ux_icon('flowbite:download-solid', {class: 'h-5 w-5 mr-2 fill-white'}) }}
+												Download
+											</button>
+											<button
+												type="button"
+												class="bg-blue-500 hover:bg-blue-700 text-white font-bold px-3 py-2 rounded flex items-center"
+												id="refresh-button"> 
+												{{ ux_icon('flowbite:refresh-outline', {class: 'h-5 w-5 mr-2 fill-white'}) }}
+												Refresh
+											</button>
+											<label class="inline-flex items-center">
+												<input type="checkbox" id="auto-refresh" class="form-checkbox" />
+												<span class="ml-2 text-neutral-700 dark:text-neutral-200">Auto Refresh</span>
+											</label>
+										</div>
+									</div>
+								</div>
+
+                                <!-- Options tab content -->
+                                <div class="tab-content hidden data-[te-tab-active]:block" id="options-content" role="tabpanel" aria-labelledby="options-tab">
+									{{ form_start(form) }}
+									<div class="my-4 flex space-x-4">
+										<div class="w-1/2 flex flex-col">
+											{{ form_label(form.defaultLogLevel, 'Log Level', {'label_attr': {'class': 'text-sm text-left font-medium text-neutral-700 dark:text-neutral-200 mb-2'}}) }}
+											{{ form_widget(form.defaultLogLevel, {'attr': {'class': 'block w-full border-none rounded-md shadow-sm bg-gray-100 dark:bg-gray-800 text-neutral-700 dark:text-neutral-200 focus:border focus:border-indigo-500 focus:ring-indigo-500'}}) }}
+										</div>
+
+										<div class="w-1/2 flex flex-col">
+											{{ form_label(form.logRefreshDelay, 'Refresh Interval (seconds)', {'label_attr': {'class': 'text-sm text-left font-medium text-neutral-700 dark:text-neutral-200 mb-2'}}) }}
+											{{ form_widget(form.logRefreshDelay, {'attr': {'class': 'block w-full border-none rounded-md shadow-sm bg-gray-100 dark:bg-gray-800 text-neutral-700 dark:text-neutral-200 focus:border focus:border-indigo-500 focus:ring-indigo-500'}}) }}
+										</div>
+									</div>
+									<hr class="my-4 border-t-1 border-gray-300 dark:border-slate-300" />
+									<div class="flex justify-end pt-3 mt-4 mb-2 xl:m-0 xl:p-0">
+										{{ form_macros.save_button(form) }}
+									</div>
+									{{ form_row(form._token) }}
+									{{ form_end(form, {'render_rest': false}) }}
+								</div>
+
+								<div id="logs-container" class="console-output max-w-5xl mx-auto content-background text-white p-4 rounded-xl relative mb-4 max-h-[450px] hidden">
+									<div class="text-left mb-2">
+										<div class="bg-gray-300 dark:bg-gray-700 px-4 py-1 rounded-t-md inline-block">
+											<span class="font-semibold text-neutral-700 dark:text-neutral-200 font-mono">Log Inspector</span>
+										</div>
+									</div>
+									<div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-sm border border-gray-300 dark:border-gray-700 text-left shadow-inner text-sm text-neutral-700 dark:text-neutral-200 font-mono overflow-x-scroll  overflow-y-auto max-h-[350px] whitespace-pre" id="log-content">
+										<!-- Logs will be displayed here -->
+									</div>
+								</div>
+                            </div>
+                        </div>
                     </div>
 				</div>
 			</div>

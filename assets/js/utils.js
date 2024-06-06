@@ -119,3 +119,19 @@ export function slugify(str) {
     }
     return str.replace(/\s+/g, '-').toLowerCase();
 }
+
+/**
+ * Fetches the content of a log file from the server.
+ * 
+ * @param {string} filePath - The path to the log file.
+ * @returns {Promise<string>} A promise that resolves with the log file content as a string.
+ */
+export async function fetchLogContent(filePath) {
+    const response = await fetchData('/api/logs/fetch', 'POST', { filePath });
+    console.log(response);
+    if (!response) {
+        throw new Error('Failed to fetch log content');
+    }
+
+    return response.logs;
+}

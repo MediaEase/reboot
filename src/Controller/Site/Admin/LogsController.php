@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\Controller\Site\Admin;
 
 use App\Entity\Log;
+use App\Form\Setting\LogLevelType;
 use App\Repository\SettingRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,13 +22,16 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 
 #[Route('/system/logs', name: 'app_settings_logs_')]
 #[IsGranted('ROLE_ADMIN')]
 class LogsController extends AbstractController
 {
-    public function __construct(private SettingRepository $settingRepository, private EntityManagerInterface $entityManager)
-    {
+    public function __construct(
+        private SettingRepository $settingRepository,
+        private EntityManagerInterface $entityManager,
+    ) {
     }
 
     #[Route('/access-logs', name: 'access', methods: ['GET'])]
@@ -40,12 +44,24 @@ class LogsController extends AbstractController
         ]);
     }
 
-    #[Route('/application-logs', name: 'application', methods: ['GET'])]
-    public function applicationLogs(#[CurrentUser] $user): Response
+    #[Route('/application-logs', name: 'application', methods: ['GET', 'POST'])]
+    public function applicationLogs(#[CurrentUser] $user, Request $request): Response
     {
+        $settings = $this->settingRepository->findLast();
+
+        $form = $this->createForm(LogLevelType::class, $settings);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->entityManager->persist($settings);
+            $this->entityManager->flush();
+
+            return $this->redirectToRoute('app_settings_logs_application', [], Response::HTTP_SEE_OTHER);
+        }
+
         return $this->render('pages/settings/logs/application_logs.html.twig', [
             'user' => $user,
-            'settings' => $this->settingRepository->findLast(),
+            'settings' => $settings,
+            'form' => $form->createView(),
         ]);
     }
 }
