@@ -1,5 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of the MediaEase project.
+ *
+ * (c) Thomas Chauveau <contact.tomc@yahoo.fr>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace App\Entity;
 
 use OpenApi\Attributes as OA;
@@ -22,8 +33,8 @@ class Log
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     #[Groups([User::GROUP_GET_USERS])]
-    #[OA\Property(description: 'The timestamp of the log.', format: 'date-time')]
-    private ?\DateTimeImmutable $timestamp = null;
+    #[OA\Property(description: 'The createdAt of the log.', format: 'date-time')]
+    private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(type: Types::STRING, length: 60)]
     #[Groups([User::GROUP_GET_USERS])]
@@ -47,12 +58,12 @@ class Log
 
     public function getTimestamp(): ?\DateTimeImmutable
     {
-        return $this->timestamp;
+        return $this->createdAt;
     }
 
-    public function setTimestamp(\DateTimeImmutable $timestamp): static
+    public function setTimestamp(\DateTimeImmutable $createdAt): static
     {
-        $this->timestamp = $timestamp;
+        $this->createdAt = $createdAt;
 
         return $this;
     }

@@ -38,7 +38,7 @@ class LogsController extends AbstractController
     public function logs(#[CurrentUser] $user): Response
     {
         return $this->render('pages/settings/logs/access_logs.html.twig', [
-            'logs' => $this->entityManager->getRepository(Log::class)->findBy([], ['timestamp' => 'DESC']),
+            'logs' => $this->entityManager->getRepository(Log::class)->findBy([], ['createdAt' => 'DESC']),
             'user' => $user,
             'settings' => $this->settingRepository->findLast(),
         ]);

@@ -50,7 +50,6 @@ final class LogController extends AbstractController
             return new JsonResponse(['error' => 'File not found'], 404);
         }
 
-
         $arrayInput = new ArrayInput([
             'logfile' => $filePath,
         ]);

@@ -1,5 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of the MediaEase project.
+ *
+ * (c) Thomas Chauveau <contact.tomc@yahoo.fr>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace App\Repository;
 
 use App\Entity\Log;
@@ -9,11 +20,11 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<Log>
  */
-class LogRepository extends ServiceEntityRepository
+final class LogRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $managerRegistry)
     {
-        parent::__construct($registry, Log::class);
+        parent::__construct($managerRegistry, Log::class);
     }
 
     //    /**

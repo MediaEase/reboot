@@ -2,6 +2,13 @@
 
 {% block title %}Access Logs - {{ app.request.server.get('SITE_NAME') }}
 {% endblock %}
+{% block stylesheets %}
+    {{ encore_entry_link_tags('logs') }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('logs') }}
+{% endblock %}
 
 {% block body %}
 	{% import '_macros/settings.html.twig' as settings_macro %}
@@ -51,6 +58,7 @@
                                 </tbody>
                             </table>
                         </div>
+                        <div id="access-logs-table"></div>
                     </div>
 				</div>
 			</div>
