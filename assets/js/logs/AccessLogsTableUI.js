@@ -11,7 +11,7 @@ import { Datatable } from "tw-elements";
  */
 class AccessLogsTableUI {
     /**
-     * Constructs the LogsTableUI object and initializes the container for the logs table.
+     * Constructs the AccessLogsTableUI object and initializes the container for the logs table.
      *
      * @param {string} containerId - The ID of the DOM element where the logs table will be displayed.
      * @throws Will throw an error if the container element is not found.
@@ -23,31 +23,50 @@ class AccessLogsTableUI {
             console.error('Table container not found');
             throw new Error('Table container not found');
         }
+        this.datatable = null;
     }
 
     /**
-     * Initializes and creates the datatable with the provided logs data and user preferences.
+     * Initializes and creates the datatable with the provided logs data.
      *
-     * @param {Object[]} logsData - Array of logs data objects.
+     * @param {Object} logsData - Object containing logs data, pagination information, and other metadata.
      */
     initialize(logsData) {
+        const logsArray = Array.isArray(logsData.logs) ? logsData.logs : Object.values(logsData.logs);
+        
+        if (!logsArray || !Array.isArray(logsArray)) {
+            console.error('Expected logsData to contain an array of logs, got:', logsData);
+            return;
+        }
+
         const data = {
             columns: [
-                { label: 'ID', field: 'id' },
-                { label: 'Timestamp', field: 'timestamp' },
-                { label: 'Type', field: 'type' },
-                { label: 'Content', field: 'content' },
-                { label: 'IP Address', field: 'ip_address' },
+                { label: 'Type', field: 'type', maxWidth: '5%' },
+                { label: 'Content', field: 'content', maxWidth: '70%' },
+                { label: 'Timestamp', field: 'createdAt', maxWidth: '10%' },
+                { label: 'IP Address', field: 'ip_address', maxWidth: '10%' },
             ],
-            rows: this.transformData(logsData)
+            rows: this.transformData(logsArray)
         };
+
         const datatableElement = document.getElementById(this.containerId);
         if (!datatableElement) {
             console.error('Datatable element not found');
             return;
         }
-        this.datatable = new Datatable(datatableElement, data, { hover: true, pagination: true, entriesOptions: [10, 20, 30, 75], fullPagination: true }, { hoverRow: 'hover:bg-gray-300 hover:text-black', column: 'pl-1 text-clip overflow-hidden text-[#212529] dark:text-white', rowItem: 'whitespace-nowrap text-clip overflow-auto px-[1.4rem] border-neutral-200 dark:border-neutral-500' });
-        this.setupAdvancedSearch(this.datatable);
+
+        const datatable = new Datatable(datatableElement, data, {
+            hover: true,
+            pagination: true,
+            entriesOptions: [10, 20, 30, 75],
+            fullPagination: true
+        }, {
+            hoverRow: 'hover:bg-gray-300 hover:text-black',
+            column: 'pl-1 text-clip overflow-hidden text-[#212529] dark:text-white',
+            rowItem: 'whitespace-nowrap text-clip overflow-auto px-[1.4rem] border-neutral-200 dark:border-neutral-500'
+        });
+
+        this.setupAdvancedSearch(datatable);
     }
 
     /**
@@ -59,8 +78,8 @@ class AccessLogsTableUI {
     transformData(logsData) {
         return logsData.map(log => ({
             id: log.id,
-            timestamp: new Date(log.timestamp).toLocaleString(),
-            type: log.type,
+            createdAt: new Date(log.createdAt).toLocaleString(),
+            type: log.logType,
             content: log.content,
             ip_address: log.ip_address,
         }));
@@ -76,9 +95,10 @@ class AccessLogsTableUI {
         const advancedSearchButton = document.getElementById('log-finder-button');
     
         if (!advancedSearchInput || !advancedSearchButton) {
-            console.error('search elements not found');
+            console.error('search elements not found: input:', advancedSearchInput, 'button:', advancedSearchButton);
             return;
         }
+
         const search = (value) => {
             let [phrase, columns] = value.split(" in:").map(str => str.trim());
             columns = columns ? columns.split(",").map(str => str.toLowerCase().trim()) : null;
@@ -87,7 +107,7 @@ class AccessLogsTableUI {
         const handleSearchEvent = (e) => {
             search(advancedSearchInput.value);
         };
-    
+
         advancedSearchButton.addEventListener("click", handleSearchEvent);
         advancedSearchInput.addEventListener("input", handleSearchEvent);
     }

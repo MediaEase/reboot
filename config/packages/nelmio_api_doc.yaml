@@ -231,6 +231,30 @@ nelmio_api_doc:
             language:
               type: string
           type: object
+        Log.list:
+          properties:
+            logs:
+              items:
+                $ref: '#/components/schemas/Log.item'
+              type: array
+          type: object
+        Log.item:
+          properties:
+            id:
+              example: 1
+              format: int64
+              type: integer
+            createdAt:
+              example: 2022-01-01T00:00:00Z
+              format: date-time
+              type: string
+            logType:
+              example: info
+              type: string
+            content:
+              example: Log Content
+              type: string
+          type: object
         Mount.item:
           properties:
             id:
@@ -635,6 +659,12 @@ nelmio_api_doc:
         - get:user-limited
         - get:user
         type: App\Entity\Group
+      - alias: Log.list
+        groups:
+        - get:users
+        - get:user-limited
+        - get:user
+        type: App\Entity\Log
       - alias: Mount.list
         groups:
         - get:users
@@ -1024,6 +1054,44 @@ nelmio_api_doc:
           summary: Update a group by ID
           tags:
           - Groups
+      /api/logs/access-logs:
+        get:
+          operationId: api_logs_access_logs
+          parameters:
+            - name: page
+              in: query
+              description: Page number
+              required: false
+              schema:
+                type: integer
+                default: 1
+            - name: limit
+              in: query
+              description: Number of items per page
+              required: false
+              schema:
+                type: integer
+                default: 10
+          responses:
+            '200':
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: '#/components/schemas/Log.list'
+              description: OK
+            '400':
+              $ref: '#/components/responses/400'
+            '401':
+              $ref: '#/components/responses/401'
+            '403':
+              $ref: '#/components/responses/403'
+            '404':
+              $ref: '#/components/responses/404'
+            '500':
+              $ref: '#/components/responses/500'
+          summary: Get access logs
+          tags:
+          - Logs
       /api/logs/fetch:
         post:
           operationId: api_logs_fetch

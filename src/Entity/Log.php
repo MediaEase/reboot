@@ -17,7 +17,6 @@ use OpenApi\Attributes as OA;
 use App\Repository\LogRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: LogRepository::class)]
 #[ORM\Table(name: '`log`')]
@@ -27,27 +26,22 @@ class Log
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: Types::INTEGER)]
-    #[Groups([User::GROUP_GET_USERS])]
     #[OA\Property(description: 'The unique identifier of the log.', format: 'int')]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
-    #[Groups([User::GROUP_GET_USERS])]
     #[OA\Property(description: 'The createdAt of the log.', format: 'date-time')]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(type: Types::STRING, length: 60)]
-    #[Groups([User::GROUP_GET_USERS])]
     #[OA\Property(description: 'The type of the log.', maxLength: 60)]
     private ?string $type = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups([User::GROUP_GET_USERS])]
     #[OA\Property(description: 'The content of the log.', type: 'string')]
     private ?string $content = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true, length: 39)]
-    #[Groups([User::GROUP_GET_USERS])]
     #[OA\Property(description: 'The IP address of the log.', type: 'string')]
     private ?string $ip_address = null;
 

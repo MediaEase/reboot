@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Log;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Tools\Pagination\Paginator;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Log>
@@ -27,28 +28,17 @@ final class LogRepository extends ServiceEntityRepository
         parent::__construct($managerRegistry, Log::class);
     }
 
-    //    /**
-    //     * @return Log[] Returns an array of Log objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('l')
-    //            ->andWhere('l.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('l.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function findPaginatedLogs(int $page, int $limit): array
+    {
+        $query = $this->createQueryBuilder('log')
+            ->orderBy('log.createdAt', 'DESC')
+            ->getQuery();
 
-    //    public function findOneBySomeField($value): ?Log
-    //    {
-    //        return $this->createQueryBuilder('l')
-    //            ->andWhere('l.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        $paginator = new Paginator($query);
+        $paginator->getQuery()
+            ->setFirstResult($limit * ($page - 1))
+            ->setMaxResults($limit);
+
+        return iterator_to_array($paginator);
+    }
 }

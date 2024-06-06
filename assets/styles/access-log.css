@@ -1,0 +1,46 @@
+#access-logs-table>div:first-child {
+    background-color: rgba(90, 108, 124, 0.521);
+    --tw-text-opacity: 1;
+    color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+#access-logs-table>div:last-child {
+    background-color: rgba(90, 108, 124, 0.521);
+    --tw-text-opacity: 1;
+    color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+#access-logs-table th {
+    background-color: rgba(90, 108, 124, 0.521);
+    --tw-text-opacity: 1;
+    color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+#access-logs-table th svg {
+    --tw-text-opacity: 1;
+    color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+#access-logs-table tbody {
+    --tw-text-opacity: 1;
+    color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
+    font-weight: normal;
+}
+
+#access-logs-table p {
+    --tw-text-opacity: 1;
+    color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
+    font-weight: normal;
+}
+
+#app-finder::placeholder {
+    --tw-text-opacity: 1;
+    color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
+    font-weight: normal !important;
+}
+
+#access-logs-table td[data-te-field="apiKey"],
+#access-logs-table td[data-te-field="actions"],
+#access-logs-table td[data-te-field="version"] {
+    vertical-align: middle;
+}

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Site\Admin;
 
-use App\Entity\Log;
 use App\Form\Setting\LogLevelType;
 use App\Repository\SettingRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -38,7 +37,6 @@ class LogsController extends AbstractController
     public function logs(#[CurrentUser] $user): Response
     {
         return $this->render('pages/settings/logs/access_logs.html.twig', [
-            'logs' => $this->entityManager->getRepository(Log::class)->findBy([], ['createdAt' => 'DESC']),
             'user' => $user,
             'settings' => $this->settingRepository->findLast(),
         ]);

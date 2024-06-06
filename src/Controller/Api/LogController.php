@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
+use App\Repository\LogRepository;
 use App\Repository\UserRepository;
 use App\Command\Logs\TailLogCommand;
 use Doctrine\ORM\EntityManagerInterface;
@@ -31,7 +32,8 @@ final class LogController extends AbstractController
     public function __construct(
         private EntityManagerInterface $entityManager,
         private UserRepository $userRepository,
-        private TailLogCommand $tailLogCommand
+        private TailLogCommand $tailLogCommand,
+        private LogRepository $logRepository,
     ) {
     }
 
@@ -62,5 +64,34 @@ final class LogController extends AbstractController
         }
 
         return new JsonResponse(['logs' => $logContent], 200);
+    }
+
+    #[Route('/access-logs', name: 'access_logs', methods: ['GET'])]
+    public function accessLogs(Request $request): JsonResponse
+    {
+        $page = $request->query->getInt('page', 1);
+        $limit = $request->query->getInt('limit', 25);
+
+        $logs = $this->logRepository->findPaginatedLogs($page, $limit);
+        $totalLogs = $this->logRepository->count([]);
+
+        $logItems = [];
+        foreach ($logs as $log) {
+            $logItems[] = [
+                'id' => $log->getId(),
+                'createdAt' => $log->getTimestamp()->format('Y-m-d\TH:i:s\Z'),
+                'logType' => $log->getType(),
+                'content' => $log->getContent(),
+                'ip_address' => $log->getIpAddress(),
+            ];
+        }
+
+        return new JsonResponse([
+            'logs' => $logItems,
+            'total' => $totalLogs,
+            'page' => $page,
+            'limit' => $limit,
+            'pages' => ceil($totalLogs / $limit),
+        ]);
     }
 }

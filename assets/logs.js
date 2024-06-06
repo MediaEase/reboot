@@ -7,6 +7,7 @@ import './bootstrap.js';
  */
 
 import './styles/app.css';
+import './styles/access-log.css';
 import './js/clipboard.js';
 import './js/routing/links.js';
 import { toDarkMode, toLightMode } from './js/menus/theme_switcher.js';
