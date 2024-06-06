@@ -27,10 +27,10 @@ use Symfony\Component\Console\Output\OutputInterface;
  * This class handles the deletefeatureflag.
  */
 #[AsCommand(
-    name: 'feature-flag:delete', 
+    name: 'feature-flag:delete',
     description: 'Delete feature flag'
 )]
-class DeleteFeatureFlagCommand extends AbstractFeatureFlagCommand
+final class DeleteFeatureFlagCommand extends AbstractFeatureFlagCommand
 {
     /**
      * Configures the current command.

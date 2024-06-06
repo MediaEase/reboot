@@ -27,10 +27,10 @@ use Symfony\Component\Console\Output\OutputInterface;
  * This class handles the deactivatefeatureflag.
  */
 #[AsCommand(
-    name: 'feature-flag:deactivate', 
+    name: 'feature-flag:deactivate',
     description: 'Deactivate feature flag'
 )]
-class DeactivateFeatureFlagCommand extends AbstractFeatureFlagCommand
+final class DeactivateFeatureFlagCommand extends AbstractFeatureFlagCommand
 {
     /**
      * Configures the current command.

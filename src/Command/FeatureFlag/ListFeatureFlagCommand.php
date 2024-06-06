@@ -26,10 +26,10 @@ use Symfony\Component\Console\Output\OutputInterface;
  * This class handles the listfeatureflag.
  */
 #[AsCommand(
-    name: 'feature-flag:list', 
+    name: 'feature-flag:list',
     description: 'List feature flag'
 )]
-class ListFeatureFlagCommand extends AbstractFeatureFlagCommand
+final class ListFeatureFlagCommand extends AbstractFeatureFlagCommand
 {
     /**
      * Configures the current command.

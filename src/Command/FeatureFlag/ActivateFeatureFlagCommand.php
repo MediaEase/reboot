@@ -27,10 +27,10 @@ use Symfony\Component\Console\Output\OutputInterface;
  * This class handles the activatefeatureflag.
  */
 #[AsCommand(
-    name: 'feature-flag:activate', 
+    name: 'feature-flag:activate',
     description: 'Activate feature flag'
 )]
-class ActivateFeatureFlagCommand extends AbstractFeatureFlagCommand
+final class ActivateFeatureFlagCommand extends AbstractFeatureFlagCommand
 {
     /**
      * Configures the current command.

@@ -28,10 +28,10 @@ use Symfony\Component\Console\Output\OutputInterface;
  * This class handles the createfeatureflag.
  */
 #[AsCommand(
-    name: 'feature-flag:create', 
+    name: 'feature-flag:create',
     description: 'Create feature flag'
 )]
-class CreateFeatureFlagCommand extends AbstractFeatureFlagCommand
+final class CreateFeatureFlagCommand extends AbstractFeatureFlagCommand
 {
     /**
      * Configures the current command.
