@@ -402,3 +402,15 @@ dropdown-menu ul {
         @apply iconed-button bg-green-500 hover:bg-green-700 text-white font-bold pl-3 rounded h-[2.75rem] pr-[1.25rem] mr-1;
     }
 }
+
+@keyframes loading-bar {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}
+.animate-loading-bar {
+    animation: loading-bar 8s linear forwards;
+}

@@ -75,6 +75,16 @@
 					</div>
 				</div>
 				<div id="my-app-list" class="mx-3"></div>
+				{% for type, messages in app.flashes %}
+				{{ dump(type, messages) }}
+				{% for message in messages %}
+					{{ dump(message) }}
+					{{ include('components/utility/toast.html.twig', {
+						title: type|capitalize ~ '!',
+						body: message
+					}) }}
+				{% endfor %}
+			{% endfor %}
 			</div>
 		</section>
 	</div>
