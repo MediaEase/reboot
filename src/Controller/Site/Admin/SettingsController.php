@@ -77,6 +77,7 @@ final class SettingsController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->entityManager->persist($settings);
             $this->entityManager->flush();
+            $this->addFlash('success', 'The settings have been updated successfully.');
         }
 
         return $this->render('pages/settings/general.html.twig', [
@@ -117,6 +118,7 @@ final class SettingsController extends AbstractController
             $formData = $form->getData();
             $envFilePath = $this->containerBag->get('kernel.project_dir').'/.env.local';
             $this->dotenvUpdater->updateEnvFile($formData, $envFilePath);
+            $this->addFlash('success', 'The SMTP settings have been updated successfully.');
             $this->reloadPhpServices();
         }
 
@@ -155,6 +157,7 @@ final class SettingsController extends AbstractController
             $cliIniPath = '/etc/php/8.3/cli/conf.d/99-mediaease.ini';
             $fpmIniPath = '/etc/php/8.3/fpm/conf.d/99-mediaease.ini';
             $phpIniUpdater->updateIniFiles($formData, [$cliIniPath, $fpmIniPath]);
+            $this->addFlash('success', 'The PHP settings have been updated successfully.');
             $this->reloadPhpServices();
         }
 

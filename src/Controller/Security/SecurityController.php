@@ -31,6 +31,8 @@ final class SecurityController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->getUser() instanceof \Symfony\Component\Security\Core\User\UserInterface) {
+            $this->addFlash('info', 'You are already logged in.');
+
             return $this->redirectToRoute('app_home');
         }
 
@@ -41,7 +43,11 @@ final class SecurityController extends AbstractController
         $entityRepository = $this->entityManager->getRepository(Setting::class);
         $settings = $entityRepository->find(1);
 
-        return $this->render('pages/security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error, 'settings' => $settings]);
+        return $this->render('pages/security/login.html.twig', [
+            'last_username' => $lastUsername,
+            'error' => $error,
+            'settings' => $settings,
+        ]);
     }
 
     #[Route(path: '/logout', name: 'app_logout')]

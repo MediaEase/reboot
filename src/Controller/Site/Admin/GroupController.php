@@ -86,6 +86,7 @@ class GroupController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($group);
             $entityManager->flush();
+            $this->addFlash('success', 'Group created successfully.');
 
             return $this->redirectToRoute('app_group_index', [], Response::HTTP_SEE_OTHER);
         }

@@ -52,6 +52,7 @@ class LogsController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->entityManager->persist($settings);
             $this->entityManager->flush();
+            $this->addFlash('success', 'The log level has been updated successfully.');
 
             return $this->redirectToRoute('app_settings_logs_application', [], Response::HTTP_SEE_OTHER);
         }
