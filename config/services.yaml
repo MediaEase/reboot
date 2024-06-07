@@ -10,6 +10,7 @@ parameters:
     project_dir: '%kernel.project_dir%'
     app.provider: '%env(PROVIDER)%'
     app.mediaease_init: '%env(MEDIAEASE_INIT)%'
+    app.encryption_key: '%env(APP_SECRET)%'
 
 services:
     # default configuration for services in *this* file
