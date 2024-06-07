@@ -27,17 +27,18 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 )]
 final class IPEncryptorCommand extends Command
 {
-    private $key;
-    private $ivLength;
+    private bool|string|int|float|\UnitEnum|array|null $key;
 
-    public function __construct(ParameterBagInterface $params)
+    private int|bool $ivLength;
+
+    public function __construct(ParameterBagInterface $parameterBag)
     {
-        $this->key = $params->get('app.encryption_key');
+        $this->key = $parameterBag->get('app.encryption_key');
         $this->ivLength = openssl_cipher_iv_length('aes-256-cbc');
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Encrypts a given string')
@@ -46,18 +47,19 @@ final class IPEncryptorCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io = new SymfonyStyle($input, $output);
+        $symfonyStyle = new SymfonyStyle($input, $output);
         $data = $input->getArgument('data');
         $encryptedData = $this->encrypt($data);
-        $io->success("Encrypted data: $encryptedData");
+        $symfonyStyle->success('Encrypted data: ' . $encryptedData);
 
         return Command::SUCCESS;
     }
 
-    private function encrypt($data)
+    private function encrypt($data): string
     {
         $iv = openssl_random_pseudo_bytes($this->ivLength);
         $encryptedData = openssl_encrypt($data, 'aes-256-cbc', $this->key, 0, $iv);
-        return base64_encode($iv . $encryptedData);
+
+        return base64_encode($iv.$encryptedData);
     }
 }

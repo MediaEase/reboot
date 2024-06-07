@@ -66,7 +66,7 @@ class TranscodingController extends AbstractController
     public function enable(Service $service): Response
     {
         $this->transcodingService->enableTranscoding($service);
-        $this->addFlash('success', 'The transcoding has been enabled for the service' . $service->getName() . '.');
+        $this->addFlash('success', 'The transcoding has been enabled for the service'.$service->getName().'.');
 
         return $this->redirectToRoute('admin_transcoding', [
             'user' => $this->getUser(),
@@ -77,7 +77,7 @@ class TranscodingController extends AbstractController
     public function disable(Service $service): Response
     {
         $this->transcodingService->disableTranscoding($service);
-        $this->addFlash('success', 'The transcoding has been disabled for the service' . $service->getName() . '.');
+        $this->addFlash('success', 'The transcoding has been disabled for the service'.$service->getName().'.');
 
         return $this->redirectToRoute('admin_transcoding', [
             'user' => $this->getUser(),

@@ -55,6 +55,7 @@ final class RegistrationController extends AbstractController
                 $form->getData()->getPlainPassword()
             );
             $this->addFlash('success', 'Your account has been created. Please check your email for a verification link.');
+
             return $this->redirectToRoute('app_login');
         }
 
