@@ -6,8 +6,7 @@
     {% import '_macros/settings.html.twig' as settings_macro %}
     {% import '_macros/breadcrumb.html.twig' as breadcrumb %}
     {% import '_macros/form/buttons.html.twig' as form_macros %}
-    {% import '_macros/badge.html.twig' as badge %}
-    {% import '_macros/profile.html.twig' as profiles %}
+
 
     <div class="max-w-8xl md:mx-auto md:px-auto lg:px-6">
         <div class="xl:pt-[2.3615rem] pt-[15rem]">
@@ -20,41 +19,22 @@
                         'For detailed information, refer to the <a href="your-documentation-link" class="text-sky-500 dark:text-sky-400 hover:underline">Users</a> section in the documentation.',
                         'external'
                     ) }}
+                    {% set unverifiedUsers = users|filter(u => not u.isVerified) %}
                     <div id="content-wrapper" class="relative px-4 pt-6 prose prose-slate mt-8 dark:prose-dark pb-3 mb-4">
+                        {% if unverifiedUsers|length > 0 %}
+                            <h2 class="text-2xl font-semibold text-gray-900 dark:text-neutral-200 mb-4">Pending Activations ({{ unverifiedUsers|length }})</h2>
+                            <div id="pending-activations" class="relative px-4 pt-6 prose prose-slate mt-8 dark:prose-dark pb-3 mb-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    {% for u in unverifiedUsers %}
+                                        {% include "pages/users/list/component/user_card.html.twig" with {'user': u} %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endif %}
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-neutral-200 mb-4">All Users ({{ users|length }})</h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {% for u in users %}
-                                <div class="bg-gray-200/85 dark:bg-gray-900/85 rounded-lg shadow-md hover:shadow-2xl hover:scale-105 transition duration-300 ease-in-out p-4 relative">
-                                    <div class="flex items-center pb-2">
-                                        <div class="relative left-1/2 top-1/2 lg:top-1/3 -translate-x-1/2 w-48 h-48 lg:w-32 lg:h-32 rounded-full overflow-hidden">
-                                            {{ profiles.avatar(u) }}
-                                        </div>
-                                    </div>
-                                    <div class="mb-2">
-                                        <h2 class="text-lg font-semibold text-gray-900 dark:text-neutral-200 mb-2">{{ u.username }}</h2>
-                                        <div class="text-sm text-gray-500 dark:text-gray-400 pb-3">
-                                            {{ badge.badge(u.roles|join(', '), 'user_role') }}
-                                        </div>
-                                    </div>
-                                    <div class="my-4 text-left">
-                                        <span class="text-sm font-semibold text-gray-900 dark:text-neutral-200">Group: {{ badge.badge(u.group.name, 'user_group') }}</span>
-                                        <p class="text-sm font-semibold text-gray-900 dark:text-neutral-200">Email: <span class="text-gray-600 dark:text-gray-400">{{ u.email }}</span></p>
-                                        <p class="text-sm font-semibold text-gray-900 dark:text-neutral-200">Status: <span class="inline-flex items-center text-gray-600 dark:text-gray-400">{{ u.isVerified ? 'Verified' : 'Not Verified' }} {{ profiles.badge(u) }}</span></p>
-                                    </div>
-                                    <div class="mt-4 flex justify-between">
-                                        <button class="bg-blue-500 text-white py-1 px-2 rounded">Edit</button>
-                                        {% if not u.isBanned %}
-                                            <a class="bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded inline-flex items-center" href="{{ path('app_settings_ban_user', { 'id': u.id }) }}">
-                                                {{ ux_icon('ion:hammer-outline', { class: 'w-5 h-5 mr-2 overflow-visible text-white' }) }}
-                                                <span>Ban</span>
-                                            </a>
-                                        {% else %}
-                                            <a class="bg-green-500 hover:bg-green-700 text-white py-1 px-2 rounded inline-flex items-center" href="{{ path('app_settings_unban_user', { 'id': u.id }) }}">
-                                                {{ ux_icon('ion:hammer-outline', { class: 'w-5 h-5 mr-2 overflow-visible text-white' }) }}
-                                                <span>Unban</span>
-                                            </a>
-                                        {% endif %}
-                                    </div>
-                                </div>
+                                {% include "pages/users/list/component/user_card.html.twig" with {'user': u} %}
                             {% endfor %}
                             <!-- Add User Card -->
                             <div class="flex items-center justify-center bg-gray-200/85 dark:bg-gray-900/85 rounded-lg shadow-md hover:shadow-2xl hover:scale-105 transition duration-300 ease-in-out p-4 relative cursor-pointer" data-te-toggle="modal" data-te-target="#addUserModal">
