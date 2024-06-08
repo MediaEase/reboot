@@ -22,7 +22,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('', name: 'app_settings_')]
@@ -33,7 +32,6 @@ class UsersController extends AbstractController
         private Security $security,
         private EntityManagerInterface $entityManager,
         private RequestStack $requestStack,
-        private SessionInterface $session
     ) {
     }
 
@@ -42,6 +40,20 @@ class UsersController extends AbstractController
     {
         $users = $this->entityManager->getRepository(User::class)->findAll();
         $settings = $this->entityManager->getRepository(Setting::class)->findLast();
+
+        usort($users, static function ($a, $b) : int {
+            $aIsAdmin = in_array('ROLE_ADMIN', $a->getRoles(), true);
+            $bIsAdmin = in_array('ROLE_ADMIN', $b->getRoles(), true);
+            if ($aIsAdmin && !$bIsAdmin) {
+                return -1;
+            }
+            if (!$aIsAdmin && $bIsAdmin) {
+                return 1;
+            }
+            else {
+                return strcmp($a->getUsername(), $b->getUsername());
+            }
+        });
 
         return $this->render('pages/users/list/users.html.twig', [
             'users' => $users,
@@ -53,7 +65,7 @@ class UsersController extends AbstractController
     #[Route('/users/{id}/ban', name: 'ban_user', methods: ['GET'])]
     public function ban(User $user): Response
     {
-        if (! $user->isBanned()) {
+        if ($user->isBanned() !== true) {
             $user->setBanned(true);
             $this->entityManager->flush();
             $this->addFlash('success', 'User banned successfully');
@@ -65,7 +77,7 @@ class UsersController extends AbstractController
     #[Route('/users/{id}/unban', name: 'unban_user', methods: ['GET'])]
     public function unban(User $user): Response
     {
-        if ($user->isBanned()) {
+        if ($user->isBanned() === true) {
             $user->setBanned(false);
             $this->entityManager->flush();
             $this->addFlash('success', 'User unbanned successfully');
