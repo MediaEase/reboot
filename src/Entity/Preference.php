@@ -82,7 +82,7 @@ class Preference
     #[ORM\Column(type: Types::BOOLEAN, options: ['default' => true])]
     #[Groups([User::GROUP_GET_USER, User::GROUP_GET_USERS])]
     #[OA\Property(description: 'Indicator if Gravatar is enabled.', type: 'boolean')]
-    private ?bool $isGravatarEnabled = null;
+    private ?bool $isGravatarEnabled = true;
 
     #[ORM\Column(type: Types::STRING, length: 90)]
     #[Groups([User::GROUP_GET_USER, User::GROUP_GET_USERS])]
@@ -92,7 +92,7 @@ class Preference
     #[ORM\Column(type: Types::BOOLEAN, options: ['default' => false])]
     #[Groups([User::GROUP_GET_USER, User::GROUP_GET_USERS])]
     #[OA\Property(description: 'Indicator if verbosity is enabled.', type: 'boolean')]
-    private ?bool $isVerbosityEnabled = null;
+    private ?bool $isVerbosityEnabled = false;
 
     public function getId(): ?int
     {
@@ -216,7 +216,7 @@ class Preference
         return $this->isFullAppListingEnabled;
     }
 
-    public function setIsFullAppListingEnabled(bool $isFullAppListingEnabled): static
+    public function setFullAppListingEnabled(bool $isFullAppListingEnabled): static
     {
         $this->isFullAppListingEnabled = $isFullAppListingEnabled;
 
@@ -228,7 +228,7 @@ class Preference
         return $this->isGravatarEnabled;
     }
 
-    public function setIsGravatarEnabled(bool $isGravatarEnabled): static
+    public function setGravatarEnabled(bool $isGravatarEnabled): static
     {
         $this->isGravatarEnabled = $isGravatarEnabled;
 

@@ -84,10 +84,10 @@ class Setting
     #[Groups([self::GROUP_GET_SETTINGS])]
     private ?string $splashscreen = null;
 
-    #[ORM\Column(type: Types::BOOLEAN)]
+    #[ORM\Column(type: Types::BOOLEAN, options: ['default' => true, 'nullable' => false])]
     #[OA\Property(description: 'The email verification preference.', default: true)]
     #[Groups([self::GROUP_GET_SETTINGS])]
-    private ?bool $emailVerificationEnabled = null;
+    private bool $emailVerificationEnabled = true;
 
     #[ORM\Column(length: 10, type: Types::STRING, options: ['default' => 'all'])]
     #[OA\Property(description: 'The default log level preference.', maxLength: 10, default: 'all', pattern: '^(all|debug|info|notice|warning|error|critical|alert|emergency)$', example: 'all')]
