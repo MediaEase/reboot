@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace App\Controller\Security;
 
+use App\Entity\User;
 use App\Entity\Setting;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Core\Exception\CustomUserMessageAccountStatusException;
 
 final class SecurityController extends AbstractController
 {
@@ -27,9 +29,10 @@ final class SecurityController extends AbstractController
     ) {
     }
 
-    #[Route(path: '/login', name: 'app_login')]
+    #[Route(path: '/login', name: 'app_login', methods: ['GET', 'POST'])]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
+        // If method is GET and user is already logged in, redirect to home page
         if ($this->getUser() instanceof \Symfony\Component\Security\Core\User\UserInterface) {
             $this->addFlash('info', 'You are already logged in.');
 
@@ -38,10 +41,16 @@ final class SecurityController extends AbstractController
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
+
+        if ($error instanceof CustomUserMessageAccountStatusException) {
+            $this->addFlash('error', $error->getMessageKey());
+
+            return $this->redirectToRoute('app_login');
+        }
+
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
-        $entityRepository = $this->entityManager->getRepository(Setting::class);
-        $settings = $entityRepository->find(1);
+        $settings = $this->entityManager->getRepository(Setting::class)->findLast();
 
         return $this->render('pages/security/login.html.twig', [
             'last_username' => $lastUsername,

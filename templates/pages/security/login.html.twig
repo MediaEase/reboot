@@ -20,9 +20,6 @@
 					{% endif %}
 				</div>
 				<form method="post">
-					{% if error %}
-						<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-					{% endif %}
 					<div class="mb-4 text-lg">
 						<input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-700 dark:border-gray-200 rounded py-3 px-4 md:w-[98%] mx-auto leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" name="username" id="inputUsername" value="{{ last_username }}" placeholder="username" autocomplete="username" required autofocus/>
 					</div>
