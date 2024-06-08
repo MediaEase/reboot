@@ -14,35 +14,91 @@ declare(strict_types=1);
 namespace App\Service;
 
 use Symfony\Component\Process\Process;
-use App\Interface\CommandExecutorInterface;
+use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use Psr\Log\LoggerInterface;
 
 /**
- * CommandExecutorService executes bash commands.
+ * Class CommandExecutorService.
  *
- * @see CommandExecutorInterface
- * @see Process
- * @see Process::run()
- * @see Process::isSuccessful()
- * @see ProcessFailedException
+ * This class handles the execution of commands.
  */
-final class CommandExecutorService implements CommandExecutorInterface
+final class CommandExecutorService
 {
+    private string $projectRoot;
+
+    private string $phpBinary;
+
+    public function __construct(private LoggerInterface $logger)
+    {
+        $this->projectRoot = dirname(__DIR__, 3);
+        $phpExecutableFinder = new PhpExecutableFinder();
+        $this->phpBinary = $phpExecutableFinder->find();
+
+        if ($this->phpBinary === false) {
+            throw new \RuntimeException('PHP binary not found.');
+        }
+    }
+
     /**
-     * Executes a bash command.
+     * Execute a command with optional arguments.
      *
      * @param string $command   The command to execute
-     * @param array  $arguments The arguments to pass to the command
+     * @param array  $arguments The arguments for the command
      *
-     * @throws ProcessFailedException
+     * @throws \Exception
      */
     public function execute(string $command, array $arguments = []): void
     {
-        $process = new Process(array_merge([$command], $arguments));
-        $process->run();
+        try {
+            $this->manageSudoersEntry('add');
+            if (str_starts_with($command, 'zen')) {
+                $command = '/usr/bin/'.$command;
+            }
 
-        if (!$process->isSuccessful()) {
-            throw new ProcessFailedException($process);
+            $this->runProcess(['sudo', $command, ...$arguments]);
+        } catch (ProcessFailedException $processFailedException) {
+            $this->logger->error('Command execution failed', ['exception' => $processFailedException]);
+            throw $processFailedException;
+        } finally {
+            try {
+                $this->manageSudoersEntry('remove');
+            } catch (ProcessFailedException $exception) {
+                $this->logger->error('Failed to remove sudoers entry', ['exception' => $exception]);
+            }
+        }
+    }
+
+    /**
+     * Manage sudoers entry for the current process.
+     *
+     * @param string $action The action to perform (add/remove)
+     *
+     * @throws ProcessFailedException
+     */
+    private function manageSudoersEntry(string $action): void
+    {
+        $process = new Process([$this->phpBinary, 'bin/console', 'log:manage-sudoers', $action], $this->projectRoot);
+        $process->mustRun();
+    }
+
+    /**
+     * Run a process and handle its output.
+     *
+     * @param array $command The command to run
+     *
+     * @throws ProcessFailedException
+     */
+    private function runProcess(array $command): void
+    {
+        $process = new Process($command, $this->projectRoot);
+        $process->mustRun();
+        foreach ($process as $type => $data) {
+            if ($type === Process::OUT) {
+                echo $data;
+            } else {
+                echo '<error>'.$data.'</error>';
+            }
         }
     }
 }
