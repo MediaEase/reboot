@@ -17,23 +17,20 @@
         <p class="text-sm font-semibold text-gray-900 dark:text-neutral-200">Email: <span class="text-gray-600 dark:text-gray-400">{{ user.email }}</span></p>
         <p class="text-sm font-semibold text-gray-900 dark:text-neutral-200">Status: <span class="inline-flex items-center text-gray-600 dark:text-gray-400">{{ user.isVerified ? 'Verified' : 'Not Verified' }} {{ profiles.badge(user) }}</span></p>
     </div>
-        <div class="mt-4 flex justify-between">
-            <a class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded inline-flex items-center" href="{{ path('app_settings_ban_user', { 'id': user.id }) }}">
-                {{ ux_icon('lucide:edit', { class: 'w-5 h-5 mr-2 overflow-visible text-white' }) }}
-                <span>Edit</span>
+    {% if 'ROLE_ADMIN' not in user.roles and context != 'approval' and user.isVerified %}
+    <div class="mt-4 flex justify-between">
+        <button class="bg-blue-500 text-white py-1 px-2 rounded">Edit</button>
+        {% if not user.isBanned %}
+            <a class="bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded inline-flex items-center" href="{{ path('app_settings_ban_user', { 'id': user.id }) }}">
+                {{ ux_icon('ion:hammer-outline', { class: 'w-5 h-5 mr-2 overflow-visible text-white' }) }}
+                <span>Ban</span>
             </a>
-            {% if 'ROLE_ADMIN' not in user.roles %}
-                {% if not user.isBanned %}
-                    <a class="bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded inline-flex items-center" href="{{ path('app_settings_ban_user', { 'id': user.id }) }}">
-                        {{ ux_icon('ion:hammer-outline', { class: 'w-5 h-5 mr-2 overflow-visible text-white' }) }}
-                        <span>Ban</span>
-                    </a>
-                {% else %}
-                    <a class="bg-green-500 hover:bg-green-700 text-white py-1 px-2 rounded inline-flex items-center" href="{{ path('app_settings_unban_user', { 'id': user.id }) }}">
-                        {{ ux_icon('ion:hammer-outline', { class: 'w-5 h-5 mr-2 overflow-visible text-white' }) }}
-                        <span>Unban</span>
-                    </a>
-                {% endif %}
+        {% else %}
+            <a class="bg-green-500 hover:bg-green-700 text-white py-1 px-2 rounded inline-flex items-center" href="{{ path('app_settings_unban_user', { 'id': user.id }) }}">
+                {{ ux_icon('ion:hammer-outline', { class: 'w-5 h-5 mr-2 overflow-visible text-white' }) }}
+                <span>Unban</span>
+            </a>
         {% endif %}
     </div>
+    {% endif %}
 </div>

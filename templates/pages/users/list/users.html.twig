@@ -26,7 +26,7 @@
                             <div id="pending-activations" class="relative px-4 pt-6 prose prose-slate mt-8 dark:prose-dark pb-3 mb-4">
                                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                     {% for u in unverifiedUsers %}
-                                        {% include "pages/users/list/component/user_card.html.twig" with {'user': u} %}
+                                        {% include "pages/users/list/component/user_card.html.twig" with {'user': u, 'context': 'approval'} %}
                                     {% endfor %}
                                 </div>
                             </div>
@@ -34,7 +34,7 @@
                         <h2 class="text-2xl font-semibold text-gray-900 dark:text-neutral-200 mb-4">All Users ({{ users|length }})</h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {% for u in users %}
-                                {% include "pages/users/list/component/user_card.html.twig" with {'user': u} %}
+                                {% include "pages/users/list/component/user_card.html.twig" with {'user': u, 'context': 'list'} %}
                             {% endfor %}
                             <!-- Add User Card -->
                             <div class="flex items-center justify-center bg-gray-200/85 dark:bg-gray-900/85 rounded-lg shadow-md hover:shadow-2xl hover:scale-105 transition duration-300 ease-in-out p-4 relative cursor-pointer" data-te-toggle="modal" data-te-target="#addUserModal">
