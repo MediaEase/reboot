@@ -41,18 +41,18 @@ class UsersController extends AbstractController
         $users = $this->entityManager->getRepository(User::class)->findAll();
         $settings = $this->entityManager->getRepository(Setting::class)->findLast();
 
-        usort($users, static function ($a, $b) : int {
+        usort($users, static function ($a, $b): int {
             $aIsAdmin = in_array('ROLE_ADMIN', $a->getRoles(), true);
             $bIsAdmin = in_array('ROLE_ADMIN', $b->getRoles(), true);
             if ($aIsAdmin && !$bIsAdmin) {
                 return -1;
             }
+
             if (!$aIsAdmin && $bIsAdmin) {
                 return 1;
             }
-            else {
-                return strcmp($a->getUsername(), $b->getUsername());
-            }
+
+            return strcmp($a->getUsername(), $b->getUsername());
         });
 
         return $this->render('pages/users/list/users.html.twig', [
@@ -82,6 +82,16 @@ class UsersController extends AbstractController
             $this->entityManager->flush();
             $this->addFlash('success', 'User unbanned successfully');
         }
+
+        return $this->redirectToRoute('app_settings_users_list');
+    }
+
+    #[Route('/users/{id}/delete', name: 'delete_user', methods: ['GET'])]
+    public function delete(User $user): Response
+    {
+        $this->entityManager->remove($user);
+        $this->entityManager->flush();
+        $this->addFlash('success', 'User deleted successfully');
 
         return $this->redirectToRoute('app_settings_users_list');
     }
