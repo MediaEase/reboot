@@ -111,6 +111,7 @@ final class RegistrationHandler
         if ($plainPassword !== null) {
             $this->commandExecutorService->execute('zen', ['user', 'create', '-u', $user->getUsername(), '-p', $plainPassword]);
             $user->setActivatedAt(new \DateTimeImmutable());
+            $user->setIsVerified(true);
             $this->entityManager->flush();
             $this->pendingActivationService->delete($user);
         }
