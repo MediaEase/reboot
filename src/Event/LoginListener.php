@@ -31,11 +31,11 @@ final class LoginListener implements EventSubscriberInterface
     /**
      * Updates the session ID of the user in the database.
      */
-    public function onSecurityInteractiveLogin(InteractiveLoginEvent $event)
+    public function onSecurityInteractiveLogin(InteractiveLoginEvent $interactiveLoginEvent): void
     {
-        $user = $event->getAuthenticationToken()->getUser();
+        $user = $interactiveLoginEvent->getAuthenticationToken()->getUser();
         if ($user instanceof User) {
-            $session = $event->getRequest()->getSession();
+            $session = $interactiveLoginEvent->getRequest()->getSession();
             $user->setSessionId($session->getId());
             $this->entityManager->flush();
         }
