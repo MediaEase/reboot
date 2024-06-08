@@ -117,7 +117,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?\DateTimeImmutable $activatedAt = null;
 
     #[ORM\Column(type: Types::STRING, length: 80, nullable: true)]
-    #[Groups([self::GROUP_GET_USER])]
     #[OA\Property(description: 'The IP address the user registered from.', maxLength: 39)]
     private ?string $registrationIp = null;
 
@@ -125,6 +124,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups([self::GROUP_GET_USER])]
     #[OA\Property(description: 'The ban status of the user.', type: 'boolean')]
     private ?bool $isBanned = false;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[OA\Property(description: 'The session ID of the user.', maxLength: 255)]
+    private ?string $sessionId = null;
 
     public function __construct()
     {
@@ -379,6 +382,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setBanned(bool $isBanned): static
     {
         $this->isBanned = $isBanned;
+
+        return $this;
+    }
+
+    public function getSessionId(): ?string
+    {
+        return $this->sessionId;
+    }
+
+    public function setSessionId(?string $sessionId): static
+    {
+        $this->sessionId = $sessionId;
 
         return $this;
     }

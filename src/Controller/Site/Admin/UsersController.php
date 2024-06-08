@@ -19,8 +19,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('', name: 'app_settings_')]
@@ -29,7 +31,9 @@ class UsersController extends AbstractController
 {
     public function __construct(
         private Security $security,
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
+        private RequestStack $requestStack,
+        private SessionInterface $session
     ) {
     }
 
@@ -44,5 +48,29 @@ class UsersController extends AbstractController
             'settings' => $settings,
             'user' => $user,
         ]);
+    }
+
+    #[Route('/users/{id}/ban', name: 'ban_user', methods: ['GET'])]
+    public function ban(User $user): Response
+    {
+        if (! $user->isBanned()) {
+            $user->setBanned(true);
+            $this->entityManager->flush();
+            $this->addFlash('success', 'User banned successfully');
+        }
+
+        return $this->redirectToRoute('app_settings_users_list');
+    }
+
+    #[Route('/users/{id}/unban', name: 'unban_user', methods: ['GET'])]
+    public function unban(User $user): Response
+    {
+        if ($user->isBanned()) {
+            $user->setBanned(false);
+            $this->entityManager->flush();
+            $this->addFlash('success', 'User unbanned successfully');
+        }
+
+        return $this->redirectToRoute('app_settings_users_list');
     }
 }

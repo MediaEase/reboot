@@ -42,7 +42,17 @@
                                     </div>
                                     <div class="mt-4 flex justify-between">
                                         <button class="bg-blue-500 text-white py-1 px-2 rounded">Edit</button>
-                                        <button class="bg-red-500 text-white py-1 px-2 rounded">Ban</button>
+                                        {% if not u.isBanned %}
+                                            <a class="bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded inline-flex items-center" href="{{ path('app_settings_ban_user', { 'id': u.id }) }}">
+                                                {{ ux_icon('ion:hammer-outline', { class: 'w-5 h-5 mr-2 overflow-visible text-white' }) }}
+                                                <span>Ban</span>
+                                            </a>
+                                        {% else %}
+                                            <a class="bg-green-500 hover:bg-green-700 text-white py-1 px-2 rounded inline-flex items-center" href="{{ path('app_settings_unban_user', { 'id': u.id }) }}">
+                                                {{ ux_icon('ion:hammer-outline', { class: 'w-5 h-5 mr-2 overflow-visible text-white' }) }}
+                                                <span>Unban</span>
+                                            </a>
+                                        {% endif %}
                                     </div>
                                 </div>
                             {% endfor %}
