@@ -135,3 +135,22 @@ export async function fetchLogContent(filePath) {
 
     return response.logs;
 }
+
+export function toggleIPVisibility() {
+    const ipDisplay = document.getElementById('ip-display');
+    const ipAddress = ipDisplay.getAttribute('data-ip');
+    const eyeIcon = document.getElementById('eye-icon');
+    const isHidden = ipDisplay.textContent === '**********';
+
+    if (isHidden) {
+        ipDisplay.classList.remove('text-center');
+        ipDisplay.textContent = ipAddress;
+        eyeIcon.innerHTML = `
+            <path d="M12 4.5C7.30558 4.5 3.13546 7.21027 1.5 12C3.13546 16.7897 7.30558 19.5 12 19.5C16.6944 19.5 20.8645 16.7897 22.5 12C20.8645 7.21027 16.6944 4.5 12 4.5ZM12 17.25C8.82436 17.25 6.125 14.5506 6.125 11.375C6.125 8.19944 8.82436 5.5 12 5.5C15.1756 5.5 17.875 8.19944 17.875 11.375C17.875 14.5506 15.1756 17.25 12 17.25ZM12 7.375C10.3579 7.375 9.125 8.60794 9.125 10.25C9.125 11.8921 10.3579 13.125 12 13.125C13.6421 13.125 14.875 11.8921 14.875 10.25C14.875 8.60794 13.6421 7.375 12 7.375Z" />`; // Eye icon for visible IP
+    } else {
+        ipDisplay.classList.add('text-center');
+        ipDisplay.textContent = '**********';
+        eyeIcon.innerHTML = `
+            <path d="M12 4.5C7.30558 4.5 3.13546 7.21027 1.5 12C3.13546 16.7897 7.30558 19.5 12 19.5C16.6944 19.5 20.8645 16.7897 22.5 12C20.8645 7.21027 16.6944 4.5 12 4.5ZM12 17.25C8.82436 17.25 6.125 14.5506 6.125 11.375C6.125 8.19944 8.82436 5.5 12 5.5C15.1756 5.5 17.875 8.19944 17.875 11.375C17.875 14.5506 15.1756 17.25 12 17.25ZM12 7.375C10.3579 7.375 9.125 8.60794 9.125 10.25C9.125 11.8921 10.3579 13.125 12 13.125C13.6421 13.125 14.875 11.8921 14.875 10.25C14.875 8.60794 13.6421 7.375 12 7.375Z" />`; // Eye icon for hidden IP
+    }
+}

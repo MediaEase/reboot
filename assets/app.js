@@ -13,9 +13,11 @@ import './styles/app.css';
 import './js/clipboard.js';
 import './js/routing/links.js';
 import { toDarkMode, toLightMode } from './js/menus/theme_switcher.js';
+import { toggleIPVisibility } from './js/utils.js';
 
 window.toDarkMode = toDarkMode;
 window.toLightMode = toLightMode;
+window.toggleIPVisibility = toggleIPVisibility;
 
 import { Tab, Modal, Popover, Ripple, Tooltip, initTE } from "tw-elements";
 

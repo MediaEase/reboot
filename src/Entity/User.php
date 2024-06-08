@@ -102,7 +102,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups([self::GROUP_GET_USER_LIMITED, self::GROUP_GET_USER])]
     private ?Preference $preferences = null;
 
-    #[ORM\Column(type: Types::STRING, length: 32, nullable: true)]
+    #[ORM\Column(type: Types::STRING, length: 32, nullable: false)]
     #[Groups([self::GROUP_GET_USER_LIMITED, self::GROUP_GET_USER])]
     private ?string $apiKey = null;
 
@@ -115,6 +115,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups([self::GROUP_GET_USER_LIMITED, self::GROUP_GET_USER])]
     #[OA\Property(description: 'The date and time the user activated.', format: 'date-time')]
     private ?\DateTimeImmutable $activatedAt = null;
+
+    #[ORM\Column(type: Types::STRING, length: 80, nullable: true)]
+    #[Groups([self::GROUP_GET_USER])]
+    #[OA\Property(description: 'The IP address the user registered from.', maxLength: 39)]
+    private ?string $registrationIp = null;
+
+    #[ORM\Column(type: Types::BOOLEAN, nullable: false, options: ['default' => false])]
+    #[Groups([self::GROUP_GET_USER])]
+    #[OA\Property(description: 'The ban status of the user.', type: 'boolean')]
+    private ?bool $isBanned = false;
 
     public function __construct()
     {
@@ -345,6 +355,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setActivatedAt(\DateTimeImmutable $activatedAt): static
     {
         $this->activatedAt = $activatedAt;
+
+        return $this;
+    }
+
+    public function getRegistrationIp(): ?string
+    {
+        return $this->registrationIp;
+    }
+
+    public function setRegistrationIp(string $registrationIp): static
+    {
+        $this->registrationIp = $registrationIp;
+
+        return $this;
+    }
+
+    public function isBanned(): ?bool
+    {
+        return $this->isBanned;
+    }
+
+    public function setBanned(bool $isBanned): static
+    {
+        $this->isBanned = $isBanned;
 
         return $this;
     }

@@ -13,20 +13,23 @@ declare(strict_types=1);
 
 namespace App\Controller\Site;
 
+use App\Entity\User;
 use App\Entity\Mount;
 use App\Form\User\MountType;
 use App\Form\User\UserImageType;
+use App\Service\EncryptionService;
+use App\Service\PathAccessService;
+use App\Service\FormHandlerService;
 use App\Form\User\UserPreferenceType;
-use App\Form\User\ChangeUserPasswordType;
 use App\Repository\SettingRepository;
 use App\Repository\PreferenceRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Form\User\ChangeUserPasswordType;
 use App\Service\Image\HandleImageService;
-use App\Service\FormHandlerService;
-use App\Service\PathAccessService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -41,7 +44,8 @@ class UserController extends AbstractController
         private PreferenceRepository $preferenceRepository,
         private HandleImageService $handleImageService,
         private FormHandlerService $formHandlerService,
-        private PathAccessService $pathAccessService
+        private PathAccessService $pathAccessService,
+        private EncryptionService $encryptionService
     ) {
     }
 
@@ -49,9 +53,9 @@ class UserController extends AbstractController
      * Displays and processes the user profile page.
      */
     #[Route('/me', name: 'profile', methods: ['GET', 'POST'])]
-    public function profile(Request $request): Response
+    public function profile(#[CurrentUser] ?User $user, Request $request): Response
     {
-        $user = $this->getUser();
+        $decryptedIP = $this->encryptionService->decrypt($user->getRegistrationIp());
         $preferences = $this->preferenceRepository->findOneBy(['user' => $user]);
 
         $forms = $this->initializeForms($user, $preferences);
@@ -75,6 +79,7 @@ class UserController extends AbstractController
 
         return $this->render('pages/users/profile/profile.html.twig', [
             'user' => $user,
+            'decryptedIP' => $decryptedIP,
             'settings' => $this->settingRepository->find(1),
             'userImagesForm' => $forms['userImagesForm']['form']->createView(),
             'userPreferencesForm' => $forms['userPreferencesForm']['form']->createView(),

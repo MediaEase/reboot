@@ -7,6 +7,20 @@
             <span class="ml-2 text-gray-500 dark:text-slate-400">{{ user.registeredAt|date('Y-m-d H:i:s') }}</span>
         </div>
         <div class="flex items-center">
+            {{ ux_icon('eos-icons:ip-outlined', { class: 'w-5 h-5 text-gray-700 dark:text-slate-200 mr-2' }) }}
+            <span class="font-semibold text-gray-700 dark:text-slate-200">Registration IP:</span>
+            <div class="flex-none ml-2 relative">
+                <code id="registration-ip" class="text-xs xs:text-base inline-flex text-left items-center space-x-4 bg-gray-900/85 text-white rounded-lg py-1 px-1 w-[200px]">
+                    <span id="ip-display" class="text-yellow-500 text-xs text-center text-clip w-full overflow-x-scroll" data-ip="{{ decryptedIP }}">**********</span>
+                    <button id="toggle-ip-visibility" class="eye-button absolute right-2" onclick="toggleIPVisibility()">
+                        <svg id="eye-icon" class="shrink-0 h-4 w-4 transition fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="" aria-hidden="true">
+                            <path d="M12 4.5C7.30558 4.5 3.13546 7.21027 1.5 12C3.13546 16.7897 7.30558 19.5 12 19.5C16.6944 19.5 20.8645 16.7897 22.5 12C20.8645 7.21027 16.6944 4.5 12 4.5ZM12 17.25C8.82436 17.25 6.125 14.5506 6.125 11.375C6.125 8.19944 8.82436 5.5 12 5.5C15.1756 5.5 17.875 8.19944 17.875 11.375C17.875 14.5506 15.1756 17.25 12 17.25ZM12 7.375C10.3579 7.375 9.125 8.60794 9.125 10.25C9.125 11.8921 10.3579 13.125 12 13.125C13.6421 13.125 14.875 11.8921 14.875 10.25C14.875 8.60794 13.6421 7.375 12 7.375Z" />
+                        </svg>
+                    </button>
+                </code>
+            </div>
+        </div>
+        <div class="flex items-center">
             {{ ux_icon('flowbite:check-circle-outline', { class: 'w-5 h-5 text-gray-700 dark:text-slate-200 mr-2' }) }}
             <span class="font-semibold text-gray-700 dark:text-slate-200">Activated At:</span>
             <span class="ml-2 text-gray-500 dark:text-slate-400">{{ user.activatedAt|date('Y-m-d H:i:s') }}</span>
@@ -26,7 +40,7 @@
             <span class="font-semibold text-gray-700 dark:text-slate-200">Api Key:</span>
             <div class="flex justify-between border-gray-300">
                 <div class="flex-none ml-2">
-                    <code id="apikey" class="text-xs xs:text-base inline-flex text-left items-center space-x-4 bg-gray-900/85 text-white rounded-lg py-1 px-1" data-clipboard-text="${data}">
+                    <code id="apikey" class="text-xs xs:text-base inline-flex text-left items-center space-x-4 bg-gray-900/85 text-white rounded-lg py-1 px-1" data-clipboard-text="{{ user.apiKey }}">
                         <span class="text-yellow-500 text-xs text-clip">
                             {{ user.apiKey }}
                         </span>

@@ -21,6 +21,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
+/**
+ * IPEncryptorCommand encrypts a given string.
+ */
 #[AsCommand(
     name: 'ip:encrypt',
     description: 'Encrypts a given string',
@@ -50,7 +53,7 @@ final class IPEncryptorCommand extends Command
         $symfonyStyle = new SymfonyStyle($input, $output);
         $data = $input->getArgument('data');
         $encryptedData = $this->encrypt($data);
-        $symfonyStyle->success('Encrypted data: ' . $encryptedData);
+        $symfonyStyle->success('Encrypted data: '.$encryptedData);
 
         return Command::SUCCESS;
     }

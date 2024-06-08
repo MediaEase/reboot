@@ -21,6 +21,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
+/**
+ * IPDecryptorCommand decrypts a given string.
+ */
 #[AsCommand(
     name: 'ip:decrypt',
     description: 'Decrypts a given string',
@@ -50,7 +53,7 @@ final class IPDecryptorCommand extends Command
         $symfonyStyle = new SymfonyStyle($input, $output);
         $data = $input->getArgument('data');
         $decryptedData = $this->decrypt($data);
-        $symfonyStyle->success('Decrypted data: ' . $decryptedData);
+        $symfonyStyle->success('Decrypted data: '.$decryptedData);
 
         return Command::SUCCESS;
     }
