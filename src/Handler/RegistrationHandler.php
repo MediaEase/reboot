@@ -46,10 +46,11 @@ final class RegistrationHandler
      *
      * @param User   $user          The user to register
      * @param string $plainPassword The plain password
+     * @param string $context       The context of the registration
      *
      * @throws \Exception
      */
-    public function handleRegistration(User $user, string $plainPassword): void
+    public function handleRegistration(User $user, string $plainPassword, string $context = 'normal'): void
     {
         $user->setPassword(
             $this->userPasswordHasher->hashPassword($user, $plainPassword)
@@ -60,11 +61,16 @@ final class RegistrationHandler
             $this->entityManager->persist($user);
             $this->entityManager->flush();
             $this->pendingActivationService->create($user, $plainPassword);
-            $setting = $this->settingRepository->findLast();
-            if ($setting instanceof Setting && $setting->isEmailVerificationEnabled() === false) {
+
+            if ($context === 'admin_creation') {
                 $this->activateUser($user);
             } else {
-                $this->sendVerificationEmail($user);
+                $setting = $this->settingRepository->findLast();
+                if ($setting instanceof Setting && $setting->isEmailVerificationEnabled() === false) {
+                    $this->activateUser($user);
+                } else {
+                    $this->sendVerificationEmail($user);
+                }
             }
         } catch (\Exception $exception) {
             $this->logger->error('User registration failed', [
