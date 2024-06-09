@@ -36,7 +36,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  * UserController handles user profile-related operations.
  */
 #[Route(name: 'app_users_')]
-class UserController extends AbstractController
+class ProfileController extends AbstractController
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
