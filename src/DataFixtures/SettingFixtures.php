@@ -34,7 +34,7 @@ final class SettingFixtures extends Fixture implements FixtureGroupInterface
         $setting->setFavicon('default-favicon.png');
         $setting->setAppstore('default-appstore.png');
         $setting->setSplashscreen('default.png');
-        $setting->isEmailVerificationEnabled(true);
+        $setting->isEmailVerificationEnabled();
 
         $objectManager->persist($setting);
 
