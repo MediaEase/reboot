@@ -7,7 +7,6 @@
     {% import '_macros/breadcrumb.html.twig' as breadcrumb %}
     {% import '_macros/form/buttons.html.twig' as form_macros %}
 
-
     <div class="max-w-8xl md:mx-auto md:px-auto lg:px-6">
         <div class="xl:pt-[2.3615rem] pt-[15rem]">
             <div class="xl:pl-[25rem]">
@@ -37,26 +36,17 @@
                                 {% include "pages/users/list/component/user_card.html.twig" with {'user': u, 'context': 'list'} %}
                             {% endfor %}
                             <!-- Add User Card -->
-                            <div class="flex items-center justify-center bg-gray-200/85 dark:bg-gray-900/85 rounded-lg shadow-md hover:shadow-2xl hover:scale-105 transition duration-300 ease-in-out p-4 relative cursor-pointer" data-te-toggle="modal" data-te-target="#addUserModal">
-                                <button
-                                    type="button"
-                                    class="inline-flex items-center rounded-full text-3xl font-medium uppercase leading-normal text-white transition duration-150 ease-in-out"
-                                    data-te-ripple-init
-                                    data-te-ripple-color="light">
-                                    {{ ux_icon('heroicons:plus', {class: 'icon w-24 h-24 fill-white button-icon'}) }}
-                                </button>
-                            </div>
+                            <a href="{{ path('app_settings_users_create') }}" class="block">
+                                <div class="flex items-center justify-center bg-gray-200/85 dark:bg-gray-900/85 rounded-lg shadow-md hover:shadow-2xl hover:scale-105 transition duration-300 h-[373px] ease-in-out p-4 relative cursor-pointer">
+                                    <span class="inline-flex items-center rounded-full text-3xl font-medium uppercase leading-normal text-white transition duration-150 ease-in-out">
+                                        {{ ux_icon('heroicons:plus', {class: 'icon w-24 h-24 fill-white button-icon'}) }}
+                                    </span>
+                                </div>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Add User Modal -->
-    <div data-te-modal-init class="fixed left-0 top-0 z-[1055] hidden h-dvh w-full overflow-y-auto overflow-x-hidden outline-none" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-modal="true" role="dialog">
-        <div data-te-modal-dialog-ref class="pointer-events-none relative flex min-h-[calc(100%-0.5rem)] w-1/2 mx-auto translate-y-[-50px] items-center opacity-0 transition-all duration-300 ease-in-out">
-            {% include "pages/users/list/modal/modale.html.twig" %}
         </div>
     </div>
 {% endblock %}
