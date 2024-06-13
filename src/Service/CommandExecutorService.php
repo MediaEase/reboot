@@ -78,7 +78,7 @@ final class CommandExecutorService
      */
     private function manageSudoersEntry(string $action): void
     {
-        $process = new Process([$this->phpBinary, 'bin/console', 'log:manage-sudoers', $action], $this->projectRoot);
+        $process = new Process([$this->phpBinary, 'bin/console', 'harmonyui:sudoers', $action], $this->projectRoot);
         $process->mustRun();
     }
 
