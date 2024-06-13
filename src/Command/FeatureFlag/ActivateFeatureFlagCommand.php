@@ -27,7 +27,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * This class handles the activatefeatureflag.
  */
 #[AsCommand(
-    name: 'feature-flag:activate',
+    name: 'harmony:feature-flag:activate',
     description: 'Activate feature flag'
 )]
 final class ActivateFeatureFlagCommand extends AbstractFeatureFlagCommand

@@ -25,7 +25,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
  * IPEncryptorCommand encrypts a given string.
  */
 #[AsCommand(
-    name: 'ip:encrypt',
+    name: 'harmony:ip:encrypt',
     description: 'Encrypts a given string',
 )]
 final class IPEncryptorCommand extends Command

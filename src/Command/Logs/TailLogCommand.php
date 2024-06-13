@@ -28,7 +28,7 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
  * This class handles the log:tail.
  */
 #[AsCommand(
-    name: 'log:tail',
+    name: 'harmony:log',
     description: 'Create the MediaEase groups in the system',
 )]
 final class TailLogCommand extends Command
@@ -78,7 +78,7 @@ final class TailLogCommand extends Command
 
         $projectRoot = dirname(__DIR__, 3);
 
-        $process = new Process([$phpBinary, 'bin/console', 'log:manage-sudoers', 'add'], $projectRoot);
+        $process = new Process([$phpBinary, 'bin/console', 'harmony:sudoers', 'add'], $projectRoot);
         try {
             $process->mustRun();
         } catch (ProcessFailedException $processFailedException) {
@@ -100,7 +100,7 @@ final class TailLogCommand extends Command
         } catch (ProcessFailedException $processFailedException) {
             $output->writeln('<error>'.$processFailedException->getMessage().'</error>');
         } finally {
-            $process = new Process([$phpBinary, 'bin/console', 'log:manage-sudoers', 'remove'], $projectRoot);
+            $process = new Process([$phpBinary, 'bin/console', 'harmony:sudoers', 'remove'], $projectRoot);
             try {
                 $process->mustRun();
                 $output->writeln('<info>Sudoers entry removed successfully.</info>');

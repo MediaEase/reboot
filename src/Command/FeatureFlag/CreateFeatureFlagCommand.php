@@ -28,7 +28,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * This class handles the createfeatureflag.
  */
 #[AsCommand(
-    name: 'feature-flag:create',
+    name: 'harmony:feature-flag:create',
     description: 'Create feature flag'
 )]
 final class CreateFeatureFlagCommand extends AbstractFeatureFlagCommand

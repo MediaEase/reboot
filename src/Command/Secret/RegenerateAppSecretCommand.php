@@ -22,7 +22,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use sixlive\DotenvEditor\DotenvEditor;
 
 #[AsCommand(
-    name: 'secrets:regenerate-app-secret',
+    name: 'harmony:secrets:regenerate-app-secret',
     description: 'Regenerate a random value and update APP_SECRET',
 )]
 class RegenerateAppSecretCommand extends Command

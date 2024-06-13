@@ -25,7 +25,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
  * IPDecryptorCommand decrypts a given string.
  */
 #[AsCommand(
-    name: 'ip:decrypt',
+    name: 'harmony:ip:decrypt',
     description: 'Decrypts a given string',
 )]
 final class IPDecryptorCommand extends Command

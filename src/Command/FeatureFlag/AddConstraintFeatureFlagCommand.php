@@ -27,7 +27,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * This class handles the addconstraintfeatureflag.
  */
 #[AsCommand(
-    name: 'feature-flag:add-constraint',
+    name: 'harmony:feature-flag:add-constraint',
     description: 'Add constraint to a feature flag'
 )]
 final class AddConstraintFeatureFlagCommand extends AbstractFeatureFlagCommand

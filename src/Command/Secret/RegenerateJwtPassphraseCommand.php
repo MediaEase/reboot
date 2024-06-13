@@ -22,7 +22,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use sixlive\DotenvEditor\DotenvEditor;
 
 #[AsCommand(
-    name: 'secrets:regenerate-jwt-passphrase',
+    name: 'harmony:secrets:regenerate-jwt-passphrase',
     description: 'Regenerate a random value and update JWT_PASSPHRASE',
 )]
 class RegenerateJwtPassphraseCommand extends Command
