@@ -21,7 +21,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints\PasswordStrength;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -42,7 +44,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[OA\Property(description: 'The unique identifier of the user.', format: 'int')]
     private ?int $id = null;
 
-    #[ORM\Column(length: 180, unique: true)]
+    #[ORM\Column(length: 180, unique: true, nullable: false)]
+    #[Assert\Length(min: 4, max: 30, minMessage: 'The username must be at least {{ limit }} characters long.', maxMessage: 'The username cannot be longer than {{ limit }} characters.')]
+    #[Assert\NotBlank(message: 'The username cannot be blank.')]
     #[Groups([self::GROUP_GET_USER_LIMITED, self::GROUP_GET_USER, self::GROUP_GET_USERS])]
     #[OA\Property(description: 'The username of the user.', maxLength: 180)]
     private ?string $username = null;
@@ -50,15 +54,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var array<string>
      */
-    #[ORM\Column]
+    #[ORM\Column(type: 'json', nullable: false)]
+    #[Assert\NotBlank]
     #[Groups([self::GROUP_GET_USER_LIMITED, self::GROUP_GET_USER, self::GROUP_GET_USERS])]
     #[OA\Property(description: 'The roles of the user.', type: 'array', items: new OA\Items(type: 'string'))]
-    private array $roles = [];
+    private array $roles = ['ROLE_USER'];
 
     /**
      * @var string The hashed password
      */
     #[ORM\Column]
+    #[Assert\NotCompromisedPassword(message: 'This password has been leaked in a data breach, it must not be used. Please use another password.')]
+    #[Assert\Length(min: 6, max: 4096)]
+    #[PasswordStrength(['minScore' => PasswordStrength::STRENGTH_VERY_STRONG, 'message' => 'Your password is too easy to guess. Company\'s security policy requires to use a stronger password.'])]
     private ?string $password = null;
 
     #[ORM\ManyToOne(inversedBy: 'users')]
@@ -87,6 +95,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $services;
 
     #[ORM\Column(length: 180, nullable: true)]
+    #[Assert\NotBlank(message: 'The email cannot be blank.')]
+    #[Assert\Email(message: 'The email "{{ value }}" is not a valid email.')]
     #[Groups([self::GROUP_GET_USER])]
     #[OA\Property(description: 'The email of the user.', maxLength: 180)]
     private ?string $email = null;
