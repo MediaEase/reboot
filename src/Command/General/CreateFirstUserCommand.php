@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Command;
+namespace App\Command\General;
 
 use App\Entity\User;
 use App\Entity\Mount;
@@ -26,7 +26,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use App\Entity\Group;
 
 #[AsCommand(
-    name: 'create:first-user',
+    name: 'harmony:create:first-user',
     description: 'Create the first user in the system',
 )]
 class CreateFirstUserCommand extends Command

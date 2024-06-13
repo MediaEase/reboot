@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Command;
+namespace App\Command\General;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -21,8 +21,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use App\Entity\Group;
 
+/**
+ * Class CreateBaseGroups.
+ *
+ * This class handles the creation of the base groups in the ecosystem.
+ */
 #[AsCommand(
-    name: 'create:base-groups',
+    name: 'harmony:create:groups',
     description: 'Create the MediaEase groups in the system',
 )]
 class CreateBaseGroups extends Command
