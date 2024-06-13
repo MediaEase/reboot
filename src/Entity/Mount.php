@@ -35,10 +35,10 @@ class Mount implements \Stringable
     #[OA\Property(description: 'The file system path of the mount.', maxLength: 80)]
     private ?string $path = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'boolean', options: ['default' => false], nullable: false)]
     #[Groups([User::GROUP_GET_USER, User::GROUP_GET_USERS])]
     #[OA\Property(description: 'Indicator whether Rclone is used for the mount.', type: 'boolean')]
-    private ?bool $rclone = null;
+    private ?bool $rclone = false;
 
     #[ORM\ManyToOne(inversedBy: 'mounts')]
     #[ORM\JoinColumn(nullable: false)]
