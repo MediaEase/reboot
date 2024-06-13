@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\DataFixtures;
 
 use App\Entity\Service;
+use App\Entity\Application;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
@@ -23,40 +24,26 @@ final class ServiceFixtures extends BaseFixtures implements DependentFixtureInte
     public function load(ObjectManager $objectManager): void
     {
         $usernames = ['lucia', 'jason'];
-        $appNames = $this->getAppNames();
+        $applications = $objectManager->getRepository(Application::class)->findAll();
 
         foreach ($usernames as $username) {
-            $userAppNames = $this->getUserAppNames($appNames);
+            $userAppNames = $this->getUserAppNames($applications);
             $this->processUserAppNames($userAppNames, $username, $objectManager);
         }
 
         $objectManager->flush();
     }
 
-    /**
-     * @return array<class-string>
-     */
-    public function getDependencies(): array
-    {
-        return [
-            ApplicationFixtures::class,
-        ];
-    }
-
-    // private function createService(string $serviceName, string $username, ObjectManager $objectManager): void
-    // {
-    //     $service = new Service();
-    //     $appReference = $this->getAppReference($serviceName);
-    //     $fullServiceName = $this->getFullServiceName($serviceName, $username);
-    //     $this->setupServiceDetails($service, $fullServiceName, $appReference, $username, $objectManager);
-    // }
-
     private function createService(string $serviceName, string $username, ObjectManager $objectManager, ?Service $parentService = null): Service
     {
         $service = new Service();
-        $appReference = $this->getAppReference($serviceName);
+        $application = $this->getApplicationByName($objectManager, $serviceName);
+        if (!$application instanceof Application) {
+            throw new \Exception(sprintf('Application %s not found in the database.', $serviceName));
+        }
+
         $fullServiceName = $this->getFullServiceName($serviceName, $username);
-        $this->setupServiceDetails($service, $fullServiceName, $appReference, $username, $objectManager);
+        $this->setupServiceDetails($service, $fullServiceName, $application, $username, $objectManager);
 
         if ($parentService instanceof Service) {
             $parentService->addChildService($service);
@@ -69,24 +56,25 @@ final class ServiceFixtures extends BaseFixtures implements DependentFixtureInte
     }
 
     /**
-     * @param array<class-string> $appNames
+     * @param array<Application> $applications
      *
-     * @return array<class-string>
+     * @return array<Application>
      */
-    private function getUserAppNames(array $appNames): array
+    private function getUserAppNames(array $applications): array
     {
-        shuffle($appNames);
+        shuffle($applications);
 
-        return array_slice($appNames, 0, rand(30, 50));
+        return array_slice($applications, 0, rand(30, 50));
     }
 
     /**
-     * @param array<class-string> $userAppNames
+     * @param array<Application> $userAppNames
      */
     private function processUserAppNames(array $userAppNames, string $username, ObjectManager $objectManager): void
     {
         $installedApps = [];
-        foreach ($userAppNames as $userAppName) {
+        foreach ($userAppNames as $application) {
+            $userAppName = $application->getName();
             if (! in_array($userAppName, $installedApps, true)) {
                 $this->handleUserAppName($userAppName, $username, $installedApps, $objectManager);
                 $installedApps[] = $userAppName;
@@ -95,7 +83,7 @@ final class ServiceFixtures extends BaseFixtures implements DependentFixtureInte
     }
 
     /**
-     * @param array<class-string> $installedApps
+     * @param array<string> $installedApps
      */
     private function handleUserAppName(
         string $userAppName,
@@ -103,20 +91,19 @@ final class ServiceFixtures extends BaseFixtures implements DependentFixtureInte
         array &$installedApps,
         ObjectManager $objectManager
     ): void {
-        $appReference = $this->getAppReference($userAppName);
-        if (in_array($appReference, $installedApps, true)) {
+        if (in_array($userAppName, $installedApps, true)) {
             return;
         }
 
         $this->handleSpecialCases($userAppName, $username, $installedApps, $objectManager);
-        if (! in_array($appReference, $installedApps, true)) {
+        if (! in_array($userAppName, $installedApps, true)) {
             $this->createService($userAppName, $username, $objectManager);
-            $installedApps[] = $appReference;
+            $installedApps[] = $userAppName;
         }
     }
 
     /**
-     * @param array<class-string> $installedApps
+     * @param array<string> $installedApps
      */
     private function handleSpecialCases(
         string $userAppName,
@@ -145,7 +132,7 @@ final class ServiceFixtures extends BaseFixtures implements DependentFixtureInte
     }
 
     /**
-     * @param array<class-string> $installedApps
+     * @param array<string> $installedApps
      */
     private function handleCalibre(string $username, ObjectManager $objectManager, array &$installedApps): void
     {
@@ -155,7 +142,7 @@ final class ServiceFixtures extends BaseFixtures implements DependentFixtureInte
     }
 
     /**
-     * @param array<class-string> $installedApps
+     * @param array<string> $installedApps
      */
     private function handleDeluge(string $username, ObjectManager $objectManager, array &$installedApps): void
     {
@@ -165,7 +152,7 @@ final class ServiceFixtures extends BaseFixtures implements DependentFixtureInte
     }
 
     /**
-     * @param array<class-string> $installedApps
+     * @param array<string> $installedApps
      */
     private function handleTorrentClients(
         string $userAppName,
@@ -184,7 +171,7 @@ final class ServiceFixtures extends BaseFixtures implements DependentFixtureInte
     }
 
     /**
-     * @param array<class-string> $installedApps
+     * @param array<string> $installedApps
      */
     private function handleRclone(string $username, ObjectManager $objectManager, array &$installedApps): void
     {
@@ -198,7 +185,7 @@ final class ServiceFixtures extends BaseFixtures implements DependentFixtureInte
     }
 
     /**
-     * @param array<class-string> $installedApps
+     * @param array<string> $installedApps
      */
     private function handleFail2ban(string $username, ObjectManager $objectManager, array &$installedApps): void
     {
@@ -221,7 +208,7 @@ final class ServiceFixtures extends BaseFixtures implements DependentFixtureInte
     private function setupServiceDetails(
         Service $service,
         string $fullServiceName,
-        string $appReference,
+        Application $application,
         string $username,
         ObjectManager $objectManager
     ): void {
@@ -230,10 +217,9 @@ final class ServiceFixtures extends BaseFixtures implements DependentFixtureInte
         $defaultPort = rand(10000, 30000);
         $sslPort = $defaultPort + 1;
         $ports = ['default' => $defaultPort, 'ssl' => $sslPort];
-        $appLower = strtolower(str_replace(' ', '', $appReference));
-        $application = $this->getReference('application-'.$appLower);
+        strtolower(str_replace(' ', '', $application->getName()));
         $user = $this->getReference('user-'.$username);
-        $paths = $this->getPaths($username, $appReference, $defaultPort);
+        $paths = $this->getPaths($username, $application->getName(), $defaultPort);
         $service->setName($fullServiceName);
         $service->setVersion(rand(1, 10).'.'.rand(0, 10).'.'.rand(0, 50));
         $service->setStatus($status[array_rand($status)]);
@@ -265,25 +251,35 @@ final class ServiceFixtures extends BaseFixtures implements DependentFixtureInte
         ];
     }
 
-    private function getAppReference(string $serviceName): string
+    private function getApplicationByName(ObjectManager $objectManager, string $serviceName): ?Application
     {
-        if (in_array($serviceName, ['Deluged', 'Deluge-Web'], true)) {
-            return 'Deluge';
+        $application = $objectManager->getRepository(Application::class)->findOneBy(['name' => $serviceName]);
+
+        if (!$application) {
+            // Handle special cases where service name might differ from application name
+            $specialCases = [
+                'Deluged' => 'Deluge',
+                'Deluge-Web' => 'Deluge',
+                'Rclone' => 'Rclone',
+                'Mergerfs' => 'Rclone',
+                'Fail2web' => 'Fail2ban',
+                'Fail2ban' => 'Fail2ban',
+                'Calibre-Web' => 'Calibre',
+                'Calibre-Server' => 'Calibre',
+            ];
+
+            $application = $objectManager->getRepository(Application::class)->findOneBy(['name' => $specialCases[$serviceName] ?? $serviceName]);
         }
 
-        if (in_array($serviceName, ['Rclone', 'Mergerfs'], true)) {
-            return 'Rclone';
-        }
+        return $application;
+    }
 
-        if (in_array($serviceName, ['Fail2web', 'Fail2ban'], true)) {
-            return 'Fail2ban';
-        }
-
-        if (in_array($serviceName, ['Calibre-Web', 'Calibre-Server'], true)) {
-            return 'Calibre';
-        }
-
-        return $serviceName;
+    public function getDependencies(): array
+    {
+        return [
+            GroupFixtures::class,
+            UserFixtures::class,
+        ];
     }
 
     public static function getGroups(): array
