@@ -15,17 +15,17 @@ namespace App\Controller\Site\Admin;
 
 use App\Entity\User;
 use App\Entity\Setting;
-use App\Form\CreateUserType;
 use App\Handler\RegistrationHandler;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 
 #[Route('', name: 'app_settings_')]
 #[IsGranted('ROLE_ADMIN')]
@@ -35,7 +35,8 @@ class UsersController extends AbstractController
         private Security $security,
         private EntityManagerInterface $entityManager,
         private RequestStack $requestStack,
-        private RegistrationHandler $registrationHandler
+        private RegistrationHandler $registrationHandler,
+        private ValidatorInterface $validator
     ) {
     }
 
@@ -44,23 +45,11 @@ class UsersController extends AbstractController
     {
         $users = $this->entityManager->getRepository(User::class)->findAll();
         $settings = $this->entityManager->getRepository(Setting::class)->findLast();
-        $newUser = new User();
-        $createUserForm = $this->createForm(CreateUserType::class, $newUser);
-        $createUserForm->handleRequest($request);
-
-        if ($createUserForm->isSubmitted() && $createUserForm->isValid()) {
-            $plainPassword = $createUserForm->get('plainPassword')->getData();
-            $this->registrationHandler->handleRegistration($newUser, $plainPassword, 'admin_creation');
-            $this->addFlash('success', 'User created successfully.');
-
-            return $this->redirectToRoute('app_settings_users_list');
-        }
 
         return $this->render('pages/users/list/users.html.twig', [
             'users' => $this->sortUsers($users),
             'settings' => $settings,
             'user' => $user,
-            'createUserForm' => $createUserForm->createView(),
         ]);
     }
 

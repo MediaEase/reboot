@@ -10,7 +10,7 @@
         <div class="xl:pt-[2.3615rem] pt-[15rem]">
             <div class="xl:pl-[25rem]">
                 <div class="w-full mx-auto pt-10 xl:max-w-none xl:ml-4 rounded-xl mb-4">
-                    {{ breadcrumb.add('Users', 'https://mediaease.github.io/docs/') }}
+                    {{ breadcrumb.add('Create User', 'https://mediaease.github.io/docs/') }}
                     <div id="content-wrapper" class="relative px-4 mt-8 dark:prose-dark pb-3 mb-4 bg-gray-200/55 dark:bg-gray-900/85 rounded-lg">
                         {{ form_start(createUserForm, {'attr': {'id': 'create-user-form', 'data-twe-validation-init': 'true'}}) }}
                         <div class="flex-grow mb-8 pt-4 text-left">
@@ -58,102 +58,4 @@
             </div>
         </div>
     </div>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const form = document.getElementById("create-user-form");
-            if (form) {
-                form.addEventListener("submit", async function (event) {
-                    event.preventDefault();
-
-                    const formData = new FormData(form);
-                    const action = form.getAttribute("action") || window.location.href;
-                    const csrfToken = form.querySelector('input[name="create_user[_token]"]').value;
-
-                    try {
-                        const response = await fetch(action, {
-                            method: "POST",
-                            body: formData,
-                            headers: {
-                                'X-CSRF-TOKEN': csrfToken
-                            }
-                        });
-
-                        if (!response.ok) {
-                            const errorText = await response.text();
-                            console.error("Response status:", response.status);
-                            console.error("Response text:", errorText);
-                            const responseData = JSON.parse(errorText);
-                            clearErrors();
-                            renderErrors(responseData.errors);
-                            throw new Error("Network response was not ok");
-                        }
-
-                        const responseData = await response.json();
-                        clearErrors();
-
-                        if (responseData.errors) {
-                            renderErrors(responseData.errors);
-                        } else {
-                            // Handle successful form submission (e.g., redirect or show success message)
-                            window.location.href = responseData.redirectUrl;
-                        }
-                    } catch (error) {
-                        console.error("Form submission error:", error);
-                    }
-                });
-            }
-
-            function clearErrors() {
-                const errorDivs = document.querySelectorAll(".form-error");
-                errorDivs.forEach((div) => {
-                    div.style.display = "none";
-                    div.innerHTML = "";
-                });
-                const inputFields = document.querySelectorAll(".peer");
-                inputFields.forEach((field) => {
-                    field.classList.remove('border-red-600', 'dark:border-red-500', 'focus:border-red-600', 'dark:focus:border-red-500');
-                });
-                const labels = document.querySelectorAll("label");
-                labels.forEach((label) => {
-                    label.classList.remove('text-red-600', 'dark:text-red-500');
-                });
-            }
-
-            function renderErrors(errors) {
-                for (const [field, message] of Object.entries(errors)) {
-                    const errorDiv = document.getElementById(`error-create_user_${field}`);
-                    if (errorDiv) {
-                        errorDiv.innerHTML = `${message}`;
-                        errorDiv.style.display = "block";
-                    }
-
-                    // If the error is related to password fields, show it on both fields and a unified error message
-                    if (field === 'first') {
-                        const passwordErrorDiv = document.getElementById('error-create_user_plainPassword');
-                        if (passwordErrorDiv) {
-                            passwordErrorDiv.innerHTML = `${message}`;
-                            passwordErrorDiv.style.display = "block";
-                        }
-                        const passwordFields = document.querySelectorAll('#create_user_plainPassword_first, #create_user_plainPassword_second');
-                        passwordFields.forEach((field) => {
-                            field.classList.add('border-red-600', 'dark:border-red-500', 'focus:border-red-600', 'dark:focus:border-red-500');
-                        });
-                        const passwordLabels = document.querySelectorAll('label[for="create_user_plainPassword_first"], label[for="create_user_plainPassword_second"]');
-                        passwordLabels.forEach((label) => {
-                            label.classList.add('text-red-600', 'dark:text-red-500');
-                        });
-                    } else {
-                        const inputField = document.getElementById(`create_user_${field}`);
-                        if (inputField) {
-                            inputField.classList.add('border-red-600', 'dark:border-red-500', 'focus:border-red-600', 'dark:focus:border-red-500');
-                        }
-                        const label = inputField ? inputField.parentNode.querySelector('label') : null;
-                        if (label) {
-                            label.classList.add('text-red-600', 'dark:text-red-500');
-                        }
-                    }
-                }
-            }
-        });
-    </script>
 {% endblock %}

@@ -36,16 +36,32 @@ final class PendingActivationService
      */
     public function create(User $user, string $plainPassword): void
     {
-        $filePath = $this->projectDir.'/var/'.$user->getUsername();
+        $dir = $this->projectDir.'/var';
+        $prefix = $user->getUsername().'_';
+        $suffix = '.txt';
+
         try {
-            $this->filesystem->dumpFile($filePath, $plainPassword);
+            $tmpFilePath = tempnam($dir, $prefix);
+            if ($tmpFilePath === false) {
+                throw new \RuntimeException('Failed to create a temporary file');
+            }
+
+            $this->filesystem->dumpFile($tmpFilePath, $plainPassword);
+            $finalFilePath = $tmpFilePath.$suffix;
+            $this->filesystem->rename($tmpFilePath, $finalFilePath);
         } catch (IOException $ioException) {
             $this->logger->error('Failed to create temporary password file', [
                 'exception' => $ioException,
-                'filePath' => $filePath,
+                'filePath' => isset($tmpFilePath) ? $tmpFilePath : 'not set',
                 'username' => $user->getUsername(),
             ]);
             throw $ioException;
+        } catch (\RuntimeException $runtimeException) {
+            $this->logger->error('Failed to create temporary file', [
+                'exception' => $runtimeException,
+                'username' => $user->getUsername(),
+            ]);
+            throw $runtimeException;
         }
     }
 

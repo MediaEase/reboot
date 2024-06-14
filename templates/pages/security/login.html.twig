@@ -31,8 +31,12 @@
 						<button type="submit" class="block bg-green-500 hover:bg-green-700 mt-5 py-2 px-10 rounded-2xl hover:-translate-y-1 transition-all duration-500 text-white font-semibold mb-2">Login</button>
 					</div>
 					<div class="flex justify-between mt-4">
+						{% if feature_manager().isActive('forgot_password') %}
 						<a href="{{ path('app_forgot_password_request')}}" class="text-sm ml-2 hover:text-blue-500 cursor-pointer">Forgot Password ?</span>
+						{% endif %}
+						{% if feature_manager().isActive('registration') %}
 						<a href="#" class="text-sm ml-2 hover:text-blue-500 cursor-pointer">Don't have an account yet?</a>
+						{% endif %}
 					</div>
 				</form>
 			</div>

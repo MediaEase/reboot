@@ -36,6 +36,7 @@
                                 {% include "pages/users/list/component/user_card.html.twig" with {'user': u, 'context': 'list'} %}
                             {% endfor %}
                             <!-- Add User Card -->
+                            {% if feature_manager().isActive('registration') %}
                             <a href="{{ path('app_settings_users_create') }}" class="block">
                                 <div class="flex items-center justify-center bg-gray-200/85 dark:bg-gray-900/85 rounded-lg shadow-md hover:shadow-2xl hover:scale-105 transition duration-300 h-[373px] ease-in-out p-4 relative cursor-pointer">
                                     <span class="inline-flex items-center rounded-full text-3xl font-medium uppercase leading-normal text-white transition duration-150 ease-in-out">
@@ -43,6 +44,7 @@
                                     </span>
                                 </div>
                             </a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

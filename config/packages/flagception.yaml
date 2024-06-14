@@ -6,3 +6,7 @@ flagception:
             default: false
         export_data:
             default: false
+        registration:
+            default: false
+        forgot_password:
+            default: false

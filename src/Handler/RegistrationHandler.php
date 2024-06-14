@@ -13,16 +13,18 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
-use App\Entity\Setting;
 use App\Entity\User;
-use App\Repository\SettingRepository;
+use App\Entity\Mount;
+use App\Entity\Setting;
+use App\Entity\Preference;
 use Psr\Log\LoggerInterface;
 use App\Security\EmailVerifier;
 use App\Repository\UserRepository;
 use Symfony\Component\Mime\Address;
+use App\Repository\SettingRepository;
 use App\Service\CommandExecutorService;
-use App\Service\PendingActivationService;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Service\PendingActivationService;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -52,15 +54,17 @@ final class RegistrationHandler
      */
     public function handleRegistration(User $user, string $plainPassword, string $context = 'normal'): void
     {
-        $user->setPassword(
-            $this->userPasswordHasher->hashPassword($user, $plainPassword)
-        );
-        $user->setRegisteredAt(new \DateTimeImmutable());
-
+        $user
+            ->setPassword(
+                $this->userPasswordHasher->hashPassword($user, $plainPassword)
+            )
+            ->setRegisteredAt(new \DateTimeImmutable())
+            ->setApiKey(bin2hex(random_bytes(16)));
         try {
             $this->entityManager->persist($user);
+            $this->createPreferences($user);
+            $this->createMount($user);
             $this->entityManager->flush();
-            $this->pendingActivationService->create($user, $plainPassword);
 
             if ($context === 'admin_creation') {
                 $this->activateUser($user);
@@ -139,5 +143,42 @@ final class RegistrationHandler
                 ->subject('Please Confirm your Email')
                 ->htmlTemplate('registration/confirmation_email.html.twig')
         );
+    }
+
+    /**
+     * Create the preferences for the user.
+     *
+     * @param User $user The user to create the preferences for
+     */
+    private function createPreferences(User $user): void
+    {
+        $preference = new Preference();
+        $preference
+            ->setUser($user)
+            ->setDisplay('list')
+            ->setShell('lshell')
+            ->setSelectedWidgets(['cpu_1', 'mem_1', 'disk_1', 'net_3'])
+            ->setTheme('dark')
+            ->setBackdrop('user-backdrop.jpg')
+            ->setAvatar('user-avatar.jpg')
+            ->setFullAppListingEnabled(true)
+            ->setGravatarEnabled(true)
+            ->setVerbosityEnabled(true);
+        $this->entityManager->persist($preference);
+    }
+
+    /**
+     * Create the mount for the user.
+     *
+     * @param User $user The user to create the mount for
+     */
+    private function createMount(User $user): void
+    {
+        $mount = new Mount();
+        $mount
+            ->setPath('/')
+            ->setUser($user)
+            ->setIsRclone(false);
+        $this->entityManager->persist($mount);
     }
 }

@@ -41,7 +41,6 @@ class UserActivationController extends AbstractController
         }
 
         $this->registrationHandler->activateUser($user);
-        $this->addFlash('success', 'User activated successfully');
 
         return $this->redirectToRoute('admin_user_list');
     }
