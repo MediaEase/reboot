@@ -39,6 +39,7 @@ final class ToggleSwitchType extends AbstractType
 
     public function buildView(FormView $formView, FormInterface $form, array $options): void
     {
+        $formView->vars['checked'] = $form->getData();
         $formView->vars['label'] = $options['label'];
     }
 
