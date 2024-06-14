@@ -22,7 +22,7 @@ window.toggleIPVisibility = toggleIPVisibility;
 import { Tab, Modal, Popover, Ripple, Tooltip, initTE } from "tw-elements";
 
 document.addEventListener('DOMContentLoaded', () => {
-    initTE({ Tab, Modal, Popover, Ripple, Tooltip });
+    initTE({ Tab, Modal, Popover, Ripple, Tooltip, Validation });
 
     const TomSelectConfig = {
         plugins: ['remove_button'],
