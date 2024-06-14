@@ -92,17 +92,17 @@ final class ScanAppsCommand extends Command
         $returnStringParts = [];
         if ($this->addedCount > 0) {
             $output->writeln('Added apps: '.implode(', ', $this->addedApps));
-            $returnStringParts[] = $this->addedCount . ' apps added';
+            $returnStringParts[] = $this->addedCount.' apps added';
         }
 
         if ($this->updatedCount > 0) {
             $output->writeln('Updated apps: '.implode(', ', $this->updatedApps));
-            $returnStringParts[] = $this->updatedCount . ' apps updated';
+            $returnStringParts[] = $this->updatedCount.' apps updated';
         }
 
         if ($this->skippedCount > 0) {
             $output->writeln('Skipped apps: '.implode(', ', $this->skippedApps));
-            $returnStringParts[] = $this->skippedCount . ' apps skipped';
+            $returnStringParts[] = $this->skippedCount.' apps skipped';
         }
 
         if ($returnStringParts !== []) {
