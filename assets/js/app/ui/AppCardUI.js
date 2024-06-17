@@ -25,6 +25,7 @@ class AppCardUI {
             console.error('Grid container not found');
             throw new Error('Grid container not found');
         }
+        this.translator = window.translator;
     }
 
     /**
@@ -59,7 +60,7 @@ class AppCardUI {
         const appNameSanitized = slugify(appDetail.name);
         const hasChildServices = appDetail.services.length > 1;
         const logoPath = `/uploads/soft_logos/${slugify(appDetail.name)}.png`;
-        const appApiKey = appDetail.services[0]?.apikey || 'No API Key';
+        const appApiKey = appDetail.services[0]?.apikey || this.translator.trans('No API Key');
         const [serverPort, webPort] = this.generatePorts(appDetail);
     
         const allServicesInactive = appDetail.services.every(service => service.status !== 'active');
@@ -94,7 +95,7 @@ class AppCardUI {
                 <div class="flex justify-between border-t border-gray-300 mx-8 my-2">
                     <div class="flex-none my-1">
                         <span class="text-sm sm:text-base inline-flex text-left items-center text-white rounded-lg">
-                            Api Key
+                            ${this.translator.trans('API Key')}
                         </span>
                     </div>
                     ${CodeBlock(appNameSanitized, 'apikey', appApiKey)}
@@ -103,7 +104,7 @@ class AppCardUI {
                     <div class="flex justify-between border-t border-gray-300 mx-8 my-2">
                         <div class="flex-none my-1">
                             <span class="text-sm sm:text-base inline-flex text-left items-center text-white rounded-lg">
-                                Server Port
+                                ${this.translator.trans('Server Port')}
                             </span>
                         </div>
                         ${CodeBlock(appNameSanitized, 'serverPort', serverPort)}
@@ -111,7 +112,7 @@ class AppCardUI {
                     <div class="flex justify-between border-t border-gray-300 mx-8 my-2">
                         <div class="flex-none my-1">
                             <span class="text-sm sm:text-base inline-flex text-left items-center text-white rounded-lg">
-                                Web Port
+                                ${this.translator.trans('Web Port')}
                             </span>
                         </div>
                         ${CodeBlock(appNameSanitized, 'webPort', webPort)}
@@ -119,7 +120,7 @@ class AppCardUI {
                     <div class="flex justify-between border-t border-gray-300 mx-8 my-2">
                         <div class="flex-none my-1">
                             <span class="text-sm sm:text-base inline-flex text-left items-center text-white rounded-lg">
-                                Port
+                                ${this.translator.trans('Port')}
                             </span>
                         </div>
                         ${CodeBlock(appNameSanitized, 'port', serverPort)}
@@ -146,8 +147,8 @@ class AppCardUI {
      *                               Returns 'N/A' for each port if not applicable.
      */
     generatePorts(appDetail) {
-        let serverPort = 'N/A';
-        let webPort = 'N/A';
+        let serverPort = this.translator.trans('N/A');
+        let webPort = this.translator.trans('N/A');
         appDetail.services.forEach(service => {
             if (service.name.includes('-server')) {
                 serverPort = service.ports[0]?.default || serverPort;
@@ -168,7 +169,7 @@ class AppCardUI {
      */
     showModalDetails(appName, appDetails) {
         const modal = document.getElementById('appModal');
-        modal.innerHTML = '<ul>' + appDetails.map(detail => `<li>${detail}</li>`).join('') + '</ul>';
+        modal.innerHTML = '<ul>' + appDetails.map(detail => `<li>${this.translator.trans(detail)}</li>`).join('') + '</ul>';
     }
 
     /**

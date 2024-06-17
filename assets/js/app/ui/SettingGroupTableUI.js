@@ -11,14 +11,15 @@ class SettingGroupTableUI {
             throw new Error('Table container not found');
         }
         this.datatable = null;
+        this.translator = window.translator;
     }
 
     initialize(groupsData) {
         const data = {
             columns: [
-                { label: 'Name', field: 'name' },
-                { label: 'Apps', field: 'apps' },
-                { label: 'Actions', field: 'actions', sort: false },
+                { label: this.translator.trans('Name'), field: 'name' },
+                { label: this.translator.trans('Apps'), field: 'apps' },
+                { label: this.translator.trans('Actions'), field: 'actions', sort: false },
             ],
             rows: this.transformData(groupsData)
         };
@@ -48,7 +49,7 @@ class SettingGroupTableUI {
     }
 
     createActionButtons(groupId) {
-        return `<a href='/access-groups/${groupId}/edit'>Edit</a> | <a href='#' onclick='deleteGroup(${groupId})'>Delete</a>`;
+        return `<a href='/access-groups/${groupId}/edit'>${this.translator.trans('Edit')}</a> | <a href='#' onclick='deleteGroup(${groupId})'>${this.translator.trans('Delete')}</a>`;
     }
 }
 

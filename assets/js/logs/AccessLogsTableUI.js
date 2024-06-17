@@ -19,6 +19,7 @@ class AccessLogsTableUI {
     constructor(containerId) {
         this.containerId = containerId;
         this.container = document.getElementById(containerId);
+        this.translator = window.translator;
         if (!this.container) {
             console.error('Table container not found');
             throw new Error('Table container not found');
@@ -41,10 +42,10 @@ class AccessLogsTableUI {
 
         const data = {
             columns: [
-                { label: 'Type', field: 'type', maxWidth: '5%' },
-                { label: 'Content', field: 'content', maxWidth: '70%' },
-                { label: 'Timestamp', field: 'createdAt', maxWidth: '10%' },
-                { label: 'IP Address', field: 'ip_address', maxWidth: '10%' },
+                { label: this.translator.trans('Type'), field: 'type', maxWidth: '5%' },
+                { label: this.translator.trans('Content'), field: 'content', maxWidth: '70%' },
+                { label: this.translator.trans('Timestamp'), field: 'createdAt', maxWidth: '10%' },
+                { label: this.translator.trans('IP Address'), field: 'ip_address', maxWidth: '10%' },
             ],
             rows: this.transformData(logsArray)
         };

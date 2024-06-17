@@ -32,6 +32,7 @@ class AppTableUI {
             throw new Error('Table container not found');
         }
         this.datatable = null;
+        this.translator = window.translator;
     }
 
     /**
@@ -43,12 +44,12 @@ class AppTableUI {
     initialize(appsData, preferencesData) {
         const data = {
             columns: [
-                { label: 'Name', field: 'name' },
-                { label: 'Version', field: 'version' },
-                { label: 'Status', field: 'status' },
-                { label: 'API Key/Socket', field: 'apiKey' },
-                { label: 'Ports', field: 'ports' },
-                { label: 'Actions', field: 'actions', sort: false },
+                { label: this.translator.trans('Name'), field: 'name' },
+                { label: this.translator.trans('Version'), field: 'version' },
+                { label: this.translator.trans('Status'), field: 'status' },
+                { label: this.translator.trans('API Key/Socket'), field: 'apiKey' },
+                { label: this.translator.trans('Ports'), field: 'ports' },
+                { label: this.translator.trans('Actions'), field: 'actions', sort: false },
             ],
             rows: this.transformData(appsData, preferencesData)
         };
@@ -137,9 +138,9 @@ class AppTableUI {
             if (columnName === 'ports' && service.ports && service.ports.length > 0) {
                 data = service.ports.map(port => port.default).join(', ');
             } else if (columnName === 'apiKey') {
-                data = service.apikey && service.apikey !== '' ? service.apikey : 'N/A';
+                data = service.apikey && service.apikey !== '' ? service.apikey : this.translator.trans('N/A');
             } else {
-                data = service[columnName] ? service[columnName] : 'N/A';
+                data = service[columnName] ? service[columnName] : this.translator.trans('N/A');
             }
             const breakLine = services.length > 1 && index === 0 ? '<br>' : '';
             const formattedData = isSpecialCase ? CodeBlock(service.name, columnName, data) : formatter(data);
