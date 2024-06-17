@@ -65,7 +65,7 @@ class AppStoreUI {
         this.renderMainContent(appStoreContainer);
         this.container.appendChild(appStoreContainer);
         this.setupEventListeners();
-        this.updateMainContent(this.appStoreManager.getHomeCategory());
+        this.updateMainContent(this.appStoreManager.getDiscoverCategory());
     }
 
     /**
@@ -74,7 +74,7 @@ class AppStoreUI {
      */
     renderNavigation(parentContainer) {
         const appTypeCounts = this.appStoreManager.getAppTypeCounts();
-        const types = Object.keys(appTypeCounts).length > 0 ? Object.keys(appTypeCounts).sort() : ['home'];
+        const types = Object.keys(appTypeCounts).length > 0 ? Object.keys(appTypeCounts).sort() : ['discover'];
         let navItems = this.createNavItems(types, appTypeCounts);
 
         const nav = document.createElement('nav');
@@ -255,7 +255,7 @@ class AppStoreUI {
      */
     createNavItems(types, appTypeCounts) {
         const icons = {
-            home: `<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" class="w-6 h-6"><path fill="currentColor" d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>`,
+            discover: `<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 512 512" class="w-6 h-6"><path fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32" d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192s192-86 192-192Z"/><path fill="currentColor" d="m350.67 150.93l-117.2 46.88a64 64 0 0 0-35.66 35.66l-46.88 117.2a8 8 0 0 0 10.4 10.4l117.2-46.88a64 64 0 0 0 35.66-35.66l46.88-117.2a8 8 0 0 0-10.4-10.4M256 280a24 24 0 1 1 24-24a24 24 0 0 1-24 24"/></svg>`,
             media: `<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48" class="w-6 h-6"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M8.797 8.797c8.397-8.396 22.01-8.396 30.406 0s8.396 22.01 0 30.406s-22.01 8.396-30.406 0"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="m34 24l-16-9.238v18.476z"/></svg>`,
             remote: `<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 48 48" class="w-6 h-6"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M37.849 20.953L27.098 10.2c-.44-.44-1.332-.26-1.992.4L4.182 31.524c-.66.66-.839 1.552-.399 1.992l10.751 10.751c.44.44 1.332.261 1.992-.399h0L37.45 22.945c.66-.66.839-1.553.399-1.992"/><circle cx="14.943" cy="33.042" r="2.484" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M31.171 6.002a10.8 10.8 0 0 1 7.702 3.318h0a10.8 10.8 0 0 1 3.323 7.697m-10.204-7.88a7.115 7.115 0 0 1 7.068 7.077m-6.324-4.147a3.57 3.57 0 0 1 3.302 2.65a2.8 2.8 0 0 1 .089.74"/><circle cx="26.279" cy="16.303" r=".75" fill="currentColor"/><circle cx="32.222" cy="22.247" r=".75" fill="currentColor"/><circle cx="29.25" cy="19.275" r=".75" fill="currentColor"/><circle cx="23.307" cy="19.275" r=".75" fill="currentColor"/><circle cx="29.25" cy="25.218" r=".75" fill="currentColor"/><circle cx="26.279" cy="22.247" r=".75" fill="currentColor"/><circle cx="20.335" cy="22.247" r=".75" fill="currentColor"/><circle cx="26.279" cy="28.19" r=".75" fill="currentColor"/><circle cx="23.307" cy="25.218" r=".75" fill="currentColor"/></svg>`,
             automation: `<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" class="w-6 h-6"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M19 16v-2c0-2.828 0-4.243-.879-5.121C17.243 8 15.828 8 13 8h-2c-2.828 0-4.243 0-5.121.879C5 9.757 5 11.172 5 14v2c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16m0 2c1.414 0 2.121 0 2.56-.44c.44-.439.44-1.146.44-2.56s0-2.121-.44-2.56C21.122 12 20.415 12 19 12M5 18c-1.414 0-2.121 0-2.56-.44C2 17.122 2 16.415 2 15s0-2.121.44-2.56C2.878 12 3.585 12 5 12m8.5-8.5a1.5 1.5 0 1 1-3 0a1.5 1.5 0 0 1 3 0M12 5v3m-3 5v1m6-1v1"/><path d="M10 17.5s.667.5 2 .5s2-.5 2-.5"/></g></svg>`,
@@ -278,8 +278,8 @@ class AppStoreUI {
 
         navItems.unshift(`<li class="mb-2 flex justify-start items-center pl-4">
             <a href="#" class="text-gray-700 dark:text-gray-200 category-link flex items-center mr-2" data-type="all" target="blank">
-                ${icons['home']}
-                <span class="ml-2">${this.translator.trans('Home')}</span>
+                ${icons['discover']}
+                <span class="ml-2">${this.translator.trans('Discover')}</span>
             </a>
         </li>`);
         return navItems.join('');
@@ -292,7 +292,7 @@ class AppStoreUI {
      */
     handleCategoryChange(type) {
         let filteredApps = type === 'all' 
-            ? this.appStoreManager.getHomeCategory() 
+            ? this.appStoreManager.getDiscoverCategory() 
             : this.appStoreManager.filterAppsByType(type);
         if (type !== 'all') {
             filteredApps = filteredApps.sort((a, b) => a.application.name.localeCompare(b.application.name));

@@ -10,7 +10,7 @@
  * @method {Array} filterAppsByUserGroup - Filters the apps based on user group and full app listing status.
  * @method {Array} handleSearch - Handles the search functionality.
  * @method {Array} resetFilter - Resets the filter.
- * @method {Array} getHomeCategory - Gets the home category.
+ * @method {Array} getDiscoverCategory - Gets the discover category.
  * @method {Object} getAppTypeCounts - Gets the app type counts.
  * @method {void} togglePopover - Toggles the popover.
  */
@@ -71,10 +71,10 @@ class AppStoreManager {
     }
 
     /**
-     * Gets the home category.
-     * @returns {Array} - An array of apps for the home category.
+     * Gets the discover category.
+     * @returns {Array} - An array of apps for the discover category.
      */
-    getHomeCategory() {
+    getDiscoverCategory() {
         const apps = this.isFullAppListing ? this.storeData : this.filterAppsByUserGroup(this.storeData);
         return this.resetFilter(apps);
     }
