@@ -303,7 +303,7 @@ t.add("reset", "Reset", "messages", "en");
 t.add("reinstall", "Reinstall", "messages", "en");
 t.add("Search an app...", "Search an app...", "messages", "en");
 t.add("Close", "Close", "messages", "en");
-t.add("Home", "Discover", "messages", "en");
+t.add("Discover", "Discover", "messages", "en");
 t.add("Executing the script...", "Executing the script...", "messages", "en");
 t.add("Error executing the script.", "Error executing the script.", "messages", "en");
 t.add("Error", "Error", "messages", "en");
