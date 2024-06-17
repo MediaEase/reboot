@@ -77,12 +77,10 @@ class AppTableUI {
             const appServices = app.services || [];
             const formattedName = this.formatServiceNameDisplay(appName, appServices);
             const actions = this.createActionButtons(appName, app, preferencesData);
-    
             const version = this.generateColumnData(appServices, 'version');
             const statusBadge = this.generateColumnData(appServices, 'status', this.generateStatusBadge);
             const apiKey = this.generateColumnData(appServices, 'apiKey', CodeBlock);
             const ports = this.generateColumnData(appServices, 'ports');
-    
             transformed.push({
                 name: `<img src="/uploads/soft_logos/${slugify(appName)}.png" alt="${slugify(appName)} logo" style="display:inline-block; width: 30px; height: 30px; margin-right: .25rem;"> ${formattedName}`,
                 version: version,
@@ -102,11 +100,9 @@ class AppTableUI {
      * @param {Datatable} datatable - The Datatable instance.
      */
     setupAdvancedSearch(datatable) {
-        const advancedSearchInput = document.getElementById('app-finder');
-        const advancedSearchButton = document.getElementById('app-finder-button');
-    
-        if (!advancedSearchInput || !advancedSearchButton) {
-            console.error('search elements not found');
+        const advancedSearchInput = document.getElementById('app-finder-list');    
+        if (!advancedSearchInput) {
+            console.error('search not found');
             return;
         }
         const search = (value) => {
@@ -118,7 +114,6 @@ class AppTableUI {
             search(advancedSearchInput.value);
         };
     
-        advancedSearchButton.addEventListener("click", handleSearchEvent);
         advancedSearchInput.addEventListener("input", handleSearchEvent);
     }
 
@@ -225,6 +220,13 @@ class AppTableUI {
         const optionsMenuInstance = new OptionsMenu();
         document.addEventListener('click', (event) => optionsMenuInstance.onDocumentClick(event));
         document.addEventListener('click', (event) => optionsMenuInstance.onButtonMenuClick(event));
+        document.addEventListener('keydown', (event) => {
+            if ((event.metaKey || event.ctrlKey) && event.key === 'k') {
+                event.preventDefault();
+                const searchInput = document.querySelector('#app-finder-list');
+                searchInput.focus();
+            }
+        });
     }
 }
 
