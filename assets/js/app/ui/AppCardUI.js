@@ -13,6 +13,7 @@ import { OptionsMenu } from "./elements/OptionsMenu.js";
  * @method generatePorts - Generates server and web port numbers for a given application detail.
  * @method showModalDetails - Displays a modal with detailed information about an application.
  * @method setupEventListeners - Sets up event listeners for the card elements.
+ * @method filterCards - Filters the displayed cards based on the search input.
  */
 class AppCardUI {
     /**
@@ -26,6 +27,7 @@ class AppCardUI {
             throw new Error('Grid container not found');
         }
         this.translator = window.translator;
+        this.appsData = {};
     }
 
     /**
@@ -34,11 +36,38 @@ class AppCardUI {
      * @param {Object} preferencesData - User's preferences data.
      */
     initialize(appsData, preferencesData) {
-        Object.entries(appsData).forEach(([appName, appDetail]) => {
-            const cardElement = this.createCard(appName, appDetail, preferencesData);
+        preferencesData.pinnedApps = preferencesData.pinnedApps || [];
+        this.appsData = appsData;
+        this.preferencesData = preferencesData;
+        this.renderSearchField(this.preferencesData);
+        Object.entries(this.appsData).forEach(([appName, appDetail]) => {
+            const cardElement = this.createCard(appName, appDetail, this.preferencesData);
             this.container.appendChild(cardElement);
         });
         this.setupEventListeners();
+    }    
+
+    /**
+     * Renders the search field.
+     * 
+     * @param {Object} preferencesData - User's preferences data.
+     */
+    renderSearchField(preferencesData) {
+        const searchFieldHTML = `
+            <div class="container mx-auto card px-2 py-6" style="${ preferencesData == 'grid' ? 'display: grid;' : 'display: none;)'}">
+                <div class="mx-[0.25rem] px-4 sm:px-2 overflow-x-auto">
+                    <div class="relative mb-4 flex w-full flex-wrap items-stretch">
+                        <div class="relative w-full">
+                            <input type="search" id="app-finder-card" class="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-base text-neutral-200 bg-[#5a6c7c85] bg-opacity-10 border-0 border-b-2 border-gray-300 appearance-none dark:bg-[#5a6c7c85] dark:border-gray-600 dark:focus:border-blue focus:outline-none focus:ring-0 focus:border-blue peer" placeholder=" " />
+                            <label for="app-finder-card" class="absolute text-base text-neutral-200 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-2.5 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4">Search an app...</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        const searchContainer = document.createElement('div');
+        searchContainer.innerHTML = searchFieldHTML;
+        this.container.parentElement.insertBefore(searchContainer, this.container);
     }
 
     /**
@@ -135,7 +164,7 @@ class AppCardUI {
             this.showModalDetails(appName, appDetail);
         });
 
-    return card;
+        return card;
     }
 
     /**
@@ -179,6 +208,29 @@ class AppCardUI {
         const optionsMenuInstance = new OptionsMenu();
         document.addEventListener('click', (event) => optionsMenuInstance.onDocumentClick(event));
         document.addEventListener('click', (event) => optionsMenuInstance.onButtonMenuClick(event));
+        document.getElementById('app-finder-card').addEventListener('input', (event) => this.filterCards(event.target.value));
+        document.addEventListener('keydown', (event) => {
+            if ((event.metaKey || event.ctrlKey) && event.key === 'k') {
+                event.preventDefault();
+                document.getElementById('app-finder-card').focus();
+            }
+        });
+    }
+
+    /**
+     * Filters the displayed cards based on the search input.
+     * @param {string} query - The search query.
+     */
+    filterCards(query) {
+        const queryLower = query.toLowerCase();
+        const filteredApps = Object.entries(this.appsData).filter(([appName, appDetail]) => {
+            return appDetail.name.toLowerCase().includes(queryLower);
+        });
+        this.container.innerHTML = '';
+        filteredApps.forEach(([appName, appDetail]) => {
+            const cardElement = this.createCard(appName, appDetail, this.preferencesData);
+            this.container.appendChild(cardElement);
+        });
     }
 }
 
