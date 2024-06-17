@@ -237,6 +237,14 @@ class AppStoreUI {
                 this.hideConsole();
             }
         });
+        // Handling the press of cmd + K or ctrl + K to focus the search input
+        document.addEventListener('keydown', (event) => {
+            if ((event.metaKey || event.ctrlKey) && event.key === 'k') {
+                event.preventDefault();
+                const searchInput = document.querySelector('#appSearch');
+                searchInput.focus();
+            }
+        });
     }
 
     /**
