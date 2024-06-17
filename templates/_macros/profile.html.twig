@@ -1,10 +1,10 @@
 {% macro avatar(user) %}
-    {% set avatarSrc = gravatar_exists(user.email) ? gravatar(user.email) : user.getPreference().avatar %}
+    {% set avatarSrc = gravatar_exists(user.email) ? gravatar(user.email) : user.getPreferences().avatar %}
     <img src="{{ avatarSrc }}" alt="{{ user.username }} avatar" class="absolute inset-0 h-full w-full object-cover"/>
 {% endmacro %}
 
 {% macro avatar_link(user, size = 8, rounded = 'full') %}
-    {% set avatarSrc = gravatar_exists(user.email) ? gravatar(user.email) : user.getPreference().avatar %}
+    {% set avatarSrc = gravatar_exists(user.email) ? gravatar(user.email) : user.getPreferences().avatar %}
     <img src="{{ avatarSrc }}" alt="{{ user.username }} avatar" class="w-{{ size }} h-{{ size }} rounded-{{ rounded }}"/>
 {% endmacro %}
 
