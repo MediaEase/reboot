@@ -39,6 +39,11 @@ final class FeatureFlagExtension extends AbstractExtension
     {
         return [
             'app_settings_extras_transcoding' => 'transcoding',
+            'app_settings_system_subdomains' => 'subdomains',
+            'app_register' => 'registration',
+            'app_forgot_password_request' => 'forgot_password',
+            'app_check_email' => 'check_email',
+            'app_reset_password' => 'reset_password',
         ];
     }
 }

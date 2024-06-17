@@ -10,3 +10,5 @@ flagception:
             default: false
         forgot_password:
             default: false
+        subdomains:
+            default: false

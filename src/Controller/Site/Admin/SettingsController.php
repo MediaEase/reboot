@@ -88,8 +88,8 @@ final class SettingsController extends AbstractController
         ]);
     }
 
-    #[Route('/system/subdomains', name: 'system_subdomains')]
     #[IsGranted('ROLE_ADMIN')]
+    #[Route('/system/subdomains', name: 'system_subdomains', defaults: ['_feature' => 'subdomains'], methods: ['GET'])]
     public function systemSubdomainsSettings(Request $request): Response
     {
         $this->serviceRepository->findAll();
