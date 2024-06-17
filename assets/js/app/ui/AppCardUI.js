@@ -39,7 +39,7 @@ class AppCardUI {
         preferencesData.pinnedApps = preferencesData.pinnedApps || [];
         this.appsData = appsData;
         this.preferencesData = preferencesData;
-        this.renderSearchField(this.preferencesData);
+        this.renderSearchField(preferencesData.display);
         Object.entries(this.appsData).forEach(([appName, appDetail]) => {
             const cardElement = this.createCard(appName, appDetail, this.preferencesData);
             this.container.appendChild(cardElement);
@@ -48,13 +48,12 @@ class AppCardUI {
     }    
 
     /**
-     * Renders the search field.
-     * 
-     * @param {Object} preferencesData - User's preferences data.
+     * Renders the search field based on the view (grid or list).
+     * @param {string} display - The current display preference ('grid' or 'list').
      */
-    renderSearchField(preferencesData) {
+    renderSearchField(display) {
         const searchFieldHTML = `
-            <div class="container mx-auto card px-2 py-6" style="${ preferencesData == 'grid' ? 'display: grid;' : 'display: none;)'}">
+            <div id="app-finder-card-container" class="container mx-auto card px-2 pt-6" style="${display == 'grid' ? 'display: block;' : 'display: none;'}">
                 <div class="mx-[0.25rem] px-4 sm:px-2 overflow-x-auto">
                     <div class="relative mb-4 flex w-full flex-wrap items-stretch">
                         <div class="relative w-full">
@@ -91,10 +90,8 @@ class AppCardUI {
         const logoPath = `/uploads/soft_logos/${slugify(appDetail.name)}.png`;
         const appApiKey = appDetail.services[0]?.apikey || this.translator.trans('No API Key');
         const [serverPort, webPort] = this.generatePorts(appDetail);
-    
         const allServicesInactive = appDetail.services.every(service => service.status !== 'active');
         const anyServiceInactive = appDetail.services.some(service => service.status !== 'active');
-    
         const [liquidClass, ringClass] = allServicesInactive
             ? ['liquid-red', 'ring-red-600']
             : anyServiceInactive
