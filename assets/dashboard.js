@@ -15,6 +15,12 @@ import './styles/app-store.css';
 import './js/clipboard.js';
 import './js/app/index.js';
 import { toDarkMode, toLightMode } from './js/menus/theme_switcher.js';
+import Translator from 'bazinga-translator';
+import translations from './translations/en.json';
+Translator.locale = 'en';
+Translator.fromJSON(translations);
+global.Translator = Translator;
 
 window.toDarkMode = toDarkMode;
 window.toLightMode = toLightMode;
+window.translator = Translator;

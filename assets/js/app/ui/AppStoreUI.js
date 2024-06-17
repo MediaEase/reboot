@@ -37,6 +37,7 @@ class AppStoreUI {
         this.filterAppsByUserGroup = appStoreManager.filterAppsByUserGroup;
         this.appStoreBanner = appStoreBanner;
         this.verbosity = verbosity;
+        this.translator = window.translator;
     }
 
     /**
@@ -49,7 +50,7 @@ class AppStoreUI {
         modalTitle.innerHTML = `
         <div class="flex justify-center items-center">
             <div class="py-1 rounded-md w-4/12 space-x-6 flex items-left">
-                <input type="search" id="appSearch" class="w-full border-none rounded-lg bg-base-100 text-sm focus:outline-none text-gray-700 dark:text-gray-800" placeholder="Search an app...">
+                <input type="search" id="appSearch" class="w-full border-none rounded-lg bg-base-100 text-sm focus:outline-none text-gray-700 dark:text-gray-800" placeholder="${this.translator.trans('Search an app...')}">
             </div>
         </div>
         `;
@@ -80,7 +81,7 @@ class AppStoreUI {
         nav.className = "w-48 flex-shrink-0 pb-4 border-r border-gray-500 border-opacity-75 rounded-bl-xl";
         nav.innerHTML = `
         <div class="px-2 pt-3">
-            <h2 class="text-gray-700 dark:text-gray-200 text-2xl pb-4 mb-4 font-bold capitalize">Categories</h2>
+            <h2 class="text-gray-700 dark:text-gray-200 text-2xl pb-4 mb-4 font-bold capitalize">${this.translator.trans('Categories')}</h2>
             <ul class="mt-4" id="navItems">${navItems}</ul>
         </div>`;
 
@@ -100,7 +101,7 @@ class AppStoreUI {
             <div class="console-output max-w-5xl mx-auto hidden content-background text-white p-2 pt-4 rounded-xl relative mb-4 max-h-[370px]">
                 <button type="button"
                     class="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none absolute top-2 right-2 fill-red-800 dark:fill-white text-red-800 bg-red-800"
-                    id="closeConsoleButton" aria-label="Close">
+                    id="closeConsoleButton" aria-label="${this.translator.trans('Close')}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" class="w-8 h-8 fill-red-800 font-bold dark:fill-white pr-4 text-red-800 bg-red-800"><path fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L17.94 6M18 18L6.06 6"/></svg>
                 </button>
             </div>
@@ -129,11 +130,13 @@ class AppStoreUI {
                         <img class="h-auto max-w-[70px] p-1 rounded-full" src="${logoPath}" alt="${application.name}_logo">
                     </div>
                     <div class="flex-grow ml-4 text-left">
-                        <h3 class="mb-2 font-semibold text-xl leading-tight text-gray-900 dark:text-neutral-200">${application.name}</h3>
-                        <p class="text-gray-500 text-md mb-2 pb-2 ${shouldApplyBlur ? 'blur-[1px]' : ''}">${app.description}</p>
-                        <span class="prose text-sm mt-4 py-3 text-gray-500">Category: 
-                            <a href="#" class="text-blue-500 text-sm category-link"data-type="${app.type}" target="blank">
-                                ${app.type}
+                        <h3 class="mb-2 font-semibold text-xl leading-tight text-gray-900 dark:text-neutral-200 flex items-center">
+                            ${application.name}
+                        </h3>
+                        <p class="text-gray-500 text-md mb-2 pb-2 ${shouldApplyBlur ? 'blur-[1px]' : ''}">${this.translator.trans(app.description)}</p>
+                        <span class="prose text-sm mt-4 py-3 text-gray-500">${this.translator.trans('Category')}: 
+                            <a href="#" class="text-blue-500 text-sm category-link" data-type="${app.type}" target="blank">
+                                ${this.translator.trans(app.type.charAt(0).toUpperCase() + app.type.slice(1) + '_group')}
                             </a>
                         </span>
                     </div>
@@ -159,7 +162,7 @@ class AppStoreUI {
         const popoverArrowSvg = '<path d="m19.5 8.25-7.5 7.5-7.5-7.5" stroke-linecap="round" stroke-linejoin="round"></path>';
         const popoverClasses = isAppInstalled ? 'bg-red-500 hover:bg-red-600 popover-arrow-button' : 'hidden';
         const links = isButtonDisabled ? ['Remove'] : ['Backup', 'Reinstall', 'Remove', 'Reset', 'Update'];
-        const listItems = links.map(link => `<li><a data-action="${link.toLowerCase()}" class="action-link">${link}</a></li>`).join('');
+        const listItems = links.map(link => `<li><a data-action="${link.toLowerCase()}" class="action-link">${this.translator.trans(link)}</a></li>`).join('');
         const popoverButton = `
         <div class="dropdown dropdown-bottom">
             <div tabindex="0" role="button" class="rounded-r-lg inline-flex items-center py-2 ${popoverClasses} ${isButtonDisabled ? 'blur-[2px]' : ''}">
@@ -184,7 +187,7 @@ class AppStoreUI {
                     ${svgPath}
                 </svg>
                 <span class="ml-4 mr-2 flex items-start flex-col leading-none">
-                    <span class="text-xs text-teal-100">${isAppInstalled ? 'Remove' : 'Install'}</span>
+                    <span class="text-xs text-teal-100">${isAppInstalled ? this.translator.trans('Remove') : this.translator.trans('Install')}</span>
                     <span class="title-font text-sm text-gray-100 font-bold">${app.application.name}</span>
                 </span>
             </a>
@@ -256,7 +259,7 @@ class AppStoreUI {
             return `<li class="mb-2 flex justify-start items-center pl-4">
                 <a href="#" class="${itemClasses} category-link flex items-center mr-2" data-type="${type}" target="blank">
                     ${icons[type]}
-                    <span class="ml-2">${type.charAt(0).toUpperCase() + type.slice(1)}</span>
+                    <span class="ml-2">${this.translator.trans(type.charAt(0).toUpperCase() + type.slice(1) + '_group')}</span>
                 </a>
                 <div class="px-2 py-0.5 text-gray-700 dark:text-gray-200 text-xs content-background rounded-full">
                     ${appTypeCounts[type]}
@@ -267,7 +270,7 @@ class AppStoreUI {
         navItems.unshift(`<li class="mb-2 flex justify-start items-center pl-4">
             <a href="#" class="text-gray-700 dark:text-gray-200 category-link flex items-center mr-2" data-type="all" target="blank">
                 ${icons['home']}
-                <span class="ml-2">Home</span>
+                <span class="ml-2">${this.translator.trans('Home')}</span>
             </a>
         </li>`);
         return navItems.join('');
@@ -304,7 +307,7 @@ class AppStoreUI {
             consoleContainer.innerHTML = `
                 <button type="button"
                     class="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none absolute top-1 right-1"
-                    id="closeConsoleButton" aria-label="Close">
+                    id="closeConsoleButton" aria-label="${this.translator.trans('Close')}">
                     <svg width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"
                         class="w-5 h-5 rounded-full bg-gray-300 dark:bg-gray-700 fill-gray-800 text-gray-800 dark:text-gray-200 dark:fill-gray-200 font-bold mt-1 mr-2 hover:bg-gray-400 dark:hover:bg-gray-400 hover:fill-gray-900 dark:hover:fill-gray-200">
                         <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L17.94 6M18 18L6.06 6"></path>
@@ -316,9 +319,9 @@ class AppStoreUI {
                     </div>
                 </div>
                 <div class="bg-gray-100 dark:bg-gray-800 p-1 rounded-sm border border-gray-300 dark:border-gray-700 text-left py-2 shadow-inner text-sm text-neutral-700 dark:text-neutral-200 font-mono">
-                    <p>Executing the script...</p>
+                    <p>${this.translator.trans('Executing the script...')}</p>
                 </div>
-            `;  
+            `; 
         }  
         
         fetchData('/api/store/install', 'POST', { appId, action })
@@ -336,7 +339,7 @@ class AppStoreUI {
                         });
                     } else {
                         const message = document.createElement('p');
-                        message.textContent = 'Error executing the script.';
+                        message.textContent = this.translator.trans('Error executing the script.');
                         consoleOutput.appendChild(message);
                     }
                 }
@@ -347,7 +350,7 @@ class AppStoreUI {
                     const consoleOutput = consoleContainer.querySelector('.bg-gray-100');
                     consoleOutput.innerHTML = '';
                     const message = document.createElement('p');
-                    message.textContent = `Error: ${error.message}`;
+                    message.textContent = `${this.translator.trans('Error')}: ${error.message}`;
                     consoleOutput.appendChild(message);
                 }
             });
