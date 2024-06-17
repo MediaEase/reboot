@@ -62,3 +62,7 @@ bun.lockb
 /public/uploads/*/custom/*.webp
 assets/icons/*
 reports/*
+assets/translations/*.js*
+!assets/translations/en.js
+!assets/translations/fr.js
+!assets/translations/config*

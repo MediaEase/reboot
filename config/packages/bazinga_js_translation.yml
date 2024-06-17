@@ -1,0 +1,10 @@
+bazinga_js_translation:
+  locale_fallback: 'en'
+  default_domain: 'messages'
+  active_domains: ['messages']
+  active_locales: ['en', 'fr']
+  locales: [en, fr]
+  default_output_format: js
+  available_translations_paths:
+    - '%kernel.project_dir%/translations'
+  target_dir: '%kernel.project_dir%/public/js/translations'
