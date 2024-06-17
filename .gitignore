@@ -63,6 +63,6 @@ bun.lockb
 assets/icons/*
 reports/*
 assets/translations/*.js*
-!assets/translations/en.js
-!assets/translations/fr.js
+!assets/translations/en.*
+!assets/translations/fr.*
 !assets/translations/config*
