@@ -109,7 +109,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: Preference::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: true)]
     #[OA\Property(description: 'The preferencess of the user.', ref: '#/components/schemas/Preference.item')]
-    #[Groups([self::GROUP_GET_USER_LIMITED, self::GROUP_GET_USER])]
+    #[Groups([self::GROUP_GET_USER_LIMITED, self::GROUP_GET_USER, Preference::GROUP_GET_PREFERENCES])]
     private ?Preference $preferences = null;
 
     #[ORM\Column(type: Types::STRING, length: 32, nullable: false)]

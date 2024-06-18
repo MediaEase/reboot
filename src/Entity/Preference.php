@@ -75,7 +75,7 @@ class Preference
     private ?string $avatar = 'user-avatar.jpg';
 
     #[ORM\Column(type: Types::BOOLEAN, options: ['default' => true])]
-    #[Groups([User::GROUP_GET_USER, User::GROUP_GET_USERS])]
+    #[Groups([User::GROUP_GET_USER, User::GROUP_GET_USERS, self::GROUP_GET_PREFERENCES])]
     #[OA\Property(description: 'Indicator if full app listing is enabled.', type: 'boolean')]
     private ?bool $isFullAppListingEnabled = true;
 
@@ -90,7 +90,7 @@ class Preference
     private ?string $primaryMountPath = '/';
 
     #[ORM\Column(type: Types::BOOLEAN, options: ['default' => false])]
-    #[Groups([User::GROUP_GET_USER, User::GROUP_GET_USERS])]
+    #[Groups([User::GROUP_GET_USER, User::GROUP_GET_USERS, self::GROUP_GET_PREFERENCES])]
     #[OA\Property(description: 'Indicator if verbosity is enabled.', type: 'boolean')]
     private ?bool $isVerbosityEnabled = false;
 
