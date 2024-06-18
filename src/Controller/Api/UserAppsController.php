@@ -32,9 +32,6 @@ final class UserAppsController extends AbstractController
     public function list(): Response
     {
         $services = $this->serviceRepository->findBy(['user' => $this->getUser()]);
-        $services = array_filter($services, static function ($service): bool {
-            return $service->getApplication()->getName() !== 'AppStore';
-        });
         usort($services, static function ($a, $b): int {
             return strcmp($a->getName(), $b->getName());
         });
