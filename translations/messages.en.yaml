@@ -131,3 +131,7 @@ Settings: Settings
 'Type': 'Type'
 'Timestamp': 'Timestamp'
 'IP Address': 'IP Address'
+'This app requires a Pro subscription. Please refer to the /settings/api page to enable your Pro license.': 'This app requires a Pro subscription. Please refer to the /settings/api page to enable your Pro license.'
+'This app requires a Pro subscription. Please contact your system administrator.': 'This app requires a Pro subscription. Please contact your system administrator.'
+'No apps found.': 'No apps found.'
+

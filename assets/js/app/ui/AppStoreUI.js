@@ -123,7 +123,23 @@ class AppStoreUI {
         const application = app.application;
         const logoPath = `/uploads/soft_logos/${application.logo}`;
         const cardClasses = `shadow-md gap-x-8 lg:gap-x-8 text-lg content-background dark:content-background light:border-2 border-gray-500 border-opacity-75 rounded-xl hover:shadow-xl p-4 flex flex-col justify-between`;
-        const proBadge = app.isPro ? '<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" class="w-4 h-4 fill-white ml-2"><path fill="#fbbf24" d="M11.219 3.375L8 7.399L4.781 3.375A1.002 1.002 0 0 0 3 4v15c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2V4a1.002 1.002 0 0 0-1.781-.625L16 7.399l-3.219-4.024c-.381-.474-1.181-.474-1.562 0M5 19v-2h14.001v2zm10.219-9.375c.381.475 1.182.475 1.563 0L19 6.851L19.001 15H5V6.851l2.219 2.774c.381.475 1.182.475 1.563 0L12 5.601z"/></svg>' : '';
+        const isAdmin = this.userRole === 'ROLE_ADMIN';
+        const tooltipMessage = isAdmin 
+            ? this.translator.trans('This app requires a Pro subscription. Please refer to the /settings/api page to enable your Pro license.') 
+            : this.translator.trans('This app requires a Pro subscription. Please contact your system administrator.');
+        const proBadge = app.isPro 
+            ? `<span class="form-label-span -mb-1"
+                    data-te-toggle="tooltip"
+                    data-te-html="true"
+                    data-te-ripple-init
+                    data-te-ripple-color="light"
+                    title="${tooltipMessage}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" class="w-4 h-4 fill-white ml-2">
+                    <path fill="#fbbf24" d="M11.219 3.375L8 7.399L4.781 3.375A1.002 1.002 0 0 0 3 4v15c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2V4a1.002 1.002 0 0 0-1.781-.625L16 7.399l-3.219-4.024c-.381-.474-1.181-.474-1.562 0M5 19v-2h14.001v2zm10.219-9.375c.381.475 1.182.475 1.563 0L19 6.851L19.001 15H5V6.851l2.219 2.774c.381.475 1.182.475 1.563 0L12 5.601z"/>
+                </svg>
+            </span>`
+        : '';
+
         return `
             <div class="${cardClasses}">
                 <div class="flex pb-4">

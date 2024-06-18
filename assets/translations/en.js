@@ -327,4 +327,7 @@ t.add("Unpin", "Unpin", "messages", "en");
 t.add("Type", "Type", "messages", "en");
 t.add("Timestamp", "Timestamp", "messages", "en");
 t.add("IP Address", "IP Address", "messages", "en");
+t.add("This app requires a Pro subscription. Please refer to the \/settings\/api page to enable your Pro license.", "This app requires a Pro subscription. Please refer to the \/settings\/api page to enable your Pro license.", "messages", "en");
+t.add("This app requires a Pro subscription. Please contact your system administrator.", "This app requires a Pro subscription. Please contact your system administrator.", "messages", "en");
+t.add("No apps found.", "No apps found.", "messages", "en");
 })(Translator);
