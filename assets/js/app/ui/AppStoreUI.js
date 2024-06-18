@@ -122,11 +122,12 @@ class AppStoreUI {
         const shouldApplyBlur = this.userGroup !== "full" && this.userGroup !== app.type;
         const application = app.application;
         const logoPath = `/uploads/soft_logos/${application.logo}`;
-        const cardClasses = `shadow-md gap-x-8 lg:gap-x-8 text-lg content-background dark:content-background light:border-2 border-gray-500 border-opacity-75 rounded-xl hover:shadow-xl p-4 flex flex-col justify-between`;
+        const cardClasses = `shadow-md gap-x-8 lg:gap-x-8 text-lg content-background dark:content-background light:border-2 border-gray-500 border-opacity-75 rounded-xl hover:shadow-xl p-4 flex flex-col justify-between ${shouldApplyBlur ? 'cursor-not-allowed' : ''}`;
         const isAdmin = this.userRole === 'ROLE_ADMIN';
         const tooltipMessage = isAdmin 
             ? this.translator.trans('This app requires a Pro subscription. Please refer to the /settings/api page to enable your Pro license.') 
             : this.translator.trans('This app requires a Pro subscription. Please contact your system administrator.');
+        const blurTooltipMessage = this.translator.trans('You do not have the required permissions to access this app.');
         const proBadge = app.isPro 
             ? `<span class="form-label-span -mb-1"
                     data-te-toggle="tooltip"
@@ -141,7 +142,7 @@ class AppStoreUI {
         : '';
 
         return `
-            <div class="${cardClasses}">
+            <div class="${cardClasses}" data-te-toggle="${shouldApplyBlur ? 'tooltip' : ''}" title="${shouldApplyBlur ? blurTooltipMessage : ''}">
                 <div class="flex pb-4">
                     <div class="flex-shrink-0 w-20 h-20 mb-4 rounded-full mr-4 pr-4">    
                         <img class="h-auto max-w-[70px] p-1 rounded-full" src="${logoPath}" alt="${application.name}_logo">
@@ -151,7 +152,10 @@ class AppStoreUI {
                             ${application.name} ${proBadge}
                         </h3>
                         <span class="prose text-sm mb-2 text-gray-500">${this.translator.trans('Category')}: 
-                            <a href="#" class="text-blue-500 text-sm category-link ${shouldApplyBlur ? 'blur-[1px] pointer-events-none cursor-not-allowed' : ''}" data-type="${app.type}" target="blank">
+                            <a href="#" class="text-blue-500 text-sm category-link ${shouldApplyBlur ? 'blur-[1px] pointer-events-none cursor-not-allowed' : ''}" data-type="${app.type}" target="blank"
+                                data-te-toggle="${shouldApplyBlur ? 'tooltip' : ''}"
+                                title="${shouldApplyBlur ? blurTooltipMessage : ''}"
+                                data-type="${app.type}" target="blank">
                                 ${this.translator.trans(app.type.charAt(0).toUpperCase() + app.type.slice(1) + '_group')}
                             </a>
                         </span>
