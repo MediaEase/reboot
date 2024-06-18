@@ -143,7 +143,7 @@ final class ScanAppsCommand extends Command
     private function validateConfig(array $config, OutputInterface $output): bool
     {
         $requiredKeys = [
-            'arguments' => ['app_name', 'altname', 'description', 'pro_only', 'logo_path', 'multi_user', 'ports', 'service_directives', 'files', 'paths', 'group'],
+            'arguments' => ['app_name', 'altname', 'description', 'pro_only', 'logo_path', 'multi_user', 'ports', 'service_directives', 'files', 'paths', 'group', 'details'],
         ];
 
         foreach ($requiredKeys as $parentKey => $keys) {
@@ -172,15 +172,22 @@ final class ScanAppsCommand extends Command
     {
         $entityRepository = $this->entityManager->getRepository(Application::class);
         $existingApplication = $entityRepository->findOneBy(['name' => $config['arguments']['app_name']]);
-
         if ($existingApplication) {
             if ($update) {
-                $existingApplication->setAltname($config['arguments']['altname']);
-                $existingApplication->setLogo($config['arguments']['logo_path']);
-                $existingApplication->getStore()->setDescription($config['arguments']['description']);
-                $existingApplication->getStore()->setIsPro($config['arguments']['pro_only']);
-                $existingApplication->getStore()->setIsAvailable(true);
-                $existingApplication->getStore()->setType($config['arguments']['group']);
+                $existingApplication
+                    ->setAltname($config['arguments']['altname'])
+                    ->setLogo($config['arguments']['logo_path'])
+                ;
+                $existingApplication
+                    ->getStore()
+                        ->setDescription($config['arguments']['description'])
+                        ->setIsPro($config['arguments']['pro_only'])
+                        ->setIsAvailable(true)
+                        ->setType($config['arguments']['group'])
+                        ->setDetails($config['arguments']['details'])
+                        ->setIsMultiUser($config['arguments']['multi_user'])
+                ;
+
 
                 ++$this->updatedCount;
                 $this->updatedApps[] = $config['arguments']['app_name'];
@@ -190,16 +197,22 @@ final class ScanAppsCommand extends Command
             }
         } else {
             $application = new Application();
-            $application->setName($config['arguments']['app_name']);
-            $application->setAltname($config['arguments']['altname']);
-            $application->setLogo($config['arguments']['logo_path']);
+            $application
+                ->setName($config['arguments']['app_name'])
+                ->setAltname($config['arguments']['altname'])
+                ->setLogo($config['arguments']['logo_path'])
+            ;
 
             $store = new Store();
-            $store->setDescription($config['arguments']['description']);
-            $store->setIsPro($config['arguments']['pro_only']);
-            $store->setIsAvailable(true);
-            $store->setType($config['arguments']['group']);
-            $store->setApplication($application);
+            $store
+                ->setDescription($config['arguments']['description'])
+                ->setIsPro($config['arguments']['pro_only'])
+                ->setIsAvailable(true)
+                ->setType($config['arguments']['group'])
+                ->setApplication($application)
+                ->setDetails($config['arguments']['details'])
+                ->setMultiUser($config['arguments']['multi_user'])
+            ;
 
             $application->setStore($store);
 

@@ -32,40 +32,50 @@ class Store
     #[ORM\GeneratedValue]
     #[ORM\Column(type: Types::INTEGER)]
     #[Groups([self::GROUP_GET_STORES])]
-    #[OA\Property(description: 'The unique identifier of the store.', format: 'int')]
+    #[OA\Property(description: 'The unique identifier of the App Store object.', format: 'int')]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT)]
     #[Groups([self::GROUP_GET_STORES])]
-    #[OA\Property(description: 'The description of the store.')]
+    #[OA\Property(description: 'The description of the application.')]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::BOOLEAN)]
     #[Groups([self::GROUP_GET_STORES])]
-    #[OA\Property(description: 'Indicator whether the store is a pro version.', type: 'boolean')]
+    #[OA\Property(description: 'Indicator whether the application isfor Pro users only.', type: 'boolean')]
     private ?bool $isPro = null;
 
     #[ORM\Column(type: Types::BOOLEAN)]
     #[Groups([self::GROUP_GET_STORES])]
-    #[OA\Property(description: 'Indicator whether the store is available.', type: 'boolean')]
+    #[OA\Property(description: 'Indicator whether the application is available through the App Store.', type: 'boolean')]
     private ?bool $isAvailable = null;
 
     #[ORM\Column(type: Types::STRING, length: 50)]
     #[Groups([self::GROUP_GET_STORES])]
-    #[OA\Property(description: 'The type of the store.', maxLength: 50)]
+    #[OA\Property(description: 'The type of the application.', maxLength: 50)]
     private ?string $type = null;
 
     #[ORM\OneToOne(mappedBy: 'store', cascade: ['persist', 'remove'])]
     #[Groups(Application::GROUP_GET_APPLICATIONS)]
-    #[OA\Property(description: 'The application associated with the store.', ref: '#/components/schemas/Application.item')]
+    #[OA\Property(description: 'The application associated with the App Store object.', ref: '#/components/schemas/Application.item')]
     private ?Application $application = null;
 
     /**
      * @var Collection<int, Group>
      */
     #[ORM\ManyToMany(targetEntity: Group::class, mappedBy: 'stores')]
-    #[OA\Property(description: 'The groups associated with the store.', type: 'array', items: new OA\Items(ref: '#/components/schemas/Group.item'))]
+    #[OA\Property(description: 'The groups associated with the App Store object.', type: 'array', items: new OA\Items(ref: '#/components/schemas/Group.item'))]
     private ?Collection $groups;
+
+    #[ORM\Column(type: Types::JSON, nullable: true)]
+    #[Groups([self::GROUP_GET_STORES])]
+    #[OA\Property(description: 'The details of the application (documentation, website, ...)', type: 'json')]
+    private ?array $details = null;
+
+    #[ORM\Column(type: Types::BOOLEAN)]
+    #[Groups([self::GROUP_GET_STORES])]
+    #[OA\Property(description: 'Indicator whether the application is available for a multi-user usage', type: 'boolean')]
+    private ?bool $isMultiUser = null;
 
     public function __construct()
     {
@@ -168,6 +178,30 @@ class Store
         if ($this->groups->removeElement($group)) {
             $group->removeStore($this);
         }
+
+        return $this;
+    }
+
+    public function getDetails(): ?array
+    {
+        return $this->details;
+    }
+
+    public function setDetails(?array $details): static
+    {
+        $this->details = $details;
+
+        return $this;
+    }
+
+    public function isMultiUser(): ?bool
+    {
+        return $this->isMultiUser;
+    }
+
+    public function setMultiUser(bool $isMultiUser): static
+    {
+        $this->isMultiUser = $isMultiUser;
 
         return $this;
     }
