@@ -151,7 +151,7 @@ class AppStoreUI {
                             ${application.name} ${proBadge}
                         </h3>
                         <span class="prose text-sm mb-2 text-gray-500">${this.translator.trans('Category')}: 
-                            <a href="#" class="text-blue-500 text-sm category-link" data-type="${app.type}" target="blank">
+                            <a href="#" class="text-blue-500 text-sm category-link ${shouldApplyBlur ? 'blur-[1px] pointer-events-none cursor-not-allowed' : ''}" data-type="${app.type}" target="blank">
                                 ${this.translator.trans(app.type.charAt(0).toUpperCase() + app.type.slice(1) + '_group')}
                             </a>
                         </span>
@@ -174,22 +174,23 @@ class AppStoreUI {
         const isAppInstalled = this.apps.some(installedApp => installedApp.application.altname === app.application.altname);
         const isButtonDisabled = this.userGroup !== "full" && this.userGroup !== app.type;
         const disabledClass = isButtonDisabled ? 'blur-[1px] cursor-not-allowed' : '';
-        const actionButtonClasses = isAppInstalled ? 'bg-red-500 hover:bg-red-600 pl-4' : 'px-4 bg-green-500 hover:bg-green-600 rounded-r-lg';
+        const actionButtonClasses = isAppInstalled ? 'bg-red-500 pl-4' : 'px-4 bg-green-500 rounded-r-lg';
+        const hoverButtonClasses = isAppInstalled ? 'hover:bg-red-600' : 'hover:bg-green-600';
         const svgPath = isAppInstalled
             ? '<path fill-rule="evenodd" d="M10.5 3.75a6 6 0 0 0-5.98 6.496A5.25 5.25 0 0 0 6.75 20.25H18a4.5 4.5 0 0 0 2.206-8.423 3.75 3.75 0 0 0-4.133-4.303A6.001 6.001 0 0 0 10.5 3.75Zm2.25 6a.75.75 0 0 0-1.5 0v4.94l-1.72-1.72a.75.75 0 0 0-1.06 1.06l3 3a.75.75 0 0 0 1.06 0l3-3a.75.75 0 1 0-1.06-1.06l-1.72 1.72V9.75Z" clip-rule="evenodd"></path>'
             : '<path fill-rule="evenodd" d="M10.5 3.75a6 6 0 0 0-5.98 6.496A5.25 5.25 0 0 0 6.75 20.25H18a4.5 4.5 0 0 0 2.206-8.423 3.75 3.75 0 0 0-4.133-4.303A6.001 6.001 0 0 0 10.5 3.75Zm2.25 6a.75.75 0 0 0-1.5 0v4.94l-1.72-1.72a.75.75 0 0 0-1.06 1.06l3 3a.75.75 0 0 0 1.06 0l3-3a.75.75 0 1 0-1.06-1.06l-1.72 1.72V9.75Z" clip-rule="evenodd"></path>';
         const popoverArrowSvg = '<path d="m19.5 8.25-7.5 7.5-7.5-7.5" stroke-linecap="round" stroke-linejoin="round"></path>';
-        const popoverClasses = isAppInstalled ? 'bg-red-500 hover:bg-red-600 popover-arrow-button' : 'hidden';
+        const popoverClasses = isAppInstalled ? 'bg-red-500 popover-arrow-button' : 'hidden';
         const links = isButtonDisabled ? ['Remove'] : ['Backup', 'Reinstall', 'Remove', 'Reset', 'Update'];
         const listItems = links.map(link => `<li><a data-action="${link.toLowerCase()}" class="action-link">${this.translator.trans(link)}</a></li>`).join('');
         const popoverButton = `
         <div class="dropdown dropdown-bottom">
-            <div tabindex="0" role="button" class="rounded-r-lg inline-flex items-center py-2 ${popoverClasses} ${isButtonDisabled ? 'blur-[2px]' : ''}">
+            <div tabindex="0" role="button" class="rounded-r-lg inline-flex items-center py-2 ${popoverClasses} ${isButtonDisabled ? 'blur-[1px] cursor-not-allowed' : hoverButtonClasses}">
                 <svg class="w-7 h-7 fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" data-slot="icon">
                     ${popoverArrowSvg}
                 </svg>
             </div>
-            <ul tabindex="0" class="dropdown-content z-[1000] menu m-2 shadow w-52 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 rounded-lg">
+            <ul tabindex="0" class="dropdown-content z-[1000] menu m-2 shadow w-52 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 rounded-lg ${isButtonDisabled ? 'hidden' : ''}">
                 ${listItems}
             </ul>
         </div>
@@ -197,7 +198,7 @@ class AppStoreUI {
         const action = isAppInstalled ? 'uninstall' : 'install';
         const actionButton = `
         <div class="relative inline-flex items-center">
-            <a class="${actionButtonClasses} ${disabledClass} rounded-l-lg inline-flex items-center cursor-pointer py-1 action-button"
+            <a class="${actionButtonClasses} ${isButtonDisabled ? '' : hoverButtonClasses} ${disabledClass} rounded-l-lg inline-flex items-center cursor-pointer py-1 action-button"
                 ${isButtonDisabled ? 'disabled' : ''}
                 data-app-id="${app.id}"
                 data-app-name="${app.application.altname}"

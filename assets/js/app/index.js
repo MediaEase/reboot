@@ -36,7 +36,7 @@ function chooseProcessDataFunction(type) {
         const appStoreBanner = globalSettings.appstore;
         const appsData = userData.services.sort((a, b) => a.application.name.localeCompare(b.application.name));
         const userGroup = userData.group.name;
-        const isFullAppListing = userData.isFullAppListing;
+        const isFullAppListing = userData.preferences.isFullAppListingEnabled;
         const preferencesData = userData.preferences;
         const isVerbosityEnabled = userData.isVerbosityEnabled;
 
