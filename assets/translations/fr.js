@@ -181,4 +181,7 @@ t.add("The link in your email is expired. Please try to reset your password agai
 t.add("Please update the request_password_repository configuration in config\/packages\/reset_password.yaml to point to your \"request password repository\" service.", "Veuillez mettre \u00e0 jour la configuration de request_password_repository dans config\/packages\/reset_password.yaml pour pointer vers votre service \"request password repository\"", "ResetPasswordBundle", "fr");
 t.add("The reset password link is invalid. Please try to reset your password again.", "Le lien de r\u00e9initialisation du mot de passe n'est pas valide. Veuillez r\u00e9essayer de r\u00e9initialiser votre mot de passe", "ResetPasswordBundle", "fr");
 t.add("You have already requested a reset password email. Please check your email or try again soon.", "Vous avez d\u00e9j\u00e0 demand\u00e9 un e-mail de r\u00e9initialisation du mot de passe. Veuillez v\u00e9rifier votre e-mail ou r\u00e9essayer bient\u00f4t.", "ResetPasswordBundle", "fr");
+t.add("Loading more results...", "Chargement d'autres r\u00e9sultats...", "AutocompleteBundle", "fr");
+t.add("No results found", "Aucun r\u00e9sultat trouv\u00e9", "AutocompleteBundle", "fr");
+t.add("No more results", "Aucun autre r\u00e9sultat trouv\u00e9", "AutocompleteBundle", "fr");
 })(Translator);

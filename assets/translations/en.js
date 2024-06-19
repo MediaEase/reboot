@@ -194,6 +194,9 @@ t.add("The link in your email is expired. Please try to reset your password agai
 t.add("Please update the request_password_repository configuration in config\/packages\/reset_password.yaml to point to your \"request password repository\" service.", "Please update the request_password_repository configuration in config\/packages\/reset_password.yaml to point to your \"request password repository\" service.", "ResetPasswordBundle", "en");
 t.add("The reset password link is invalid. Please try to reset your password again.", "The reset password link is invalid. Please try to reset your password again.", "ResetPasswordBundle", "en");
 t.add("You have already requested a reset password email. Please check your email or try again soon.", "You have already requested a reset password email. Please check your email or try again soon.", "ResetPasswordBundle", "en");
+t.add("Loading more results...", "Loading more results...", "AutocompleteBundle", "en");
+t.add("No results found", "No results found", "AutocompleteBundle", "en");
+t.add("No more results", "No more results", "AutocompleteBundle", "en");
 t.add("forms.general.help.siteName", "The name of your MediaEase instance.", "messages", "en");
 t.add("forms.general.help.siteDescription", "A brief description of your MediaEase instance.", "messages", "en");
 t.add("forms.general.help.rootUrl", "The URL of your MediaEase instance.", "messages", "en");
