@@ -14,12 +14,13 @@ import './js/clipboard.js';
 import './js/routing/links.js';
 import { toDarkMode, toLightMode } from './js/menus/theme_switcher.js';
 import { toggleIPVisibility } from './js/utils.js';
+import NewAppForm from './js/app/ui/elements/NewAppForm';
 
 window.toDarkMode = toDarkMode;
 window.toLightMode = toLightMode;
 window.toggleIPVisibility = toggleIPVisibility;
 
-import { Tab, Modal, Popover, Ripple, Tooltip, initTE } from "tw-elements";
+import { Tab, Modal, Popover, Ripple, Tooltip, initTE, Validation } from "tw-elements";
 
 document.addEventListener('DOMContentLoaded', () => {
     initTE({ Tab, Modal, Popover, Ripple, Tooltip, Validation });
@@ -28,5 +29,12 @@ document.addEventListener('DOMContentLoaded', () => {
         plugins: ['remove_button'],
         hideSelected: true,
     };
-    new TomSelect('#new_group_stores', TomSelectConfig);
+    if (document.getElementById('new_group_stores')) {
+        new TomSelect('#new_group_stores', TomSelectConfig);
+    }
+
+    const newAppForm = document.getElementById('create-user-form');
+    if (newAppForm) {
+        new NewAppForm();
+    }
 });

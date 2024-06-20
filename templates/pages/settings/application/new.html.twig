@@ -1,0 +1,31 @@
+{% extends 'pages/settings/base.html.twig' %}
+
+{% block title %}Create New Application - {{ app.request.server.get('SITE_NAME') }}{% endblock %}
+
+{% block body %}
+    {% import '_macros/settings.html.twig' as settings_macro %}
+    {% import '_macros/breadcrumb.html.twig' as breadcrumb %}
+    {% import '_macros/form/dropzone.html.twig' as dropzone %}
+    {% import '_macros/form/form.html.twig' as form_macros %}
+    <div class="max-w-8xl md:mx-auto md:px-auto lg:px-6">
+        <div class="xl:pt-[2.3615rem] pt-[15rem]">
+            <div class="xl:pl-[25rem]">
+                <div class="w-full mx-auto pt-10 xl:max-w-none xl:ml-4 rounded-xl mb-4">
+                    {{ breadcrumb.add('Create New Application', 'https://mediaease.github.io/docs/') }}
+                    {{ settings_macro.infobox(
+                        'info', 
+                        'This page allows you to create a new application and add its associated services. Make sure to fill out all the necessary fields for proper configuration.',
+                        'For more details, refer to the <a href="link-to-documentation" class="text-sky-500 dark:text-sky-400 hover:underline">documentation</a>.',
+                        'external'
+                    ) }}
+                    <div id="content-wrapper" class="relative px-4 mt-8 dark:prose-dark pb-3 mb-4 bg-gray-200/55 dark:bg-gray-900/85 rounded-lg">
+                        <div class="py-2">
+                            <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100">Application Details</h2>
+                        </div>
+                        {{ include('pages/settings/application/_form.html.twig') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% import '_macros/form/form.html.twig' as form_macros %}
+{% import '_macros/form/dropzone.html.twig' as dropzone %}
+{{ form_start(form, {'attr': {'id': 'create-user-form', 'data-twe-validation-init': 'true'}}) }}
+<div class="pt-6">
+    <div class="flex flex-wrap xl:py-2 items-start">
+        <div class="w-full xl:w-1/2 px-3 pt-2">
+            <div class="relative mb-6" data-twe-input-wrapper-init data-twe-validate="input">
+                {{ form_widget(form.name, {'attr': {'class': 'block rounded-t-md px-2.5 pb-2.5 pt-5 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer', 'placeholder': ' '}}) }}
+                {{ form_label(form.name, 'Name', {'label_attr': {'class': 'absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4'}})}}
+                <p id="error-form_name" class="mt-2 text-xs text-red-600 dark:text-red-400" style="display: none;"></p>
+            </div>
+        </div>
+        <div class="w-full xl:w-1/2 px-3 pt-2">
+            {{ dropzone.dropzone_field(form, 'logo', 'Application Logo', 'Drag and drop a file or click to browse', '', 'Application Logo') }}
+        </div>
+    </div>
+
+    <div class="flex flex-wrap xl:py-2" id="services-collection" data-prototype="{{ form_widget(form.services.vars.prototype)|e('html_attr') }}" data-index="{{ form.services|length }}">
+        {% for serviceForm in form.services %}
+            <div class="service-form border-r border-b border-gray-300 p-4 rounded-lg mb-4 w-1/2">
+                <div class="flex flex-wrap xl:py-2" id="services-collection" data-prototype="{{ form_widget(form.services.vars.prototype)|e('html_attr') }}" data-index="{{ form.services|length }}">
+                {# form is created by Javascript #}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <button type="button" class="bg-blue-500 text-white font-bold py-2 px-4 rounded mt-4 add-service-btn">
+        {{ ux_icon('heroicons:plus', {class: 'w-5 h-5 inline'}) }} Add Service
+    </button>
+    <hr class="my-4 border-t-1 border-gray-300 dark:border-slate-300" />
+    <div class="flex justify-end pt-3 mt-4 mb-2 xl:m-0 xl:p-0">
+        <button type="submit" class="{{ form.save.vars.button_class }}">
+            {{ ux_icon(form.save.vars.icon_before, {class: form.save.vars.icon_class ~ ' icon mr-1'})|raw }}{{ form.save.vars.label }}
+        </button>
+    </div>
+    {{ form_row(form._token) }}
+{{ form_end(form, {'render_rest': false}) }}
+</div>
