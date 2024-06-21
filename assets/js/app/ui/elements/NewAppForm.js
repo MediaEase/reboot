@@ -1,14 +1,33 @@
 /**
- * Handles the UI logic for creating a new application, including adding/removing service forms
+ * NewAppForm
+ * 
+ * Class handling the UI logic for creating a new application, including adding/removing service forms
  * and toggling between port fields and socket fields.
+ * 
+ * @property {HTMLElement} collectionHolder - The DOM element that holds the service forms.
+ * @property {Object} translator - The translator for handling multilingual text.
+ * 
+ * @method {void} initialize - Initializes the new application form UI.
+ * @method {void} addServiceForm - Adds a new service form to the collection.
+ * @method {void} removeServiceForm - Removes a service form from the collection.
+ * @method {void} updateServiceTitles - Updates the titles of the service forms.
+ * @method {void} initializeFloatingLabels - Initializes floating labels for input fields.
+ * @method {void} initializeToggleLogic - Initializes the toggle logic for port and socket fields.
  */
+
 class NewAppForm {
+    /**
+     * Creates an instance of NewAppForm.
+     */
     constructor() {
         this.collectionHolder = document.querySelector('#services-collection');
         this.initialize();
         this.translator = window.translator;
     }
 
+    /**
+     * Initializes the new application form UI.
+     */
     initialize() {
         this.collectionHolder.dataset.index = this.collectionHolder.querySelectorAll('.service-form').length;
         document.querySelector('[data-controller="symfony--ux-dropzone--dropzone"]').classList.add('w-full');
@@ -32,6 +51,11 @@ class NewAppForm {
         document.querySelectorAll('.service-form').forEach(form => this.initializeToggleLogic(form));
     }
 
+    /**
+     * Adds a new service form to the collection.
+     * 
+     * @param {number} index - The index of the new service form.
+     */
     addServiceForm(index) {
         const newForm = this.collectionHolder.dataset.prototype.replace(/__name__/g, index);
         const newFormWrapper = document.createElement('div');
@@ -135,6 +159,11 @@ class NewAppForm {
         this.initializeToggleLogic(newFormWrapper);
     }
 
+    /**
+     * Removes a service form from the collection.
+     * 
+     * @param {HTMLElement} button - The button that triggered the removal.
+     */
     removeServiceForm(button) {
         const serviceForm = button.closest('.service-form');
         serviceForm.remove();
@@ -142,16 +171,24 @@ class NewAppForm {
         this.updateServiceTitles();
     }
 
+    /**
+     * Updates the titles of the service forms.
+     */
     updateServiceTitles() {
         const serviceForms = this.collectionHolder.querySelectorAll('.service-form');
         serviceForms.forEach((form, index) => {
             const title = form.querySelector('.service-title');
             if (title) {
-                title.textContent = index === 0 ? 'Parent Service' : 'Child Service';
+                title.textContent = index === 0 ? this.translator.trans('Parent Service') : this.translator.trans('Child Service');
             }
         });
     }
 
+    /**
+     * Initializes floating labels for input fields.
+     * 
+     * @param {HTMLElement} container - The container element within which to initialize floating labels.
+     */
     initializeFloatingLabels(container) {
         container.querySelectorAll('.peer').forEach(input => {
             const label = input.nextElementSibling;
@@ -170,6 +207,11 @@ class NewAppForm {
         });
     }
 
+    /**
+     * Initializes the toggle logic for port and socket fields.
+     * 
+     * @param {HTMLElement} container - The container element within which to initialize the toggle logic.
+     */
     initializeToggleLogic(container) {
         const toggle = container.querySelector('.use-socket-toggle');
         const portFields = container.querySelector('.port-fields');
