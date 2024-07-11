@@ -64,7 +64,7 @@ final class ScanAppsCommand extends Command
     {
         $this
             ->setDescription('Scans the software directories and populates the database with applications.')
-            ->addOption('path', null, InputOption::VALUE_REQUIRED, 'The base path to scan', '/home/thomas/prout/scripts/src/software')
+            ->addOption('path', null, InputOption::VALUE_REQUIRED, 'The base path to scan', '/opt/MediaEase/MediaEase/zen/src/software')
             ->addOption('update', null, InputOption::VALUE_NONE, 'Update existing applications instead of creating new entries');
     }
 
@@ -187,7 +187,6 @@ final class ScanAppsCommand extends Command
                         ->setDetails($config['arguments']['details'])
                         ->setIsMultiUser($config['arguments']['multi_user'])
                 ;
-
 
                 ++$this->updatedCount;
                 $this->updatedApps[] = $config['arguments']['app_name'];
