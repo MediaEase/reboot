@@ -13,10 +13,10 @@
         "doctrine/doctrine-bundle": "^2.12",
         "doctrine/doctrine-migrations-bundle": "^3.3",
         "doctrine/orm": "2.*",
-        "flagception/flagception-bundle": "^4.4",
+        "flagception/flagception-bundle": "5.0.*",
         "lexik/jwt-authentication-bundle": "^2.20",
         "liip/imagine-bundle": "^2.12",
-        "nelmio/api-doc-bundle": "4.26.*",
+        "nelmio/api-doc-bundle": "4.28.*",
         "nelmio/cors-bundle": "^2.4",
         "nelmio/security-bundle": "^3.1",
         "phpdocumentor/reflection-docblock": "^5.3",
@@ -69,7 +69,8 @@
         "twig/markdown-extra": "^3.10",
         "twig/string-extra": "^3.8",
         "twig/twig": "^2.12|^3.0",
-        "willdurand/js-translation-bundle": "^6.0"
+        "willdurand/js-translation-bundle": "^6.0",
+        "zircote/swagger-php": "4.10.3"
     },
     "config": {
         "allow-plugins": {
