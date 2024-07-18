@@ -146,6 +146,10 @@ final class ScanAppsCommand extends Command
             'arguments' => ['app_name', 'altname', 'description', 'pro_only', 'logo_path', 'multi_user', 'ports', 'service_directives', 'files', 'paths', 'group', 'details'],
         ];
 
+        if (isset($config['skip_requirements_check']) && $config['skip_requirements_check'] === true) {
+            return true;
+        }
+
         foreach ($requiredKeys as $parentKey => $keys) {
             if (!isset($config[$parentKey])) {
                 $output->writeln('Missing required parent key: '.$parentKey);
