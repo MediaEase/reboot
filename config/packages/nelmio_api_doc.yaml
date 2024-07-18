@@ -1,68 +1,750 @@
 nelmio_api_doc:
   areas:
     default:
-      disable_default_routes: true
       path_patterns:
         - ^/api
-  use_validation_groups: true
+      disable_default_routes: true
   documentation:
+    openapi: 3.0.0
     info:
-      contact:
-        name: MediaEase
-        url: https://github.com/MediaEase/MediaEase
-      description:  >-
+      title: HarmonyUI V1 API
+      description: >-
         Use these APIs to interact with the  HarmonyUI backend.
         You can find out more about the HarmonyUI project at htttps://github.com/MediaEase/HarmonyUI
+      termsOfService: https:///github.com/MediaEase/HarmonyUI/tos
+      contact:
+        name: MediaEase
+        url: htttps://github.com/MediaEase/MediaEase
       license:
         name: MIT
         url: https://opensource.org/licenses/MIT
-      termsOfService: https://github.com/MediaEase/HarmonyUI/tos
-      title: HarmonyUI V1 API
       version: 1.0.0
-    openapi: 3.1.0
-    security:
-    - Bearer: []
-    - apiKey: []
     servers:
-    - description: Local development server
-      url: http://localhost:8000
+      - url: "http://localhost:8000"
+        description: Local development server
+    security:
+      - Bearer: []
+      - apiKey: []
     tags:
-    - description: Operations involving applications
-      name: Apps
-    - description: Authentication and authorization processes
-      name: Authentication
-    - description: Group management and information
-      name: Groups
-    - description: Access and management of log data
-      name: Logs
-    - description: Metrics and performance data interactions
-      name: Metrics
-    - description: File system mount management
-      name: Mounts
-    - description: User profile settings and information
-      name: Profile
-    - description: Service management and operations
-      name: Services
-    - description: Settings operations
-      name: Settings
-    - description: Store functionalities and data
-      name: Store
-    - description: Transcoding operations and management
-      name: Transcode
-    - description: User management and details
-      name: Users
-    - description: Widget functionalities and settings
-      name: Widgets
-    components:
-      responses:
-        "201":
-          description: Created - The request has been fulfilled and has resulted in one or more new resources being created.
-          content:
-            application/json:
+      - name: Apps
+        description: Apps related endpoints
+      - name: Authentication
+        description: Authentication related endpoints
+      - name: Metrics
+        description: Metrics related endpoints
+      - name: Profile
+        description: Profile related endpoints
+      - name: Store
+        description: Store related endpoints
+      - name: Users
+        description: Users related endpoints
+      - name: Widgets
+        description: Widgets related endpoints
+    paths:
+      /api/apps:
+        get:
+          tags:
+            - Apps
+          summary: Get apps
+          operationId: getApps
+          responses:
+            "200":
+              description: Returns apps
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: "#/components/schemas/App"
+            "401":
+              $ref: "#/components/responses/401"
+            "500":
+              $ref: "#/components/responses/500"
+        post:
+          tags:
+            - Apps
+          summary: Create app
+          operationId: createApp
+          requestBody:
+            content:
+              application/hal+json:
+                schema:
+                  $ref: "#/components/schemas/App"
+          responses:
+            "201":
+              description: App created
+              content:
+                application/hal+json:
+                  schema:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+            "401":
+              $ref: "#/components/responses/401"
+            "422":
+              $ref: "#/components/responses/422"
+            "500":
+              $ref: "#/components/responses/500"
+      /api/apps/{id}:
+        get:
+          tags:
+            - Apps
+          summary: Get app details
+          operationId: getApp
+          parameters:
+            - name: id
+              in: path
+              description: App Identifier
               schema:
-                $ref: "#/components/schemas/SuccessResponse"
+                type: integer
+              required: true
+          responses:
+            "200":
+              description: Returns app details
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: "#/components/schemas/App"
+            "401":
+              $ref: "#/components/responses/401"
+            "404":
+              $ref: "#/components/responses/404"
+            "500":
+              $ref: "#/components/responses/500"
+        put:
+          tags:
+            - Apps
+          summary: Update app
+          operationId: updateApp
+          parameters:
+            - name: id
+              in: path
+              description: App Identifier
+              schema:
+                type: integer
+              required: true
+          requestBody:
+            content:
+              application/hal+json:
+                schema:
+                  $ref: "#/components/schemas/App"
+          responses:
+            "200":
+              description: App updated
+              content:
+                application/hal+json:
+                  schema:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+            "204":
+              $ref: "#/components/responses/204"
+            "401":
+              $ref: "#/components/responses/401"
+            "404":
+              $ref: "#/components/responses/404"
+            "422":
+              $ref: "#/components/responses/422"
+            "500":
+              $ref: "#/components/responses/500"
+        delete:
+          tags:
+            - Apps
+          summary: Delete app
+          operationId: deleteApp
+          parameters:
+            - name: id
+              in: path
+              description: App Identifier
+              schema:
+                type: integer
+              required: true
+          responses:
+            "204":
+              $ref: "#/components/responses/204"
+            "401":
+              $ref: "#/components/responses/401"
+            "404":
+              $ref: "#/components/responses/404"
+            "500":
+              $ref: "#/components/responses/500"
+      /api/login_check:
+        post:
+          tags:
+            - Authentication
+          summary: Get JWT token
+          operationId: login
+          requestBody:
+            content:
+              application/json:
+                schema:
+                  properties:
+                    username:
+                      type: string
+                    password:
+                      type: string
+                  type: object
+          responses:
+            "200":
+              description: OK
+              content:
+                application/hal+json:
+                  schema:
+                    type: object
+                    properties:
+                      token:
+                        type: string
+            "400":
+              $ref: "#/components/responses/400"
+            "405":
+              $ref: "#/components/responses/405"
+            "422":
+              $ref: "#/components/responses/422"
+            "500":
+              $ref: "#/components/responses/500"
+          security: []
+      /api/users/{id}:
+        get:
+          tags:
+            - Users
+          summary: Get user details
+          operationId: getUser
+          parameters:
+            - name: id
+              in: path
+              description: User Identifier
+              schema:
+                type: integer
+              required: true
+          responses:
+            "200":
+              description: Returns user details
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: "#/components/schemas/User"
+            "401":
+              $ref: "#/components/responses/401"
+            "403":
+              $ref: "#/components/responses/403"
+            "404":
+              $ref: "#/components/responses/404"
+            "500":
+              $ref: "#/components/responses/500"
+        put:
+          tags:
+            - Users
+          summary: Update user
+          operationId: updateCustomer
+          parameters:
+            - name: id
+              in: path
+              description: User Identifier
+              schema:
+                type: integer
+              required: true
+          requestBody:
+            content:
+              application/hal+json:
+                schema:
+                  properties:
+                    email:
+                      type: string
+                  type: object
+          responses:
+            "200":
+              description: User updated
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: "#/components/schemas/User"
+            "204":
+              $ref: "#/components/responses/204"
+            "401":
+              $ref: "#/components/responses/401"
+            "403":
+              $ref: "#/components/responses/403"
+            "404":
+              $ref: "#/components/responses/404"
+            "422":
+              $ref: "#/components/responses/422"
+            "500":
+              $ref: "#/components/responses/500"
+        delete:
+          tags:
+            - Users
+          summary: Delete user
+          operationId: deleteCustomer
+          parameters:
+            - name: id
+              in: path
+              description: User Identifier
+              schema:
+                type: integer
+              required: true
+          responses:
+            "204":
+              $ref: "#/components/responses/204"
+            "401":
+              $ref: "#/components/responses/401"
+            "403":
+              $ref: "#/components/responses/403"
+            "404":
+              $ref: "#/components/responses/404"
+            "500":
+              $ref: "#/components/responses/500"
+      /api/metric/cpu:
+        get:
+          tags:
+            - Metrics
+          summary: Get CPU metrics
+          operationId: getCpuUsage
+          responses:
+            "200":
+              description: Returns CPU metrics
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: "#/components/schemas/Cpu"
+            "401":
+              $ref: "#/components/responses/401"
+            "403":
+              $ref: "#/components/responses/403"
+            "500":
+              $ref: "#/components/responses/500"
+      /api/metric/disk:
+        get:
+          tags:
+            - Metrics
+          summary: Get disk metrics
+          operationId: getDiskUsage
+          responses:
+            "200":
+              description: Returns disk metrics
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: "#/components/schemas/Disk"
+            "401":
+              $ref: "#/components/responses/401"
+            "403":
+              $ref: "#/components/responses/403"
+            "500":
+              $ref: "#/components/responses/500"
+      /api/metric/mem:
+        get:
+          tags:
+            - Metrics
+          summary: Get ram metrics
+          operationId: getMetricsMem
+          responses:
+            "200":
+              description: Returns ram metrics
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: "#/components/schemas/Memory"
+            "401":
+              $ref: "#/components/responses/401"
+            "403":
+              $ref: "#/components/responses/403"
+            "500":
+              $ref: "#/components/responses/500"
+      /api/metric/net:
+        get:
+          tags:
+            - Metrics
+          summary: Get network metrics
+          operationId: getNetworkUsage
+          responses:
+            "200":
+              description: Returns network metrics
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: "#/components/schemas/Network"
+            "401":
+              $ref: "#/components/responses/401"
+            "403":
+              $ref: "#/components/responses/403"
+            "500":
+              $ref: "#/components/responses/500"
+      /api/me/preferences:
+        get:
+          tags:
+            - Profile
+          summary: Get user preferences
+          operationId: getPreferences
+          responses:
+            "200":
+              description: Returns user preferences
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: "#/components/schemas/Preferences"
+            "401":
+              $ref: "#/components/responses/401"
+            "403":
+              $ref: "#/components/responses/403"
+        patch:
+          tags:
+            - Profile
+          summary: Update user preferences
+          operationId: updatePreferences
+          requestBody:
+            content:
+              application/hal+json:
+                schema:
+                  $ref: "#/components/schemas/Preferences"
+          responses:
+            "200":
+              description: User preferences updated
+              content:
+                application/hal+json:
+                  schema:
+                    type: object
+                    properties:
+                      preferences:
+                        type: string
+            "204":
+              $ref: "#/components/responses/204"
+            "401":
+              $ref: "#/components/responses/401"
+            "403":
+              $ref: "#/components/responses/403"
+            "422":
+              $ref: "#/components/responses/422"
+            "500":
+              $ref: "#/components/responses/500"
+      /api/me/preferences/pin:
+        patch:
+          tags:
+            - Profile
+          summary: Update user pin
+          operationId: updatePin
+          requestBody:
+            content:
+              application/hal+json:
+                schema:
+                  $ref: "#/components/schemas/PinnedApp"
+          responses:
+            "200":
+              description: User pin updated
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: "#/components/schemas/PinnedApp"
+            "204":
+              $ref: "#/components/responses/204"
+            "401":
+              $ref: "#/components/responses/401"
+            "403":
+              $ref: "#/components/responses/403"
+            "422":
+              $ref: "#/components/responses/422"
+            "500":
+              $ref: "#/components/responses/500"
+      /api/me/preferences/theme:
+        patch:
+          tags:
+            - Profile
+          summary: Update user theme
+          operationId: updateTheme
+          requestBody:
+            content:
+              application/hal+json:
+                schema:
+                  $ref: "#/components/schemas/Theme"
+          responses:
+            "200":
+              description: User theme updated
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: "#/components/schemas/Theme"
+            "204":
+              $ref: "#/components/responses/204"
+            "401":
+              $ref: "#/components/responses/401"
+            "403":
+              $ref: "#/components/responses/403"
+            "422":
+              $ref: "#/components/responses/422"
+            "500":
+              $ref: "#/components/responses/500"
+      /api/me/preferences/lang:
+        patch:
+          tags:
+            - Profile
+          summary: Update user language
+          operationId: updateLanguage
+          requestBody:
+            content:
+              application/hal+json:
+                schema:
+                  $ref: "#/components/schemas/Lang"
+          responses:
+            "200":
+              description: User language updated
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: "#/components/schemas/Lang"
+            "204":
+              $ref: "#/components/responses/204"
+            "401":
+              $ref: "#/components/responses/401"
+            "403":
+              $ref: "#/components/responses/403"
+            "422":
+              $ref: "#/components/responses/422"
+            "500":
+              $ref: "#/components/responses/500"
+      /api/me/preferences/shell:
+        patch:
+          tags:
+            - Profile
+          summary: Update user shell
+          operationId: updateShell
+          requestBody:
+            content:
+              application/hal+json:
+                schema:
+                  $ref: "#/components/schemas/Shell"
+          responses:
+            "200":
+              description: User shell updated
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: "#/components/schemas/Shell"
+            "204":
+              $ref: "#/components/responses/204"
+            "401":
+              $ref: "#/components/responses/401"
+            "403":
+              $ref: "#/components/responses/403"
+            "422":
+              $ref: "#/components/responses/422"
+            "500":
+              $ref: "#/components/responses/500"
+      /api/me/preferences/display:
+        patch:
+          tags:
+            - Profile
+          summary: Update user display
+          operationId: updateDisplay
+          requestBody:
+            content:
+              application/hal+json:
+                schema:
+                  $ref: "#/components/schemas/Display"
+          responses:
+            "200":
+              description: User display updated
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: "#/components/schemas/Display"
+            "204":
+              $ref: "#/components/responses/204"
+            "401":
+              $ref: "#/components/responses/401"
+            "403":
+              $ref: "#/components/responses/403"
+            "422":
+              $ref: "#/components/responses/422"
+            "500":
+              $ref: "#/components/responses/500"
+      /api/me/preferences/widgets:
+        patch:
+          tags:
+            - Profile
+          summary: Update user widgets
+          operationId: updateWidgets
+          requestBody:
+            content:
+              application/hal+json:
+                schema:
+                  $ref: "#/components/schemas/Widget"
+          responses:
+            "200":
+              description: User widgets updated
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: "#/components/schemas/Widget"
+            "204":
+              $ref: "#/components/responses/204"
+            "401":
+              $ref: "#/components/responses/401"
+            "403":
+              $ref: "#/components/responses/403"
+            "422":
+              $ref: "#/components/responses/422"
+            "500":
+              $ref: "#/components/responses/500"
+      /api/me/my_apps:
+        get:
+          tags:
+            - Profile
+          summary: Get user apps
+          operationId: getUserApps
+          responses:
+            "200":
+              description: Returns user apps
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: "#/components/schemas/MyApps"
+            "401":
+              $ref: "#/components/responses/401"
+            "403":
+              $ref: "#/components/responses/403"
+      /api/me/services:
+        post:
+          tags:
+            - Profile
+          summary: Add service
+          operationId: addService
+          requestBody:
+            content:
+              application/hal+json:
+                schema:
+                  $ref: "#/components/schemas/Service"
+          responses:
+            "201":
+              description: Service added
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: "#/components/schemas/Service"
+            "401":
+              $ref: "#/components/responses/401"
+            "422":
+              $ref: "#/components/responses/422"
+            "500":
+              $ref: "#/components/responses/500"
+      /api/me/services/{id}:
+        delete:
+          tags:
+            - Profile
+          summary: Delete service
+          operationId: deleteService
+          parameters:
+            - name: id
+              in: path
+              description: Service Identifier
+              schema:
+                type: integer
+              required: true
+          responses:
+            "204":
+              $ref: "#/components/responses/204"
+            "401":
+              $ref: "#/components/responses/401"
+            "404":
+              $ref: "#/components/responses/404"
+            "500":
+              $ref: "#/components/responses/500"
+        patch:
+          tags:
+            - Profile
+          summary: Update service
+          operationId: updateService
+          parameters:
+            - name: id
+              in: path
+              description: Service Identifier
+              schema:
+                type: integer
+              required: true
+          requestBody:
+            content:
+              application/hal+json:
+                schema:
+                  $ref: "#/components/schemas/Service"
+          responses:
+            "200":
+              description: Service updated
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: "#/components/schemas/Service"
+            "204":
+              $ref: "#/components/responses/204"
+            "401":
+              $ref: "#/components/responses/401"
+            "404":
+              $ref: "#/components/responses/404"
+            "422":
+              $ref: "#/components/responses/422"
+            "500":
+              $ref: "#/components/responses/500"
+      /api/me/services/status:
+        get:
+          tags:
+            - Profile
+          summary: Get services status
+          operationId: getServicesStatus
+          responses:
+            "200":
+              description: Returns services status
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: "#/components/schemas/ServiceStatus"
+            "401":
+              $ref: "#/components/responses/401"
+            "500":
+              $ref: "#/components/responses/500"
+      /api/store:
+        get:
+          tags:
+            - Store
+          summary: Get store
+          operationId: getStore
+          responses:
+            "200":
+              description: Returns store
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: "#/components/schemas/Store"
+            "401":
+              $ref: "#/components/responses/401"
+            "500":
+              $ref: "#/components/responses/500"
+      /api/widgets:
+        get:
+          tags:
+            - Widgets
+          summary: Get widgets
+          operationId: getWidgets
+          responses:
+            "200":
+              description: Returns widgets
+              content:
+                application/hal+json:
+                  schema:
+                    $ref: "#/components/schemas/Widget"
+            "401":
+              $ref: "#/components/responses/401"
+            "500":
+              $ref: "#/components/responses/500"
+    components:
+      securitySchemes:
+        Bearer:
+          type: http
+          scheme: bearer
+        apiKey:
+          type: apiKey
+          description: "Value: {apiKey}"
+          in: header
+          name: X-API-KEY
+      responses:
         "204":
-          description: No content - Indicates the request was successful but there is no content to be returned in the response.
+          description: No content - indicates the request was successful but there is no content to be returned in the response.
         "400":
           description: Client Error - Returned if the request body is invalid.
           content:
@@ -77,65 +759,226 @@ nelmio_api_doc:
                 type: object
                 properties:
                   error:
-                    type: string
                     description: A message describing the error
                     example: "JWT validation failed: JWT is expired"
         "403":
-          description: Forbidden - Returned if the user does not have access to this endpoint.
+          description: Forbidden - Returned if the user you are running as, doesn't have access to this end-point.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponseDto"
+              examples:
+                "403":
+                  summary: An example of a 403 response object
+                  value:
+                    detailCode: 403 Forbidden
+                    trackingId: b21b1f7ce4da4d639f2c62a57171b427
+                    messages:
+                      - locale: en-US
+                        localeOrigin: DEFAULT
+                        text: The server understood the request but refuses to authorize it.
         "404":
-          description: Not Found - Returned if the request URL refers to a resource or object that does not exist.
+          description: Not Found - returned if the request URL refers to a resource or object that does not exist
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponseDto"
+              examples:
+                "404":
+                  summary: An example of a 404 response object
+                  value:
+                    detailCode: 404 Not found
+                    trackingId: b21b1f7ce4da4d639f2c62a57171b427
+                    messages:
+                      - locale: en-US
+                        localeOrigin: DEFAULT
+                        text: The server did not find a current representation for the target resource.
         "405":
-          description: Method Not Allowed - Indicates that the server knows the request method, but the target resource doesn't support this method.
+          description: Method Not Allowed - indicates that the server knows the request method, but the target resource doesn't support this method.
           content:
             application/json:
               schema:
                 type: object
                 properties:
                   errorName:
-                    type: string
                     description: A message describing the error
                     example: NotSupportedException
                   errorMessage:
-                    type: string
                     description: Description of the error
                     example: Cannot consume content type
                   trackingId:
                     type: string
-                    description: Unique tracking ID for the error.
+                    description: Unique tracking id for the error.
                     example: e7eab60924f64aa284175b9fa3309599
         "422":
           description: Unprocessable Entity - Returned if the request was not processed due to validation errors.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponseDto"
         "500":
           description: Internal Server Error - Returned if there is an unexpected error.
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponseDto"
+              examples:
+                "500":
+                  summary: An example of a 500 response object
+                  value:
+                    detailCode: 500.0 Internal Fault
+                    trackingId: b21b1f7ce4da4d639f2c62a57171b427
+                    messages:
+                      - locale: en-US
+                        localeOrigin: DEFAULT
+                        text: An internal fault occurred.
       schemas:
-        SuccessResponse:
+        App:
           type: object
           properties:
-            message:
+            name:
               type: string
-              example: "Ok, created"
+            altname:
+              type: string
+            logo:
+              type: string
+            type:
+              type: string
+              enum:
+                - remote
+                - media
+                - automation
+                - download
+            groups:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+            store:
+              type: object
+              properties:
+                id:
+                  type: integer
+        Cpu:
+          type: object
+          properties:
+            model:
+              type: string
+            percentage:
+              type: number
+              format: double
+            loadAverage:
+              type: object
+              properties:
+                1min:
+                  type: number
+                  format: double
+                5min:
+                  type: number
+                  format: double
+                15min:
+                  type: number
+                  format: double
+        Disk:
+          type: object
+          properties:
+            total:
+              type: number
+            used:
+              type: number
+            free:
+              type: number
+            percentage:
+              type: number
+        Network:
+          type: object
+          properties:
+            interface:
+              type: string
+            downloadSpeed:
+              type: number
+              format: float
+            uploadSpeed:
+              type: number
+              format: float
+        Ram:
+          $ref: "#/components/schemas/Memory"
+        User:
+          type: object
+          properties:
+            id:
+              type: integer
+            username:
+              type: string
+            roles:
+              type: array
+              items:
+                type: string
+            mounts:
+              type: array
+              items:
+                type: object
+                properties:
+                  path:
+                    type: string
+                  rclone:
+                    type: boolean
+            email:
+              type: string
+            isVerified:
+              type: boolean
+            preference:
+              type: object
+              properties:
+                pinnedApps:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                display:
+                  type: string
+                shell:
+                  type: string
+                selectedWidgets:
+                  type: array
+                  items:
+                    type: string
+                theme:
+                  type: string
+            apiKey:
+              type: string
+        Service:
+          type: object
+          properties:
+            name:
+              type: string
+            url:
+              type: string
+            icon:
+              type: string
+            color:
+              type: string
+        Store:
+          type: object
+          properties:
+            name:
+              type: string
+            altName:
+              type: string
+            description:
+              type: string
+            type:
+              type: string
+            isPro:
+              type: boolean
+            isAvailable:
+              type: boolean
         LocaleOrigin:
-          description: An indicator of how the locale was selected. *DEFAULT* means the locale is the system default. *REQUEST* means the locale was selected from the request context (i.e., best match based on the *Accept-Language* header). Additional values may be added in the future without notice.
           type: string
           enum:
             - DEFAULT
             - REQUEST
+          description: An indicator of how the locale was selected. *DEFAULT* means the locale is the system default. *REQUEST* means the locale was selected from the request context (i.e., best match based on the *Accept-Language* header). Additional values may be added in the future without notice.
           example: DEFAULT
         ErrorMessageDto:
           type: object
@@ -145,7 +988,7 @@ nelmio_api_doc:
               description: The locale for the message text, a BCP 47 language tag.
               example: en-US
             localeOrigin:
-              $ref: '#/components/schemas/LocaleOrigin'
+              $ref: "#/components/schemas/LocaleOrigin"
             text:
               type: string
               description: Actual text of the error message in the indicated locale.
@@ -153,1430 +996,106 @@ nelmio_api_doc:
         ErrorResponseDto:
           type: object
           properties:
-            causes:
-              type: array
-              description: Plain-text descriptive reasons to provide additional detail to the text provided in the messages field.
-              items:
-                $ref: '#/components/schemas/ErrorMessageDto'
             detailCode:
               type: string
               description: Fine-grained error code providing more detail of the error.
-              example: 400_BAD_REQUEST_CONTENT
-            messages:
-              type: array
-              description: Generic localized reason for error.
-              items:
-                $ref: '#/components/schemas/ErrorMessageDto'
+              example: 400.1 Bad Request Content
             trackingId:
               type: string
-              description: Unique tracking ID for the error.
+              description: Unique tracking id for the error.
               example: e7eab60924f64aa284175b9fa3309599
-        Application.item:
-          properties:
-            altname:
-              example: Alternative Name
-              type: string
-            id:
-              example: 1
-              format: int64
-              type: integer
-            logo:
-              example: /path/to/logo.png
-              type: string
-            name:
-              example: Application Name
-              type: string
-            store:
-              $ref: '#/components/schemas/Store.item'
-          type: object
-        Application.list:
-          properties:
-            applications:
-              items:
-                $ref: '#/components/schemas/Application.item'
+            messages:
               type: array
+              description: Generic localized reason for error
+              items:
+                $ref: "#/components/schemas/ErrorMessageDto"
+            causes:
+              type: array
+              description: Plain-text descriptive reasons to provide additional detail to the text provided in the messages field
+              items:
+                $ref: "#/components/schemas/ErrorMessageDto"
+        Memory:
           type: object
-        Display:
           properties:
+            total:
+              type: number
+              format: float
+              description: Total amount of RAM available, in MB.
+            used:
+              type: number
+              format: float
+              description: Amount of RAM used, in MB.
+            free:
+              type: number
+              format: float
+              description: Amount of free RAM, in MB.
+            available:
+              type: number
+              format: float
+              description: Amount of RAM available for use, in MB.
+            percentage:
+              type: number
+              format: float
+              description: Percentage of RAM currently used.
+        Preferences:
+          type: object
+          properties:
+            pinnedApps:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
             display:
               type: string
-          type: object
-        Group.item:
-          properties:
-            id:
-              example: 1
-              format: int64
-              type: integer
-            name:
-              example: Group Name
+            shell:
               type: string
-            stores:
-              items:
-                $ref: '#/components/schemas/Store.item'
+            selectedWidgets:
               type: array
-            users:
               items:
-                $ref: '#/components/schemas/User.item'
-              type: array
+                type: string
+            theme:
+              type: string
+        PinnedApp:
           type: object
-        Group.list:
           properties:
-            groups:
-              items:
-                $ref: '#/components/schemas/Group.item'
-              type: array
+            pin:
+              type: string
+        Theme:
           type: object
+          properties:
+            theme:
+              type: string
         Lang:
+          type: object
           properties:
             language:
               type: string
+        Shell:
           type: object
-        Log.list:
           properties:
-            logs:
-              items:
-                $ref: '#/components/schemas/Log.item'
-              type: array
-          type: object
-        Log.item:
-          properties:
-            id:
-              example: 1
-              format: int64
-              type: integer
-            createdAt:
-              example: 2022-01-01T00:00:00Z
-              format: date-time
-              type: string
-            logType:
-              example: info
-              type: string
-            content:
-              example: Log Content
-              type: string
-          type: object
-        Mount.item:
-          properties:
-            id:
-              example: 1
-              format: int64
-              type: integer
-            path:
-              example: /mnt/data
-              type: string
-            rclone:
-              example: false
-              type: boolean
-            user:
-              $ref: '#/components/schemas/User.item'
-          type: object
-        Mount.list:
-          properties:
-            mounts:
-              items:
-                $ref: '#/components/schemas/Mount.item'
-              type: array
-          type: object
-        PinnedApps:
-          items:
-            $ref: '#/components/schemas/Service.item'
-          type: array
-        Preference.item:
-          properties:
-            avatar:
-              example: /path/to/avatar.png
-              type: string
-            backdrop:
-              example: /path/to/backdrop.png
-              type: string
-            display:
-              example: dark
-              type: string
-            id:
-              example: 1
-              format: int64
-              type: integer
-            isFullAppListingEnabled:
-              example: true
-              type: boolean
-            pinnedApps:
-              items:
-                example: Service1
-                type: string
-              type: array
-            selectedWidgets:
-              items:
-                example: Widget1
-                type: string
-              type: array
             shell:
-              example: bash
               type: string
-            theme:
-              example: default
-              type: string
-            user:
-              $ref: '#/components/schemas/User.item'
-            primaryMountPath:
-              example: /mnt/data
-              type: string
-            isVerbosityEnabled:
-              example: true
-              type: boolean
-            isGravatarEnabled:
-              example: true
-              type: boolean
+        Display:
           type: object
-        Preference.list:
           properties:
-            preferences:
-              items:
-                $ref: '#/components/schemas/Preference.item'
-              type: array
-          type: object
-        Service.item:
-          properties:
-            apiKey:
-              example: service-api-key
+            display:
               type: string
-            application:
-              $ref: '#/components/schemas/Application.item'
-            childServices:
-              items:
-                $ref: '#/components/schemas/Service.item'
+        Widget:
+          type: object
+          properties:
+            widgets:
               type: array
-            configuration:
               items:
-                example: config1
                 type: string
-              type: array
-            id:
-              example: 1
-              format: int64
-              type: integer
-            name:
-              example: Service Name
-              type: string
-            parentService:
-              $ref: '#/components/schemas/Service.item'
-            ports:
-              items:
-                example: '80'
-                type: string
-              type: array
-            status:
-              example: running
-              type: string
-            transcode:
-              $ref: '#/components/schemas/Transcode.item'
-            user:
-              $ref: '#/components/schemas/User.item'
-            version:
-              example: 1.0.0
-              type: string
+        MyApps:
           type: object
-        Service.list:
           properties:
-            services:
-              items:
-                $ref: '#/components/schemas/Service.item'
-              type: array
-          type: object
+            apps:
+              type: string
         ServiceStatus:
+          type: object
           properties:
             message:
               type: string
-          type: object
-        Setting.item:
-          properties:
-            id:
-              example: 1
-              format: int64
-              type: integer
-            key:
-              example: theme
-              type: string
-            user:
-              $ref: '#/components/schemas/User.item'
-            value:
-              example: dark
-              type: string
-          type: object
-        Setting.list:
-          properties:
-            settings:
-              items:
-                $ref: '#/components/schemas/Setting.item'
-              type: array
-          type: object
-        Shell:
-          properties:
-            shell:
-              type: string
-          type: object
-        Store.item:
-          properties:
-            application:
-              $ref: '#/components/schemas/Application.item'
-            description:
-              example: Store Description
-              type: string
-            groups:
-              items:
-                $ref: '#/components/schemas/Group.item'
-              type: array
-            id:
-              example: 1
-              format: int64
-              type: integer
-            isAvailable:
-              example: true
-              type: boolean
-            isPro:
-              example: false
-              type: boolean
-            type:
-              example: type1
-              type: string
-          type: object
-        Store.list:
-          properties:
-            stores:
-              items:
-                $ref: '#/components/schemas/Store.item'
-              type: array
-          type: object
-        Theme:
-          properties:
-            theme:
-              type: string
-          type: object
-        Transcode.item:
-          properties:
-            id:
-              example: 1
-              format: int64
-              type: integer
-            isEnabled:
-              example: false
-              type: boolean
-            service:
-              $ref: '#/components/schemas/Service.item'
-            user:
-              $ref: '#/components/schemas/User.item'
-          type: object
-        Transcode.list:
-          properties:
-            transcodes:
-              items:
-                $ref: '#/components/schemas/Transcode.item'
-              type: array
-          type: object
-        User.item:
-          properties:
-            apiKey:
-              example: user-api-key
-              type: string
-            email:
-              example: user@example.com
-              format: email
-              type: string
-            group:
-              items:
-                $ref: '#/components/schemas/Group.item'
-              type: array
-            isVerified:
-              example: true
-              type: boolean
-            mounts:
-              items:
-                $ref: '#/components/schemas/Mount.item'
-              type: array
-            preferences:
-              $ref: '#/components/schemas/Preference.item'
-            roles:
-              items:
-                example: ROLE_USER
-                type: string
-              type: array
-            services:
-              items:
-                $ref: '#/components/schemas/Service.item'
-              type: array
-            username:
-              example: username
-              type: string
-            isBanned:
-              example: false
-              type: boolean
-            registrationIp:
-              example: 192.168.1.1
-              type: string
-            registeredAt:
-              example: 2022-01-01T00:00:00Z
-              format: date-time
-              type: string
-            activatedAt:
-              example: 2022-01-01T00:00:00Z
-              format: date-time
-              type: string
-            session_id:
-              example: 1234567890
-              type: string
-          type: object
-        User.list:
-          properties:
-            users:
-              items:
-                $ref: '#/components/schemas/User.item'
-              type: array
-          type: object
-        Widget.cpu.item:
-          properties:
-            loadAverage:
-              properties:
-                15min:
-                  example: 1.8
-                  format: double
-                  type: number
-                1min:
-                  example: 1.5
-                  format: double
-                  type: number
-                5min:
-                  example: 1.7
-                  format: double
-                  type: number
-              type: object
-            model:
-              example: Intel(R) Xeon(R) CPU E5-2670 v3 @ 2.30GHz
-              type: string
-            percentage:
-              example: 15.6
-              format: double
-              type: number
-          type: object
-        Widget.disk.item:
-          properties:
-            free:
-              example: 51200
-              type: number
-            percentage:
-              example: 50
-              type: number
-            total:
-              example: 102400
-              type: number
-            used:
-              example: 51200
-              type: number
-          type: object
-        Widget.item:
-          properties:
-            description:
-              example: cpu_1
-              type: string
-            id:
-              example: 1
-              format: int64
-              type: integer
-            name:
-              example: CPU 1
-              type: string
-            type:
-              example: cpu
-              type: string
-          type: object
-        Widget.list:
-          properties:
-            totalResults:
-              description: Total number of widgets in the list
-              example: 10
-              type: integer
-            widgets:
-              items:
-                $ref: '#/components/schemas/Widget.item'
-              type: array
-          type: object
-        Widget.memory.item:
-          properties:
-            available:
-              description: Amount of RAM available for use, in MB.
-              example: 4096
-              format: float
-              type: number
-            free:
-              description: Amount of free RAM, in MB.
-              example: 4096
-              format: float
-              type: number
-            percentage:
-              description: Percentage of RAM currently used.
-              example: 50
-              format: float
-              type: number
-            total:
-              description: Total amount of RAM available, in MB.
-              example: 16384
-              format: float
-              type: number
-            used:
-              description: Amount of RAM used, in MB.
-              example: 8192
-              format: float
-              type: number
-          type: object
-        Widget.network.item:
-          properties:
-            downloadSpeed:
-              example: 1024
-              format: float
-              type: number
-            interface:
-              example: eth0
-              type: string
-            uploadSpeed:
-              example: 512
-              format: float
-              type: number
-          type: object
-        Widget.ram.item:
-          $ref: '#/components/schemas/Widget.memory.item'
-      securitySchemes:
-        Bearer:
-          bearerFormat: JWT
-          scheme: bearer
-          type: http
-        apiKey:
-          description: 'Value: {apiKey}'
-          in: header
-          name: X-API-KEY
-          type: apiKey
-    models:
-      names:
-      - alias: User.list
-        groups:
-        - get:users
-        - get:user-limited
-        - get:user
-        type: App\Entity\User
-      - alias: User.item
-        groups:
-        - get:user
-        type: App\Entity\User
-      - alias: Application.list
-        groups:
-        - get:users
-        - get:user-limited
-        - get:user
-        type: App\Entity\Application
-      - alias: Group.list
-        groups:
-        - get:users
-        - get:user-limited
-        - get:user
-        type: App\Entity\Group
-      - alias: Log.list
-        groups:
-        - get:users
-        - get:user-limited
-        - get:user
-        type: App\Entity\Log
-      - alias: Mount.list
-        groups:
-        - get:users
-        - get:user-limited
-        - get:user
-        type: App\Entity\Mount
-      - alias: Preference.list
-        groups:
-        - get:users
-        - get:user-limited
-        - get:user
-        type: App\Entity\Preference
-      - alias: Service.list
-        groups:
-        - get:users
-        - get:user-limited
-        - get:user
-        type: App\Entity\Service
-      - alias: Store.list
-        groups:
-        - get:users
-        - get:user-limited
-        - get:user
-        type: App\Entity\Store
-      - alias: Transcode.list
-        groups:
-        - get:users
-        - get:user-limited
-        - get:user
-        type: App\Entity\Transcode
-      - alias: Transcode.item
-        groups:
-        - get:transcode
-        type: App\Entity\Transcode
-      - alias: Widget.list
-        groups:
-        - get:users
-        - get:user-limited
-        - get:user
-        - get:widget
-        type: App\Entity\Widget
-      - alias: Widget.item
-        groups:
-        - get:widget
-        type: App\Entity\Widget
-    paths:
-      /api/apps:
-        get:
-          operationId: api_apps_list
-          responses:
-            '200':
-              content:
-                application/hal+json:
-                  schema:
-                    $ref: '#/components/schemas/Application.list'
-              description: OK
-            '400':
-              $ref: '#/components/responses/400'
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '404':
-              $ref: '#/components/responses/404'
-            '405':
-              $ref: '#/components/responses/405'
-            '500':
-              $ref: '#/components/responses/500'
-          summary: Get all applications
-          tags:
-          - Apps
-        post:
-          operationId: api_apps_create
-          requestBody:
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Application.item'
-          responses:
-            '201':
-              content:
-                application/json:
-                  schema:
-                    $ref: '#/components/schemas/SuccessResponse'
-              description: Created
-            '400':
-              $ref: '#/components/responses/400'
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '405':
-              $ref: '#/components/responses/405'
-            '422':
-              $ref: '#/components/responses/422'
-            '500':
-              $ref: '#/components/responses/500'
-          summary: Create a new application
-          tags:
-          - Apps
-      /api/apps/{id}:
-        delete:
-          operationId: api_apps_delete
-          parameters:
-          - description: ID of the application to delete
-            in: path
-            name: id
-            required: true
-            schema:
-              format: int64
-              type: integer
-          responses:
-            '204':
-              $ref: '#/components/responses/204'
-            '400':
-              $ref: '#/components/responses/400'
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '404':
-              $ref: '#/components/responses/404'
-            '405':
-              $ref: '#/components/responses/405'
-            '500':
-              $ref: '#/components/responses/500'
-          summary: Delete an application by ID
-          tags:
-          - Apps
-        get:
-          operationId: api_apps_get
-          parameters:
-          - description: ID of the application to get
-            in: path
-            name: id
-            required: true
-            schema:
-              format: int64
-              type: integer
-          responses:
-            '200':
-              content:
-                application/hal+json:
-                  schema:
-                    $ref: '#/components/schemas/Application.item'
-              description: OK
-            '400':
-              $ref: '#/components/responses/400'
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '404':
-              $ref: '#/components/responses/404'
-            '405':
-              $ref: '#/components/responses/405'
-            '500':
-              $ref: '#/components/responses/500'
-          summary: Get an application by ID
-          tags:
-          - Apps
-        put:
-          operationId: api_apps_update
-          parameters:
-          - description: ID of the application to update
-            in: path
-            name: id
-            required: true
-            schema:
-              format: int64
-              type: integer
-          requestBody:
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Application.item'
-          responses:
-            '200':
-              content:
-                application/hal+json:
-                  schema:
-                    $ref: '#/components/schemas/Application.item'
-              description: OK
-            '400':
-              $ref: '#/components/responses/400'
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '404':
-              $ref: '#/components/responses/404'
-            '405':
-              $ref: '#/components/responses/405'
-            '422':
-              $ref: '#/components/responses/422'
-            '500':
-              $ref: '#/components/responses/500'
-          summary: Update an application by ID
-          tags:
-          - Apps
-      /api/auth/login:
-        post:
-          operationId: login
-          requestBody:
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    username:
-                      type: string
-                    password:
-                      type: string
-          responses:
-            '200':
-              content:
-                application/hal+json:
-                  schema:
-                    type: object
-                    properties:
-                      token:
-                        type: string
-              description: OK
-            '400':
-              $ref: '#/components/responses/400'
-            '405':
-              $ref: '#/components/responses/405'
-            '422':
-              $ref: '#/components/responses/422'
-            '500':
-              $ref: '#/components/responses/500'
-          security: []
-          summary: Get JWT token
-          tags:
-          - Authentication
-      /api/groups:
-        get:
-          operationId: api_groups_list
-          responses:
-            '200':
-              content:
-                application/hal+json:
-                  schema:
-                    $ref: '#/components/schemas/Group.list'
-              description: OK
-            '400':
-              $ref: '#/components/responses/400'
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '404':
-              $ref: '#/components/responses/404'
-            '405':
-              $ref: '#/components/responses/405'
-            '500':
-              $ref: '#/components/responses/500'
-          summary: Get all groups
-          tags:
-          - Groups
-        post:
-          operationId: api_groups_create
-          requestBody:
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Group.item'
-          responses:
-            '201':
-              content:
-                application/json:
-                  schema:
-                    $ref: '#/components/schemas/SuccessResponse'
-              description: Created
-            '400':
-              $ref: '#/components/responses/400'
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '405':
-              $ref: '#/components/responses/405'
-            '422':
-              $ref: '#/components/responses/422'
-            '500':
-              $ref: '#/components/responses/500'
-          summary: Create a new group
-          tags:
-          - Groups
-      /api/groups/{id}:
-        delete:
-          operationId: api_groups_delete
-          parameters:
-          - description: ID of the group to delete
-            in: path
-            name: id
-            required: true
-            schema:
-              format: int64
-              type: integer
-          responses:
-            '204':
-              $ref: '#/components/responses/204'
-            '400':
-              $ref: '#/components/responses/400'
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '404':
-              $ref: '#/components/responses/404'
-            '405':
-              $ref: '#/components/responses/405'
-            '500':
-              $ref: '#/components/responses/500'
-          summary: Delete a group by ID
-          tags:
-          - Groups
-        get:
-          operationId: api_groups_get
-          parameters:
-          - description: ID of the group to get
-            in: path
-            name: id
-            required: true
-            schema:
-              format: int64
-              type: integer
-          responses:
-            '200':
-              content:
-                application/hal+json:
-                  schema:
-                    $ref: '#/components/schemas/Group.item'
-              description: OK
-            '400':
-              $ref: '#/components/responses/400'
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '404':
-              $ref: '#/components/responses/404'
-            '405':
-              $ref: '#/components/responses/405'
-            '500':
-              $ref: '#/components/responses/500'
-          summary: Get a group by ID
-          tags:
-          - Groups
-        put:
-          operationId: api_groups_update
-          parameters:
-          - description: ID of the group to update
-            in: path
-            name: id
-            required: true
-            schema:
-              format: int64
-              type: integer
-          requestBody:
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Group.item'
-          responses:
-            '200':
-              content:
-                application/hal+json:
-                  schema:
-                    $ref: '#/components/schemas/Group.item'
-              description: OK
-            '400':
-              $ref: '#/components/responses/400'
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '404':
-              $ref: '#/components/responses/404'
-            '405':
-              $ref: '#/components/responses/405'
-            '422':
-              $ref: '#/components/responses/422'
-            '500':
-              $ref: '#/components/responses/500'
-          summary: Update a group by ID
-          tags:
-          - Groups
-      /api/logs/access-logs:
-        get:
-          operationId: api_logs_access_logs
-          parameters:
-            - name: page
-              in: query
-              description: Page number
-              required: false
-              schema:
-                type: integer
-                default: 1
-            - name: limit
-              in: query
-              description: Number of items per page
-              required: false
-              schema:
-                type: integer
-                default: 10
-          responses:
-            '200':
-              content:
-                application/hal+json:
-                  schema:
-                    $ref: '#/components/schemas/Log.list'
-              description: OK
-            '400':
-              $ref: '#/components/responses/400'
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '404':
-              $ref: '#/components/responses/404'
-            '500':
-              $ref: '#/components/responses/500'
-          summary: Get access logs
-          tags:
-          - Logs
-      /api/logs/fetch:
-        post:
-          operationId: api_logs_fetch
-          requestBody:
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    filePath:
-                      type: string
-          responses:
-            '200':
-              content:
-                application/hal+json:
-                  schema:
-                    type: object
-                    properties:
-                      logs:
-                        type: array
-                        items:
-                          type: text
-              description: OK
-            '400':
-              $ref: '#/components/responses/400'
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '404':
-              $ref: '#/components/responses/404'
-            '405':
-              $ref: '#/components/responses/405'
-            '500':
-              $ref: '#/components/responses/500'
-          summary: Fetch logs
-          tags:
-          - Logs
-      /api/me:
-        get:
-          operationId: getProfile
-          responses:
-            '200':
-              content:
-                application/hal+json:
-                  schema:
-                    $ref: '#/components/schemas/User.item'
-              description: Returns user profile
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '404':
-              $ref: '#/components/responses/404'
-            '500':
-              $ref: '#/components/responses/500'
-          summary: Get user profile
-          tags:
-          - Profile
-      /api/me/preferences/pin:
-        patch:
-          operationId: updatePin
-          requestBody:
-            content:
-              application/hal+json:
-                schema:
-                  $ref: '#/components/schemas/PinnedApps'
-          responses:
-            '200':
-              content:
-                application/hal+json:
-                  schema:
-                    $ref: '#/components/schemas/PinnedApps'
-              description: User pin updated
-            '204':
-              $ref: '#/components/responses/204'
-            '400':
-              $ref: '#/components/responses/400'
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '404':
-              $ref: '#/components/responses/404'
-            '422':
-              $ref: '#/components/responses/422'
-            '500':
-              $ref: '#/components/responses/500'
-          summary: Update user pin
-          tags:
-          - Profile
-      /api/me/preferences/widgets:
-        patch:
-          operationId: updateWidgets
-          requestBody:
-            content:
-              application/hal+json:
-                schema:
-                  $ref: '#/components/schemas/Widget.item'
-          responses:
-            '200':
-              content:
-                application/hal+json:
-                  schema:
-                    $ref: '#/components/schemas/Widget.item'
-              description: User widgets updated
-            '204':
-              $ref: '#/components/responses/204'
-            '400':
-              $ref: '#/components/responses/400'
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '404':
-              $ref: '#/components/responses/404'
-            '422':
-              $ref: '#/components/responses/422'
-            '500':
-              $ref: '#/components/responses/500'
-          summary: Update user widgets
-          tags:
-          - Profile
-      /api/me/preferences/{preferenceKey}:
-        patch:
-          description: Update a specific user preference by key.
-          operationId: updatePreference
-          parameters:
-          - in: path
-            name: preferenceKey
-            required: true
-            schema:
-              description: The key of the preference to update.
-              type: string
-          - in: query
-            name: value
-            required: true
-            schema:
-              description: The value to set the preference to.
-              type: string
-          responses:
-            '200':
-              content:
-                application/json:
-                  schema:
-                    oneOf:
-                    - $ref: '#/components/schemas/Theme'
-                    - $ref: '#/components/schemas/Lang'
-                    - $ref: '#/components/schemas/Shell'
-                    - $ref: '#/components/schemas/Display'
-              description: Preference updated successfully.
-            '204':
-              $ref: '#/components/responses/204'
-            '400':
-              $ref: '#/components/responses/400'
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '404':
-              $ref: '#/components/responses/404'
-            '405':
-              $ref: '#/components/responses/405'
-            '422':
-              $ref: '#/components/responses/422'
-            '500':
-              $ref: '#/components/responses/500'
-          summary: Update a user preference
-          tags:
-          - Profile
-      /api/me/services:
-        post:
-          operationId: addService
-          requestBody:
-            content:
-              application/hal+json:
-                schema:
-                  $ref: '#/components/schemas/Service.item'
-          responses:
-            '201':
-              content:
-                application/json:
-                  schema:
-                    $ref: '#/components/schemas/SuccessResponse'
-              description: Service added
-            '400':
-              $ref: '#/components/responses/400'
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '404':
-              $ref: '#/components/responses/404'
-            '405':
-              $ref: '#/components/responses/405'
-            '422':
-              $ref: '#/components/responses/422'
-            '500':
-              $ref: '#/components/responses/500'
-          summary: Add service
-          tags:
-          - Profile
-      /api/me/services/status:
-        get:
-          operationId: api_me_services_status
-          responses:
-            '200':
-              content:
-                application/hal+json:
-                  schema:
-                    $ref: '#/components/schemas/ServiceStatus'
-              description: Returns services status
-            '400':
-              $ref: '#/components/responses/400'
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '404':
-              $ref: '#/components/responses/404'
-            '500':
-              $ref: '#/components/responses/500'
-          summary: Get services status
-          tags:
-          - Profile
-      /api/me/services/{id}:
-        delete:
-          operationId: deleteService
-          parameters:
-          - description: Service Identifier
-            in: path
-            name: id
-            required: true
-            schema:
-              type: integer
-          responses:
-            '204':
-              $ref: '#/components/responses/204'
-            '400':
-              $ref: '#/components/responses/400'
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '404':
-              $ref: '#/components/responses/404'
-            '405':
-              $ref: '#/components/responses/405'
-            '500':
-              $ref: '#/components/responses/500'
-          summary: Delete service
-          tags:
-          - Profile
-        patch:
-          operationId: updateService
-          parameters:
-          - description: Service Identifier
-            in: path
-            name: id
-            required: true
-            schema:
-              type: integer
-          requestBody:
-            content:
-              application/hal+json:
-                schema:
-                  $ref: '#/components/schemas/Service.item'
-          responses:
-            '200':
-              content:
-                application/hal+json:
-                  schema:
-                    $ref: '#/components/schemas/Service.item'
-              description: Service updated
-            '204':
-              $ref: '#/components/responses/204'
-            '400':
-              $ref: '#/components/responses/400'
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '404':
-              $ref: '#/components/responses/404'
-            '405':
-              $ref: '#/components/responses/405'
-            '500':
-              $ref: '#/components/responses/500'
-          summary: Update service
-          tags:
-          - Profile
-      /api/metric/cpu:
-        get:
-          operationId: getCpuUsage
-          responses:
-            '200':
-              content:
-                application/hal+json:
-                  schema:
-                    $ref: '#/components/schemas/Widget.cpu.item'
-              description: Returns CPU metrics
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '404':
-              $ref: '#/components/responses/404'
-            '500':
-              $ref: '#/components/responses/500'
-          summary: Get CPU metrics
-          tags:
-          - Metrics
-      /api/metric/disk:
-        get:
-          operationId: getDiskUsage
-          responses:
-            '200':
-              content:
-                application/hal+json:
-                  schema:
-                    $ref: '#/components/schemas/Widget.disk.item'
-              description: Returns disk metrics
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '404':
-              $ref: '#/components/responses/404'
-            '500':
-              $ref: '#/components/responses/500'
-          summary: Get disk metrics
-          tags:
-          - Metrics
-      /api/metric/mem:
-        get:
-          operationId: getMetricsMem
-          responses:
-            '200':
-              content:
-                application/hal+json:
-                  schema:
-                    $ref: '#/components/schemas/Widget.memory.item'
-              description: Returns RAM metrics
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '404':
-              $ref: '#/components/responses/404'
-            '500':
-              $ref: '#/components/responses/500'
-          summary: Get RAM metrics
-          tags:
-          - Metrics
-      /api/metric/net:
-        get:
-          operationId: getNetworkUsage
-          responses:
-            '200':
-              content:
-                application/hal+json:
-                  schema:
-                    $ref: '#/components/schemas/Widget.network.item'
-              description: Returns network metrics
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '404':
-              $ref: '#/components/responses/404'
-            '500':
-              $ref: '#/components/responses/500'
-          summary: Get network metrics
-          tags:
-          - Metrics
-      /api/settings:
-        get:
-          operationId: api_settings
-          responses:
-            '200':
-              content:
-                application/hal+json:
-                  schema:
-                    $ref: '#/components/schemas/Setting.item'
-              description: OK
-            '400':
-              $ref: '#/components/responses/400'
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '404':
-              $ref: '#/components/responses/404'
-            '405':
-              $ref: '#/components/responses/405'
-            '500':
-              $ref: '#/components/responses/500'
-          summary: Get all settings
-          tags:
-          - Settings
-      /api/services:
-        get:
-          operationId: api_services_list
-          responses:
-            '200':
-              content:
-                application/hal+json:
-                  schema:
-                    $ref: '#/components/schemas/Service.list'
-              description: OK
-            '400':
-              $ref: '#/components/responses/400'
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '404':
-              $ref: '#/components/responses/404'
-            '405':
-              $ref: '#/components/responses/405'
-            '500':
-              $ref: '#/components/responses/500'
-          summary: Get all services
-          tags:
-          - Services
-      /api/transcodes:
-        get:
-          operationId: api_transcodes_list
-          responses:
-            '200':
-              content:
-                application/hal+json:
-                  schema:
-                    $ref: '#/components/schemas/Transcode.list'
-              description: OK
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '404':
-              $ref: '#/components/responses/404'
-            '500':
-              $ref: '#/components/responses/500'
-          summary: List all the transcodes objects
-          tags:
-          - Transcode
-      /api/widgets:
-        get:
-          operationId: api_widgets_list
-          responses:
-            '200':
-              content:
-                application/hal+json:
-                  schema:
-                    $ref: '#/components/schemas/Widget.list'
-              description: OK
-            '400':
-              $ref: '#/components/responses/400'
-            '401':
-              $ref: '#/components/responses/401'
-            '403':
-              $ref: '#/components/responses/403'
-            '404':
-              $ref: '#/components/responses/404'
-            '405':
-              $ref: '#/components/responses/405'
-            '500':
-              $ref: '#/components/responses/500'
-          summary: Get all widgets
-          tags:
-          - Widgets
