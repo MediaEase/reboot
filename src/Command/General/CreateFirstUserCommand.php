@@ -69,6 +69,7 @@ class CreateFirstUserCommand extends Command
         $shell = $input->getArgument('shell');
         $display = $input->getArgument('display');
         $userIp = $input->getArgument('user_ip');
+        $currentTimestamp = (new \DateTimeImmutable());
 
         $user = new User();
         $user->setUsername($username);
@@ -78,6 +79,8 @@ class CreateFirstUserCommand extends Command
         $user->setPassword($this->userPasswordHasher->hashPassword($user, $password));
         $user->setIsVerified($isVerified);
         $user->setApiKey(bin2hex(random_bytes(16)));
+        $user->setRegisteredAt($currentTimestamp);
+        $user->setActivatedAt($currentTimestamp);
         $user->setRegistrationIp($userIp);
 
         $this->entityManager->persist($user);
