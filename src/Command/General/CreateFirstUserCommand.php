@@ -47,7 +47,8 @@ class CreateFirstUserCommand extends Command
             ->addArgument('theme', InputArgument::REQUIRED, 'User theme')
             ->addArgument('mount', InputArgument::REQUIRED, 'User mount path')
             ->addArgument('shell', InputArgument::REQUIRED, 'User shell')
-            ->addArgument('display', InputArgument::REQUIRED, 'User display preference');
+            ->addArgument('display', InputArgument::REQUIRED, 'User display preference')
+            ->addArgument('user_ip', InputArgument::REQUIRED, 'User IP address');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -67,6 +68,7 @@ class CreateFirstUserCommand extends Command
         $mountPath = $input->getArgument('mount');
         $shell = $input->getArgument('shell');
         $display = $input->getArgument('display');
+        $userIp = $input->getArgument('user_ip');
 
         $user = new User();
         $user->setUsername($username);
@@ -76,6 +78,7 @@ class CreateFirstUserCommand extends Command
         $user->setPassword($this->userPasswordHasher->hashPassword($user, $password));
         $user->setIsVerified($isVerified);
         $user->setApiKey(bin2hex(random_bytes(16)));
+        $user->setRegistrationIp($userIp);
 
         $this->entityManager->persist($user);
 
