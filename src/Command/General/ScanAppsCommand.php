@@ -146,9 +146,7 @@ final class ScanAppsCommand extends Command
             'arguments' => ['app_name', 'altname', 'description', 'pro_only', 'logo_path', 'multi_user', 'ports', 'service_directives', 'files', 'paths', 'group', 'details'],
         ];
 
-        $bypass = false;
         if (isset($config['skip_requirements_check']) && $config['skip_requirements_check'] === true) {
-            $bypass = true;
             return true;
         }
 
@@ -160,7 +158,7 @@ final class ScanAppsCommand extends Command
             }
 
             foreach ($keys as $key) {
-                if (!isset($config[$parentKey][$key]) || $bypass === false) {
+                if (!isset($config[$parentKey][$key])) {
                     $output->writeln('Missing required key: '.$parentKey.'.'.$key);
 
                     return false;
