@@ -53,7 +53,7 @@ install-project:
     {{PHP_CONSOLE}} doctrine:database:create
     {{PHP_CONSOLE}} doctrine:schema:update --force --complete
     {{PHP_CONSOLE}} ux:icons:lock --force
-    just sf-clear-cache --env=dev
+    just sf-clear-cache-dev
     just qa-composer-outdated
 
 ###################################
@@ -64,6 +64,10 @@ install-project:
 # Clear the Symfony cache.
 sf-clear-cache:
     {{SYMFONY_CONSOLE}} cache:clear
+
+# Clear the Symfony cache in dev environment.
+sf-clear-cache-dev:
+    {{SYMFONY_CONSOLE}} cache:clear --env=dev
 
 # Open symfony logs
 sf-log:

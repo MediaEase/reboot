@@ -42,7 +42,7 @@ install-project: ## Install project with normal dependencies
 	$(PHP_CONSOLE) doctrine:database:create
 	$(PHP_CONSOLE) doctrine:schema:update --force --complete
 	$(PHP_CONSOLE) ux:icons:lock --force
-	make sf-clear-cache --env=dev
+	make sf-clear-cache-dev
 	make qa-composer-validate
 
 ###################################
@@ -52,6 +52,9 @@ install-project: ## Install project with normal dependencies
 ###################################
 sf-clear-cache: ## Clear the Symfony cache.
 	$(PHP_CONSOLE) cache:clear
+
+sf-clear-cache-dev: ## Clear the Symfony cache in dev environment.
+	$(PHP_CONSOLE) cache:clear --env=dev
 
 sf-log: ## Open symfony logs
 	$(SYMFONY) server:log
