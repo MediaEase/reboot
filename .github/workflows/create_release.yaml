@@ -38,8 +38,8 @@ jobs:
           REPO_NAME: ${{ github.event.repository.name }}
           DEVELOP_BRANCH: develop
           # PRERELEASE_IDENTIFIER: 'alpha'
-          PRERELEASE_REPO: 'MediaEase/MediaEase'
-          PRERELEASE_FILE: 'prerelease_identifier.txt'
+          PRERELEASE_REPO: "MediaEase/MediaEase"
+          PRERELEASE_FILE: "prerelease_identifier.txt"
         run: |
           chmod +x .github/scripts/create-release.sh
           bash .github/scripts/create-release.sh
@@ -64,4 +64,4 @@ jobs:
           token: ${{ secrets.PAT }}
           repository: MediaEase/MediaEase
           event-type: harmonyui-release
-          client-payload: '{ "submodule": "HarmonyUI", "ref": "${{ github.ref_name }}", "sha": "${{ github.sha }}"}'
+          client-payload: '{ "submodule": "harmonyui", "ref": "${{ github.ref_name }}", "sha": "${{ github.sha }}"}'
