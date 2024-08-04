@@ -70,7 +70,7 @@
         "twig/string-extra": "^3.8",
         "twig/twig": "^2.12|^3.0",
         "willdurand/js-translation-bundle": "^6.0",
-        "zircote/swagger-php": "4.10.3"
+        "zircote/swagger-php": "^4.10"
     },
     "config": {
         "allow-plugins": {

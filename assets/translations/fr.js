@@ -110,6 +110,8 @@ t.add("The extension of the file is invalid ({{ extension }}). Allowed extension
 t.add("The detected character encoding is invalid ({{ detected }}). Allowed encodings are {{ encodings }}.", "L'encodage de caract\u00e8res d\u00e9tect\u00e9 est invalide ({{ detected }}). Les encodages autoris\u00e9s sont {{ encodings }}.", "validators", "fr");
 t.add("This value is not a valid MAC address.", "Cette valeur n'est pas une adresse MAC valide.", "validators", "fr");
 t.add("This URL is missing a top-level domain.", "Cette URL doit contenir un domaine de premier niveau.", "validators", "fr");
+t.add("This value is too short. It should contain at least one word.|This value is too short. It should contain at least {{ min }} words.", "Cette valeur est trop courte. Elle doit contenir au moins un mot.|Cette valeur est trop courte. Elle doit contenir au moins {{ min }} mots.", "validators", "fr");
+t.add("This value is too long. It should contain one word.|This value is too long. It should contain {{ max }} words or less.", "Cette valeur est trop longue. Elle doit contenir au maximum un mot.|Cette valeur est trop longue. Elle doit contenir au maximum {{ max }} mots.", "validators", "fr");
 t.add("This form should not contain extra fields.", "Ce formulaire ne doit pas contenir de champs suppl\u00e9mentaires.", "validators", "fr");
 t.add("The uploaded file was too large. Please try to upload a smaller file.", "Le fichier t\u00e9l\u00e9charg\u00e9 est trop volumineux. Merci d'essayer d'envoyer un fichier plus petit.", "validators", "fr");
 t.add("The CSRF token is invalid. Please try to resubmit the form.", "Le jeton CSRF est invalide. Veuillez renvoyer le formulaire.", "validators", "fr");

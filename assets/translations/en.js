@@ -110,6 +110,8 @@ t.add("The extension of the file is invalid ({{ extension }}). Allowed extension
 t.add("The detected character encoding is invalid ({{ detected }}). Allowed encodings are {{ encodings }}.", "The detected character encoding is invalid ({{ detected }}). Allowed encodings are {{ encodings }}.", "validators", "en");
 t.add("This value is not a valid MAC address.", "This value is not a valid MAC address.", "validators", "en");
 t.add("This URL is missing a top-level domain.", "This URL is missing a top-level domain.", "validators", "en");
+t.add("This value is too short. It should contain at least one word.|This value is too short. It should contain at least {{ min }} words.", "This value is too short. It should contain at least one word.|This value is too short. It should contain at least {{ min }} words.", "validators", "en");
+t.add("This value is too long. It should contain one word.|This value is too long. It should contain {{ max }} words or less.", "This value is too long. It should contain one word.|This value is too long. It should contain {{ max }} words or less.", "validators", "en");
 t.add("This form should not contain extra fields.", "This form should not contain extra fields.", "validators", "en");
 t.add("The uploaded file was too large. Please try to upload a smaller file.", "The uploaded file was too large. Please try to upload a smaller file.", "validators", "en");
 t.add("The CSRF token is invalid. Please try to resubmit the form.", "The CSRF token is invalid. Please try to resubmit the form.", "validators", "en");
