@@ -43,17 +43,6 @@ final class StoreController extends AbstractController
     }
 
     #[Route('', name: 'list', methods: ['GET'])]
-    #[OA\Get(
-        operationId: 'getStoreList',
-        summary: 'Get a list of stores',
-        description: 'Retrieve all available stores',
-        tags: ['Store'],
-    )]
-    #[OA\Response(
-        response: Response::HTTP_OK,
-        description: 'OK',
-        content: new OA\JsonContent(ref: '#/components/schemas/Store.list'),
-    )]
     public function list(): Response
     {
         $stores = $this->storeRepository->findAll();
