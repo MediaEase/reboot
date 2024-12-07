@@ -53,9 +53,9 @@ install-project:
     {{PHP_CONSOLE}} doctrine:database:create
     {{PHP_CONSOLE}} doctrine:schema:update --force --complete
     {{PHP_CONSOLE}} ux:icons:lock --force
-    {{PHP_CONSOLE}} harmony:secrets:regenerate-app-secret
-	{{PHP_CONSOLE}} harmony:secrets:regenerate-jwt-passphrase
-	{{PHP_CONSOLE}} harmony:secrets:regenerate-mercure-jwt-secret
+    {{PHP_CONSOLE}} harmony:secrets:regenerate-app-secret .env.local
+	{{PHP_CONSOLE}} harmony:secrets:regenerate-jwt-passphrase .env.local
+	{{PHP_CONSOLE}} harmony:secrets:regenerate-mercure-jwt-secret .env.local
     just sf-clear-cache-dev
     just qa-composer-outdated
 
