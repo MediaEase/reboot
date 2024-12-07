@@ -8,7 +8,6 @@ PHP_CONSOLE = php bin/console
 SYMFONY_CONSOLE = symfony console
 NPM := /usr/local/bin/pnpm/pnpm
 
-
 audit: ## Shortcut that runs make qa-audit
 	make qa-audit
 
@@ -42,6 +41,9 @@ install-project: ## Install project with normal dependencies
 	$(PHP_CONSOLE) doctrine:database:create
 	$(PHP_CONSOLE) doctrine:schema:update --force --complete
 	$(PHP_CONSOLE) ux:icons:lock --force
+	$(PHP_CONSOLE) harmony:secrets:regenerate-app-secret
+	$(PHP_CONSOLE) harmony:secrets:regenerate-jwt-passphrase
+	$(PHP_CONSOLE) harmony:secrets:regenerate-mercure-jwt-secret
 	make sf-clear-cache-dev
 	make qa-composer-validate
 
