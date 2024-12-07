@@ -40,7 +40,7 @@ class RegenerateJwtPassphraseCommand extends Command
         if ($envname && ($envname == '.env' || $envname == '.env.local')) {
             $symfonyStyle->note(sprintf('You chose to update: %s', $envname));
             $secret = bin2hex(random_bytes(32));
-            $filepath = realpath(dirname(__FILE__).'/../..').'/'.$envname;
+            $filepath = realpath(dirname(__FILE__).'/../../../').'/'.$envname;
             $symfonyStyle->note(sprintf('Editing file: %s', $filepath));
 
             $dotenvEditor = new DotenvEditor();
