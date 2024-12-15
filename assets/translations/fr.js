@@ -112,6 +112,10 @@ t.add("This value is not a valid MAC address.", "Cette valeur n'est pas une adre
 t.add("This URL is missing a top-level domain.", "Cette URL doit contenir un domaine de premier niveau.", "validators", "fr");
 t.add("This value is too short. It should contain at least one word.|This value is too short. It should contain at least {{ min }} words.", "Cette valeur est trop courte. Elle doit contenir au moins un mot.|Cette valeur est trop courte. Elle doit contenir au moins {{ min }} mots.", "validators", "fr");
 t.add("This value is too long. It should contain one word.|This value is too long. It should contain {{ max }} words or less.", "Cette valeur est trop longue. Elle doit contenir au maximum un mot.|Cette valeur est trop longue. Elle doit contenir au maximum {{ max }} mots.", "validators", "fr");
+t.add("This value does not represent a valid week in the ISO 8601 format.", "Cette valeur ne repr\u00e9sente pas une semaine valide au format ISO 8601.", "validators", "fr");
+t.add("This value is not a valid week.", "Cette valeur n'est pas une semaine valide.", "validators", "fr");
+t.add("This value should not be before week \"{{ min }}\".", "Cette valeur ne doit pas \u00eatre ant\u00e9rieure \u00e0 la semaine \"{{ min }}\".", "validators", "fr");
+t.add("This value should not be after week \"{{ max }}\".", "Cette valeur ne doit pas \u00eatre post\u00e9rieure \u00e0 la semaine \"{{ max }}\".", "validators", "fr");
 t.add("This form should not contain extra fields.", "Ce formulaire ne doit pas contenir de champs suppl\u00e9mentaires.", "validators", "fr");
 t.add("The uploaded file was too large. Please try to upload a smaller file.", "Le fichier t\u00e9l\u00e9charg\u00e9 est trop volumineux. Merci d'essayer d'envoyer un fichier plus petit.", "validators", "fr");
 t.add("The CSRF token is invalid. Please try to resubmit the form.", "Le jeton CSRF est invalide. Veuillez renvoyer le formulaire.", "validators", "fr");
@@ -169,9 +173,9 @@ t.add("%count% month|%count% months", "%count% mois|%count% mois", "VerifyEmailB
 t.add("%count% day|%count% days", "%count% jour|%count% jours", "VerifyEmailBundle", "fr");
 t.add("%count% hour|%count% hours", "%count% heure|%count% heures", "VerifyEmailBundle", "fr");
 t.add("%count% minute|%count% minutes", "%count% minute|%count% minutes", "VerifyEmailBundle", "fr");
-t.add("The link to verify your email has expired. Please request a new link.", "Le lien pour v\u00e9rifier votre adresse e-mail a expir\u00e9. Veuillez refaire une demande de r\u00e9initialisation.", "VerifyEmailBundle", "fr");
-t.add("The link to verify your email is invalid. Please request a new link.", "Le lien pour v\u00e9rifier votre adresse e-mail est invalide. Veuillez refaire une demande de r\u00e9initialisation.", "VerifyEmailBundle", "fr");
-t.add("The link to verify your email appears to be for a different account or email. Please request a new link.", "Le lien permettant de v\u00e9rifier votre adresse e-mail semble correspondre \u00e0 un autre compte ou e-mail. Veuillez refaire une demande de r\u00e9initialisation.", "VerifyEmailBundle", "fr");
+t.add("The link to verify your email has expired. Please request a new link.", "Le lien pour v\u00e9rifier votre adresse e-mail a expir\u00e9. Veuillez demander un nouveau lien.", "VerifyEmailBundle", "fr");
+t.add("The link to verify your email is invalid. Please request a new link.", "Le lien pour v\u00e9rifier votre adresse e-mail est invalide. Veuillez demander un nouveau lien.", "VerifyEmailBundle", "fr");
+t.add("The link to verify your email appears to be for a different account or email. Please request a new link.", "Le lien permettant de v\u00e9rifier votre adresse e-mail semble correspondre \u00e0 un autre compte ou e-mail. Veuillez demander un nouveau lien.", "VerifyEmailBundle", "fr");
 t.add("%count% year|%count% years", "%count% an|%count% ans", "ResetPasswordBundle", "fr");
 t.add("%count% month|%count% months", "%count% mois|%count% mois", "ResetPasswordBundle", "fr");
 t.add("%count% day|%count% days", "%count% jour|%count% jours", "ResetPasswordBundle", "fr");
@@ -186,4 +190,5 @@ t.add("You have already requested a reset password email. Please check your emai
 t.add("Loading more results...", "Chargement d'autres r\u00e9sultats...", "AutocompleteBundle", "fr");
 t.add("No results found", "Aucun r\u00e9sultat trouv\u00e9", "AutocompleteBundle", "fr");
 t.add("No more results", "Aucun autre r\u00e9sultat trouv\u00e9", "AutocompleteBundle", "fr");
+t.add("Add %placeholder%...", "Ajouter %placeholder%...", "AutocompleteBundle", "fr");
 })(Translator);

@@ -112,6 +112,10 @@ t.add("This value is not a valid MAC address.", "This value is not a valid MAC a
 t.add("This URL is missing a top-level domain.", "This URL is missing a top-level domain.", "validators", "en");
 t.add("This value is too short. It should contain at least one word.|This value is too short. It should contain at least {{ min }} words.", "This value is too short. It should contain at least one word.|This value is too short. It should contain at least {{ min }} words.", "validators", "en");
 t.add("This value is too long. It should contain one word.|This value is too long. It should contain {{ max }} words or less.", "This value is too long. It should contain one word.|This value is too long. It should contain {{ max }} words or less.", "validators", "en");
+t.add("This value does not represent a valid week in the ISO 8601 format.", "This value does not represent a valid week in the ISO 8601 format.", "validators", "en");
+t.add("This value is not a valid week.", "This value is not a valid week.", "validators", "en");
+t.add("This value should not be before week \"{{ min }}\".", "This value should not be before week \"{{ min }}\".", "validators", "en");
+t.add("This value should not be after week \"{{ max }}\".", "This value should not be after week \"{{ max }}\".", "validators", "en");
 t.add("This form should not contain extra fields.", "This form should not contain extra fields.", "validators", "en");
 t.add("The uploaded file was too large. Please try to upload a smaller file.", "The uploaded file was too large. Please try to upload a smaller file.", "validators", "en");
 t.add("The CSRF token is invalid. Please try to resubmit the form.", "The CSRF token is invalid. Please try to resubmit the form.", "validators", "en");
@@ -199,6 +203,7 @@ t.add("You have already requested a reset password email. Please check your emai
 t.add("Loading more results...", "Loading more results...", "AutocompleteBundle", "en");
 t.add("No results found", "No results found", "AutocompleteBundle", "en");
 t.add("No more results", "No more results", "AutocompleteBundle", "en");
+t.add("Add %placeholder%...", "Add %placeholder%...", "AutocompleteBundle", "en");
 t.add("forms.general.help.siteName", "The name of your MediaEase instance.", "messages", "en");
 t.add("forms.general.help.siteDescription", "A brief description of your MediaEase instance.", "messages", "en");
 t.add("forms.general.help.rootUrl", "The URL of your MediaEase instance.", "messages", "en");
